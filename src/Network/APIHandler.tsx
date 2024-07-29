@@ -55,7 +55,6 @@ export const sessionBaseUrl = (v2: boolean = false) => {
 };
 
 export const currentNodeUrl = (v2: boolean = false) => {
-	return "http://127.0.0.1:6060/debug/diag";
 	if (isLocalVersion()) {
 		let addr = store.getState().connection.backendAddress;
 		return `${addr}/debug/diag`;
@@ -134,10 +133,6 @@ export const nodeInfoUrl = () => {
 	return `${currentNodeUrl(true)}/${nodeInfoVarName}`;
 };
 
-export const backendUrlUrl = () => {
-	return `${window.location.origin}/diagaddr`;
-};
-
 export const fetchBackendUrl = () => {
 	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
 		return new Promise((resolve, reject) => {
@@ -146,8 +141,15 @@ export const fetchBackendUrl = () => {
 			});
 		});
 	} else {
-		const request = createRequest(backendUrlUrl(), "GET");
-		return fetchRequest(request);
+		const host = window.location.host;
+		const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
+		const address = window.location.protocol + "//" + hostWithoutPort + ":6060";
+
+		return new Promise((resolve, reject) => {
+			resolve({
+				address,
+			});
+		});
 	}
 };
 
