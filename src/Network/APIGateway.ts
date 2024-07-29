@@ -62,7 +62,7 @@ const getNodeId = (): string => {
 
 export const getBackendUrl = () => {
 	fetchBackendUrl()
-		.then((response) => {
+		.then((response: any) => {
 			if (response.address != undefined) {
 				store.dispatch(setNodeConnectionType(NodeConnectionType.Local));
 				store.dispatch(setBackendAddress(response.address));

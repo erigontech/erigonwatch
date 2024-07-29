@@ -139,7 +139,7 @@ export const backendUrlUrl = () => {
 
 export const fetchBackendUrl = () => {
 	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			resolve({
 				address: "http://127.0.0.1:6060"
 			});
@@ -170,16 +170,17 @@ export const fetchBackendUrl = () => {
 							});
 						});
 					}
+
+					return new Promise((resolve) => {
+						resolve({
+							address: response.address,
+						});
+					});
 				}
 			})
 			.catch(() => {
-				const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
-				const address = window.location.protocol + "//" + hostWithoutPort + ":6060";
-
-				return new Promise((resolve) => {
-					resolve({
-						address,
-					});
+				return new Promise((_, reject) => {
+					reject();
 				});
 			});
 	}
