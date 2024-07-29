@@ -145,7 +145,6 @@ export const fetchBackendUrl = () => {
 			});
 		});
 	} else {
-		const host = window.location.host;
 		const request = createRequest(backendUrlUrl(), "GET");
 
 		return fetchRequest(request)
@@ -161,6 +160,7 @@ export const fetchBackendUrl = () => {
 
 					if (address === "127.0.0.1:6060" || address === "localhost:6060") isDefault = true;
 					if (isDefault) {
+						const host = window.location.host;
 						const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
 						const _address = window.location.protocol + "//" + hostWithoutPort + ":6060";
 
