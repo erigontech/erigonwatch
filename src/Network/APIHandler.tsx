@@ -156,17 +156,17 @@ export const fetchBackendUrl = () => {
 
 					if (address.startsWith("http")) {
 						address = address.substring(address.indexOf("//") + 2);
-						address = address.substring(0, address.indexOf("/"));
+						address = address.indexOf("/") >=0 ? address.substring(0, address.indexOf("/")) : address;
 					}
 
 					if (address === "127.0.0.1:6060" || address === "localhost:6060") isDefault = true;
 					if (isDefault) {
 						const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
-						const address = window.location.protocol + "//" + hostWithoutPort + ":6060";
+						const _address = window.location.protocol + "//" + hostWithoutPort + ":6060";
 
 						return new Promise((resolve) => {
 							resolve({
-								address,
+								address: _address,
 							});
 						});
 					}
