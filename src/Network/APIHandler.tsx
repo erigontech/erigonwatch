@@ -133,6 +133,10 @@ export const nodeInfoUrl = () => {
 	return `${currentNodeUrl(true)}/${nodeInfoVarName}`;
 };
 
+export const backendUrlUrl = () => {
+	return `${window.location.origin}/diagaddr`;
+};
+
 export const fetchBackendUrl = () => {
 	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
 		return new Promise((resolve, reject) => {
@@ -142,14 +146,42 @@ export const fetchBackendUrl = () => {
 		});
 	} else {
 		const host = window.location.host;
-		const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
-		const address = window.location.protocol + "//" + hostWithoutPort + ":6060";
+		const request = createRequest(backendUrlUrl(), "GET");
 
-		return new Promise((resolve, reject) => {
-			resolve({
-				address,
+		return fetchRequest(request)
+			.then((response) => {
+				if (response.address) {
+					let address = response.address;
+					let isDefault = false;
+
+					if (address.startsWith("http")) {
+						address = address.substring(address.indexOf("//") + 2);
+						address = address.substring(0, address.indexOf("/"));
+					}
+
+					if (address === "127.0.0.1:6060" || address === "localhost:6060") isDefault = true;
+					if (isDefault) {
+						const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
+						const address = window.location.protocol + "//" + hostWithoutPort + ":6060";
+
+						return new Promise((resolve) => {
+							resolve({
+								address,
+							});
+						});
+					}
+				}
+			})
+			.catch(() => {
+				const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
+				const address = window.location.protocol + "//" + hostWithoutPort + ":6060";
+
+				return new Promise((resolve) => {
+					resolve({
+						address,
+					});
+				});
 			});
-		});
 	}
 };
 
