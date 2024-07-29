@@ -162,7 +162,16 @@ export const fetchBackendUrl = () => {
 					if (isDefault) {
 						const host = window.location.host;
 						const hostWithoutPort = host.lastIndexOf(":") >=0 ? host.substring(0, host.lastIndexOf(":")) : host;
-						const _address = window.location.protocol + "//" + hostWithoutPort + ":6060";
+
+						if (hostWithoutPort === "127.0.0.1" || hostWithoutPort === "localhost") {
+							return new Promise((resolve) => {
+								resolve({
+									address: response.address,
+								});
+							});
+						}
+
+						const _address = window.location.protocol + "//" + hostWithoutPort + ":8080";
 
 						return new Promise((resolve) => {
 							resolve({
