@@ -161,7 +161,7 @@ export const fetchBackendUrl = () => {
 					if (address === "127.0.0.1:6060" || address === "localhost:6060") isDefault = true;
 					if (isDefault) {
 						const host = window.location.host;
-						const hostWithoutPort = host.substring(0, host.lastIndexOf(":"));
+						const hostWithoutPort = host.lastIndexOf(":") >=0 ? host.substring(0, host.lastIndexOf(":")) : host;
 						const _address = window.location.protocol + "//" + hostWithoutPort + ":6060";
 
 						return new Promise((resolve) => {
