@@ -1,3 +1,3 @@
-module github.com/erigontech/erigonwatch
+module github.com/noku-team/erigonwatch
 
 go 1.21
