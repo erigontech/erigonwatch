@@ -171,7 +171,7 @@ export const fetchBackendUrl = () => {
 							});
 						}
 
-						const _address = window.location.protocol + "//" + hostWithoutPort + ":8080";
+						const _address = window.location.protocol + "//" + hostWithoutPort + "/api";
 
 						return new Promise((resolve) => {
 							resolve({
