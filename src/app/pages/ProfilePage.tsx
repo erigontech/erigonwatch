@@ -9,10 +9,8 @@ export const ProfilePage = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const getFunction = async () => {
-		//let url = "http://localhost:8080/api/sessions/16305640/nodes/9dd7edd8d62cdb7e25d9a8d88267a9780ae7d5a00e55df5e0ca6a2e349ce12e2/profile/heap";
-		let url = heapProfileUrl();
 		try {
-			const resp = await axios.get(url, {
+			const resp = await axios.get(heapProfileUrl(), {
 				onDownloadProgress: (progressEvent) => {
 					let eventObj: XMLHttpRequest | undefined = undefined;
 					if (progressEvent.event?.currentTarget) {
@@ -70,7 +68,7 @@ export const ProfilePage = () => {
 				</div>
 				<div className="w-[15%]" />
 			</div>
-			<div className="mt-5 mr-5 mb-5 w-[80%]">
+			<div className="mt-5 mr-5 mb-5">
 				{img && (
 					<TransformWrapper>
 						<TransformComponent>

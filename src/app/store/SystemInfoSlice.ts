@@ -7,8 +7,7 @@ const initialState: SystemInfoState = {
 	ramInfo: [],
 	cpuInfo: [],
 	diskInfo: [],
-	processesInfo: [],
-	heapprofile: ""
+	processesInfo: []
 };
 
 export interface SystemInfoState {
@@ -17,7 +16,6 @@ export interface SystemInfoState {
 	cpuInfo: NodeCPUInfo[];
 	diskInfo: NodeDiskInfo[];
 	processesInfo: NodeProcessesInfo[];
-	heapprofile: string;
 }
 
 export interface NodeNetworkSpeed {
@@ -156,9 +154,6 @@ export const systemInfoSlice = createSlice({
 				state.ramInfo.push({ nodeId: action.payload.nodeId, info: { total: 0, available: 0, used: 0, usedPercent: action.payload.usage } });
 			}
 		},
-		setHeap: (state, action: PayloadAction<string>) => {
-			state.heapprofile = action.payload;
-		},
 		resetSystemInfoState: () => initialState
 	}
 });
@@ -171,11 +166,8 @@ export const {
 	addOrUpdateRAMInfo,
 	addOrUpdateCPUUsage,
 	addOrUpdateRAMUsage,
-	resetSystemInfoState,
-	setHeap
+	resetSystemInfoState
 } = systemInfoSlice.actions;
-
-export const selectHeap = (state: RootState): string => state.sysInfo.heapprofile;
 
 export const selectNodesNetworkSpeed = (state: RootState): NodeNetworkSpeed[] => state.sysInfo.networkSpeed;
 export const selectNetworkSpeedForActiveNode = createSelector(
