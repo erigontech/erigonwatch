@@ -77,17 +77,29 @@ const getNodeId = (): string => {
 };
 
 export const getBackendUrl = () => {
-	fetchBackendUrl()
+	return fetchBackendUrl()
 		.then((response: any) => {
 			if (response.address != undefined) {
 				store.dispatch(setNodeConnectionType(NodeConnectionType.Local));
 				store.dispatch(setBackendAddress(response.address));
+
+				return new Promise((resolve) => {
+					resolve(NodeConnectionType.Local);
+				})
 			} else {
 				store.dispatch(setNodeConnectionType(NodeConnectionType.Unknown));
+
+				return new Promise((resolve) => {
+					resolve(NodeConnectionType.Unknown);
+				})
 			}
 		})
 		.catch((error) => {
 			store.dispatch(setNodeConnectionType(NodeConnectionType.Remote));
+
+			return new Promise((resolve) => {
+				resolve(NodeConnectionType.Remote);
+			})
 		});
 };
 

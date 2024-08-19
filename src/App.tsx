@@ -158,6 +158,7 @@ function Layout() {
 
 	const [isSessionsModalOpen, setIsSessionsModalOpen] = useState(false);
 	const [isNodesModalOpen, setIsNodesModalOpen] = useState(false);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (activeSession && document?.title) {
@@ -166,7 +167,9 @@ function Layout() {
 	}, [activeSession]);
 
 	useEffect(() => {
-		getBackendUrl();
+		getBackendUrl()
+			.then((res) => console.log(`Connection type: ${res}`))
+			.finally(() => setLoading(false));
 	}, []);
 
 	/*useEffect(() => {
@@ -245,10 +248,10 @@ function Layout() {
 	}, [activeSessionPin, conectionType]);
 
 	useEffect(() => {
-		if (activeNodeId !== "" && activeSessionPin !== "") {
+		if (activeNodeId !== "" && activeSessionPin !== "" && !loading) {
 			queryData();
 		}
-	}, [activeNodeId]);
+	}, [activeNodeId, loading]);
 
 	const queryData = () => {
 		getHardwareInfo();
