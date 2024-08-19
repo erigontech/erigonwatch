@@ -93,7 +93,10 @@ export const FlagsTable = ({ flags }: FlagsTableProps) => {
 			</thead>
 			<tbody>
 				{visibleFlags.map((flag) => (
-					<FlagsTableRow flag={flag} />
+					<FlagsTableRow
+						flag={flag}
+						key={flag.flag}
+					/>
 				))}
 			</tbody>
 		</table>

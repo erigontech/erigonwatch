@@ -75,7 +75,8 @@ export const NetworkDownloaderPage = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{syncStatus?.downloaded && (
+					{
+						//syncStatus?.downloaded && (
 						<tr
 							onClick={() => {
 								setShowDetails(true);
@@ -96,7 +97,8 @@ export const NetworkDownloaderPage = () => {
 							<td className="px-4 py-2">{multipleBytes(syncStatus.alloc)}</td>
 							<td className="px-4 py-2">{multipleBytes(syncStatus.sys)}</td>
 						</tr>
-					)}
+						//)
+					}
 				</tbody>
 			</table>
 			<div className="flex flex-col">

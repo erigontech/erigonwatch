@@ -17,14 +17,18 @@ import {
 	fetchBackendUrl,
 	fetchBootnodes,
 	fetchCmdLineArgs,
+	fetchCpuUsage,
 	fetchDB,
 	fetchDBList,
 	fetchFlags,
+	fetchHardwareInfo,
 	fetchHeaders,
 	fetchLogFilesList,
+	fetchMemoryInfo,
 	fetchNetworkSpeed,
 	fetchNodeInfo,
 	fetchPeers,
+	fetchProcessesInfo,
 	fetchReorgs,
 	fetchSession,
 	fetchSnapshotFilesList,
@@ -53,7 +57,19 @@ import {
 } from "../app/store/syncStagesSlice";
 import { addOrUpdateHeaders } from "../app/store/headersSlice";
 import { headersFromJson } from "../helpers/headersFromJson";
-import { NetworkSpeed, addOrUpdateNetworkSpeed } from "../app/store/systemInfoSlice";
+import {
+	CPUInfo,
+	CPUUsage,
+	NetworkSpeed,
+	ProcessesInfo,
+	addOrUpdateCPUInfo,
+	addOrUpdateCPUUsage,
+	addOrUpdateDiskInfo,
+	addOrUpdateNetworkSpeed,
+	addOrUpdateProcessesInfo,
+	addOrUpdateRAMInfo,
+	addOrUpdateRAMUsage
+} from "../app/store/systemInfoSlice";
 import { NodeConnectionType, setBackendAddress, setNodeConnectionType } from "../app/store/connectionSlice";
 
 const getNodeId = (): string => {
@@ -339,5 +355,86 @@ export const getNetworkSpeed = () => {
 		})
 		.catch((error) => {
 			console.log("Error fetching network speed: ", error);
+		});
+};
+
+export const getHardwareInfo = () => {
+	fetchHardwareInfo()
+		.then((response) => {
+			let cpuInfo: CPUInfo[] = [];
+
+			response.cpu.forEach((cpu: any) => {
+				cpuInfo.push({
+					cpu: cpu.cpu,
+					vendorId: cpu.vendorId,
+					family: cpu.family,
+					model: cpu.model,
+					stepping: cpu.stepping,
+					physicalId: cpu.physicalId,
+					coreId: cpu.coreId,
+					cores: cpu.cores,
+					modelName: cpu.modelName,
+					mhz: cpu.mhz,
+					cacheSize: cpu.cacheSize,
+					flags: cpu.flags,
+					microcode: cpu.microcode
+				});
+			});
+
+			store.dispatch(addOrUpdateCPUInfo({ nodeId: getNodeId(), info: cpuInfo }));
+			store.dispatch(addOrUpdateRAMInfo({ nodeId: getNodeId(), info: response.ram }));
+			store.dispatch(addOrUpdateDiskInfo({ nodeId: getNodeId(), info: response.disk }));
+		})
+		.catch((error) => {
+			console.log("Error fetching hardware info: ", error);
+		});
+};
+
+export const getCpuUsage = () => {
+	fetchCpuUsage()
+		.then((response) => {
+			let cores: number[] = [];
+			response.Cores.forEach((cpu: any) => {
+				cores.push(cpu);
+			});
+
+			let cpuUsage: CPUUsage = {
+				total: response.Total,
+				cores: cores
+			};
+			store.dispatch(addOrUpdateCPUUsage({ nodeId: getNodeId(), usage: cpuUsage }));
+		})
+		.catch((error) => {
+			console.log("Error fetching CPU usage: ", error);
+		});
+};
+
+export const getProcessesInfo = () => {
+	fetchProcessesInfo()
+		.then((response) => {
+			let prcs: ProcessesInfo[] = [];
+			response.forEach((prc: any) => {
+				prcs.push({
+					pid: prc.Pid,
+					name: prc.Name,
+					cpuUsage: prc.CPUUsage,
+					memory: prc.Memory
+				});
+			});
+
+			store.dispatch(addOrUpdateProcessesInfo({ nodeId: getNodeId(), info: prcs }));
+		})
+		.catch((error) => {
+			console.log("Error fetching processes info: ", error);
+		});
+};
+
+export const getMemoryInfo = () => {
+	fetchMemoryInfo()
+		.then((response) => {
+			store.dispatch(addOrUpdateRAMUsage({ nodeId: getNodeId(), usage: response }));
+		})
+		.catch((error) => {
+			console.log("Error fetching memory info: ", error);
 		});
 };

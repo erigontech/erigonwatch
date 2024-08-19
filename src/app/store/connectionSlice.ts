@@ -19,8 +19,8 @@ const initialState: ConnectionState = {
 	isConnectedToInternet: true,
 	isConnectedToNode: true,
 	nodeConnectionType: NodeConnectionType.Unknown,
-	backendAddress: "http://localhost:8080"
 	//backendAddress: window.location.origin
+	backendAddress: "http://localhost:8080"
 };
 
 export const connectionSlice = createSlice({
@@ -37,6 +37,7 @@ export const connectionSlice = createSlice({
 			state.nodeConnectionType = action.payload;
 		},
 		setBackendAddress: (state, action: PayloadAction<string>) => {
+			console.log("Setting backend address to: ", action.payload);
 			state.backendAddress = action.payload;
 		},
 		resetConectionState: () => initialState

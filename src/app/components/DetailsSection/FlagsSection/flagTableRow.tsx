@@ -18,18 +18,14 @@ export const FlagsTableRow = ({ flag }: FlagsTableRowProps) => {
 	};
 
 	const renderArray = (value: string[] | number[]) => {
-		return (
-			<>
-				{value.map((val) => (
-					<tr
-						key={val}
-						className="border-b border-gray-200 hover:bg-gray-100"
-					>
-						<td className="px-4 py-2">{val + ""}</td>
-					</tr>
-				))}
-			</>
-		);
+		let res = "";
+		value.forEach((val, idx) => {
+			if (idx < value.length - 1) {
+				res += val + ", ";
+			}
+		});
+
+		return <td className="px-4 py-2">{res}</td>;
 	};
 
 	return (

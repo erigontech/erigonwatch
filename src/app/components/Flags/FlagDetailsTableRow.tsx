@@ -1,6 +1,5 @@
 import { Flag } from "../../../entities";
 
-
 interface FlagsDetailsTableRowProps {
 	flag: Flag;
 }
@@ -47,7 +46,7 @@ export const FlagsDetailsTableRow = ({ flag }: FlagsDetailsTableRowProps) => {
 		>
 			<td className="px-4 py-2">{flag.flag}</td>
 			{renderValue(flag.value)}
-            <td className="px-4 py-2">{String(flag.usage)}</td>
+			<td className="px-4 py-2">{String(flag.usage)}</td>
 		</tr>
 	);
 };

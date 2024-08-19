@@ -20,9 +20,11 @@ import {
 	syncStatsMock
 } from "./../../tests/mocks";
 
+import { cpuUsageMock, hardwareInfoMock, memoryInfoMock, processesInfoMock } from "../../tests/sysinfo_mock";
+
 const sessionVarName = "sessions";
 const nodeVarName = "nodes";
-const versionVarName = "versions";
+const versionVarName = "version";
 const flagsVarName = "flags";
 const cmdLineVarName = "cmdline";
 const logsVarName = "logs";
@@ -37,6 +39,11 @@ const snapshotFilesListVarName = "snapshot-files-list";
 const headersVarName = "headers";
 const networkSpeedVarName = "network-speed";
 const nodeInfoVarName = "nodeinfo";
+const hardwareInfoVarName = "hardware-info";
+const cpuUsageVarName = "cpu-usage";
+const processesInfoVarName = "processes-info";
+const memoryInfoVarName = "memory-info";
+const heapProfileVarName = "profile/heap";
 
 export const getActiveSessionPin = (): string => {
 	return store.getState().app.activeSessionPin;
@@ -66,7 +73,7 @@ export const currentNodeUrl = (v2: boolean = false) => {
 };
 
 export const versionUrl = () => {
-	const baseUrl = currentNodeUrl();
+	const baseUrl = currentNodeUrl(true);
 	return `${baseUrl}/${versionVarName}`;
 };
 
@@ -135,6 +142,26 @@ export const nodeInfoUrl = () => {
 
 export const backendUrlUrl = () => {
 	return `${window.location.origin}/diagaddr`;
+};
+
+export const hardwareInfoUrl = () => {
+	return `${currentNodeUrl(true)}/${hardwareInfoVarName}`;
+};
+
+export const cpuUsageUrl = () => {
+	return `${currentNodeUrl(true)}/${cpuUsageVarName}`;
+};
+
+export const processesInfoUrl = () => {
+	return `${currentNodeUrl(true)}/${processesInfoVarName}`;
+};
+
+export const memoryInfoUrl = () => {
+	return `${currentNodeUrl(true)}/${memoryInfoVarName}`;
+};
+
+export const heapProfileUrl = () => {
+	return `${currentNodeUrl(false)}/${heapProfileVarName}`;
 };
 
 export const fetchBackendUrl = () => {
@@ -407,6 +434,52 @@ export const fetchNetworkSpeed = () => {
 	}
 };
 
+export const fetchHardwareInfo = () => {
+	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
+		return new Promise((resolve, reject) => {
+			resolve(hardwareInfoMock);
+		});
+	} else {
+		const request = createRequest(hardwareInfoUrl(), "GET");
+		return fetchRequest(request);
+	}
+};
+
+export const fetchCpuUsage = () => {
+	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
+		return new Promise((resolve, reject) => {
+			resolve(cpuUsageMock);
+		});
+	} else {
+		const request = createRequest(cpuUsageUrl(), "GET");
+		return fetchRequest(request);
+	}
+};
+
+export const fetchProcessesInfo = () => {
+	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve(processesInfoMock);
+			}, 4000);
+		});
+	} else {
+		const request = createRequest(processesInfoUrl(), "GET");
+		return fetchRequest(request);
+	}
+};
+
+export const fetchMemoryInfo = () => {
+	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
+		return new Promise((resolve, reject) => {
+			resolve(memoryInfoMock);
+		});
+	} else {
+		const request = createRequest(memoryInfoUrl(), "GET");
+		return fetchRequest(request);
+	}
+};
+
 const fetchRequest = (request: Request) => {
 	return fetch(request)
 		.then((response) => {
@@ -431,7 +504,6 @@ function createRequest(url: string, method: string, formData?: FormData) {
 	return new Request(url, {
 		method: method,
 		headers: {
-			"Diagnostics-API-Key": "your-api-key",
 			"Content-Type": "application/json"
 		}
 	});

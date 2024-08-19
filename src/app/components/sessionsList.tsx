@@ -28,6 +28,10 @@ export const SessionsList = ({ onSessionSelected, ...props }: SessionsListProps)
 		onSessionSelected();
 	};
 
+	const supportCmd = (pin: string) => {
+		return "./build/bin/erigon support --diagnostics.sessions " + pin;
+	};
+
 	const renderSessionsTable = () => {
 		return (
 			<>
@@ -37,23 +41,30 @@ export const SessionsList = ({ onSessionSelected, ...props }: SessionsListProps)
 							<th />
 							<th className="px-4 py-2">Name</th>
 							<th className="px-4 py-2">PIN</th>
-							<th />
+							<th className="px-4 py-2">Support cmd</th>
 						</tr>
 					</thead>
 					<tbody>
 						{sessions.map((session, index) => {
 							return (
 								<tr
-									className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer"
+									className="border-b border-gray-200"
 									key={index}
 									onClick={() => onSessionClicked(session.pin)}
 								>
 									<td className="pl-2">{session.active && <CheckIcon />}</td>
 									<td className="px-4 py-2">{session.name}</td>
-									<td className="px-4 py-2">{session.pin}</td>
-									<td>
+									<td className="px-4 py-2 hover:bg-gray-100">
+										{session.pin}{" "}
 										<ContentCopyIcon
 											onClick={() => copyToClipboard(session.pin)}
+											className="cursor-pointer pr-2"
+										/>
+									</td>
+									<td className="px-4 py-2 hover:bg-gray-100">
+										{supportCmd(session.pin)}{" "}
+										<ContentCopyIcon
+											onClick={() => copyToClipboard(supportCmd(session.pin))}
 											className="cursor-pointer pr-2"
 										/>
 									</td>

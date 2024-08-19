@@ -3,20 +3,19 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PermDataSettingIcon from "@mui/icons-material/PermDataSetting";
 import NetworkPingIcon from "@mui/icons-material/NetworkPing";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import LinkIcon from "@mui/icons-material/Link";
 import DatasetIcon from "@mui/icons-material/Dataset";
-import PestControlIcon from "@mui/icons-material/PestControl";
-import BiotechIcon from "@mui/icons-material/Biotech";
-import SpeedIcon from "@mui/icons-material/Speed";
-import SummarizeIcon from "@mui/icons-material/Summarize";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import WarningIcon from "@mui/icons-material/Warning";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SyncIcon from "@mui/icons-material/Sync";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import { useSelector } from "react-redux";
 import { selectIssuesCountForBadge } from "../../store/issuesSlice";
+import DesktopWindowsIcon from "@mui/icons-material/DesktopWindows";
+import MemoryIcon from "@mui/icons-material/Memory";
+import InfoIcon from "@mui/icons-material/Info";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
 
 export const SidebarComponent = () => {
 	const [isColapsed, setIsColapsed] = useState(false);
@@ -84,19 +83,19 @@ export const SidebarComponent = () => {
 				>
 					Logs
 				</MenuItem>
-				<MenuItem
+				{/*<MenuItem
 					component={<Link to="/chain" />}
 					icon={<LinkIcon />}
 				>
 					Chain
-				</MenuItem>
+				</MenuItem>*/}
 				<MenuItem
 					component={<Link to="/data" />}
 					icon={<DatasetIcon />}
 				>
 					Data
 				</MenuItem>
-				<MenuItem
+				{/*<MenuItem
 					component={<Link to="/debug" />}
 					icon={<PestControlIcon />}
 				>
@@ -134,7 +133,38 @@ export const SidebarComponent = () => {
 					}
 				>
 					Issues
-				</MenuItem>
+				</MenuItem>*/}
+				<SubMenu
+					label="System Info"
+					icon={<DesktopWindowsIcon />}
+				>
+					<MenuItem
+						component={<Link to="/sysinfo" />}
+						icon={<InfoIcon />}
+					>
+						Info
+					</MenuItem>
+
+					<MenuItem
+						component={<Link to="/cpu-info" />}
+						icon={<MemoryIcon />}
+					>
+						CPU
+					</MenuItem>
+
+					<MenuItem
+						component={<Link to="/processes" />}
+						icon={<ListAltIcon />}
+					>
+						Processes
+					</MenuItem>
+					<MenuItem
+						component={<Link to="/profile" />}
+						icon={<NetworkCheckIcon />}
+					>
+						Profile
+					</MenuItem>
+				</SubMenu>
 				<MenuItem
 					component={<Link to="/admin" />}
 					icon={<AdminPanelSettingsIcon />}

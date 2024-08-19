@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { calculatePercentDownloaded, multipleBps, multipleBytes } from "../../../helpers/converters";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -322,25 +322,22 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 				<tbody>
 					{visibleSegments.map((segment) => {
 						return (
-							<>
-								{segment.visible && (
-									<tr
-										className="border-b hover:bg-gray-100 cursor-pointer"
-										onClick={() => {
-											onSegmentClicked(segment.status);
-										}}
-									>
-										<td className="px-4 py-2">{segment.status.name}</td>
-										<td className="px-4 py-2">{calculatePercentDownloaded(segment.status.downloadedBytes, segment.status.totalBytes)}</td>
-										<td className="px-4 py-2">{multipleBytes(segment.status.totalBytes)}</td>
-										<td className="px-4 py-2">{peersCount(segment.status)}</td>
-										<td className="px-4 py-2">{multipleBps(peersRate(segment.status))}</td>
-										<td className="px-4 py-2">{webseedsCount(segment.status)}</td>
-										<td className="px-4 py-2">{multipleBps(webseedsRate(segment.status))}</td>
-										<td className="px-4 py-2">{segment.active.toString()}</td>
-									</tr>
-								)}
-							</>
+							<tr
+								key={segment.status.name}
+								className="border-b hover:bg-gray-100 cursor-pointer"
+								onClick={() => {
+									onSegmentClicked(segment.status);
+								}}
+							>
+								<td className="px-4 py-2">{segment.status.name}</td>
+								<td className="px-4 py-2">{calculatePercentDownloaded(segment.status.downloadedBytes, segment.status.totalBytes)}</td>
+								<td className="px-4 py-2">{multipleBytes(segment.status.totalBytes)}</td>
+								<td className="px-4 py-2">{peersCount(segment.status)}</td>
+								<td className="px-4 py-2">{multipleBps(peersRate(segment.status))}</td>
+								<td className="px-4 py-2">{webseedsCount(segment.status)}</td>
+								<td className="px-4 py-2">{multipleBps(webseedsRate(segment.status))}</td>
+								<td className="px-4 py-2">{segment.active.toString()}</td>
+							</tr>
 						);
 					})}
 				</tbody>

@@ -69,7 +69,6 @@ export const PeersDetailsTable = ({ peers, onPeerClicked }: PeersDetailsTablePro
 	};
 
 	const compareNumbers = (a: number, b: number, desc: boolean) => {
-		console.log("!  currentSortState " + currentSortState.column + " " + currentSortState.descending);
 		if (desc) {
 			return b - a;
 		} else {
