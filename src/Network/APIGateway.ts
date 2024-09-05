@@ -83,7 +83,7 @@ export const getBackendUrl = () => {
 				let beAddr = response.address;
 				store.dispatch(setNodeConnectionType(NodeConnectionType.Local));
 				//Check is running from diag ui command
-				if (response.address.includes("127.0.0.1")) {
+				if (response.address.includes("127.0.0.1") || response.address.includes("localhost")) {
 					//Check for proxy
 					if (!window.location.origin.includes("127.0.0.1") && !window.location.origin.includes("localhost")) {
 						beAddr = window.location.origin + "/api";
