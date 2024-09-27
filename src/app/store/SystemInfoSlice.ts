@@ -115,6 +115,10 @@ export const systemInfoSlice = createSlice({
 			}
 		},
 		addOrUpdateCPUInfo: (state, action: PayloadAction<{ info: CPUInfo[]; nodeId: string }>) => {
+			if (!state.cpuInfo) {
+				state.cpuInfo = [];
+			}
+
 			let nodeIdx = state.cpuInfo.findIndex((issue) => issue.nodeId === action.payload.nodeId);
 			if (nodeIdx !== -1) {
 				state.cpuInfo[nodeIdx].info = action.payload.info;

@@ -10,13 +10,16 @@
     "lint": "yarn lint:format && yarn lint:fix ",
     "type-check": "tsc",
     "test": "vitest",
-    "test-cov": "vitest --coverage"
+    "test-cov": "vitest --coverage",
+    "start": "react-scripts --max_old_space_size=4096 start",
+    "predeploy": "react-scripts --max_old_space_size=4096 build"
   },
   "dependencies": {
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.5",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.7.4",
+    "graphviz-react": "^1.2.5",
     "react": "^18.2.0",
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",

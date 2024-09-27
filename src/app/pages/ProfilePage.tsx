@@ -1,7 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, CircularProgress } from "@mui/material";
-import axios from "axios";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import {
 	allocsProfileUrl,
 	blockProfileUrl,
@@ -10,38 +9,42 @@ import {
 	mutexProfileUrl,
 	threadCreateProfileUrl
 } from "../../Network/APIHandler";
+import { Graphviz } from "graphviz-react";
+import { addProfile, selectAllProfileDataForNode } from "../store/profileSlice";
+import { selectActiveNodeId } from "../store/appSlice";
 
 export interface ProfilePageProps {
 	profile: string;
 }
 
 export const ProfilePage = ({ profile }: ProfilePageProps) => {
+	const dispatch = useDispatch();
+
 	const [imagesMap, setImagesMap] = useState<Map<string, string>>(new Map());
 	const [loading, setLoading] = useState<boolean>(false);
+	const activeNodeId = useSelector(selectActiveNodeId);
+	const profileData = useSelector(selectAllProfileDataForNode);
+	const [selectedProfile, setSelectedProfile] = useState<string>("");
 
 	const getFunction = async () => {
 		try {
-			const resp = await axios.get(getFetchUrl(), {
-				onDownloadProgress: (progressEvent) => {
-					let eventObj: XMLHttpRequest | undefined = undefined;
-					if (progressEvent.event?.currentTarget) {
-						eventObj = progressEvent.event?.currentTarget;
-					} else if (progressEvent.event?.srcElement) {
-						eventObj = progressEvent.event?.srcElement;
-					} else if (progressEvent.event?.target) {
-						eventObj = progressEvent.event?.target;
-					}
-					if (!eventObj) return;
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", getFetchUrl(), true);
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					setLoading(false);
+					imagesMap.set(profile, xhr.responseText);
+
+					dispatch(addProfile({ nodeId: activeNodeId, profileName: profile, data: xhr.responseText }));
 				}
-			});
-			setLoading(false);
-			imagesMap.set(profile, resp.data);
+			};
+			xhr.send();
 		} catch (error) {
 			setLoading(false);
 			console.error(error);
 		}
 	};
-
+	``;
 	const getFetchUrl = () => {
 		switch (profile) {
 			case "heap":
@@ -68,10 +71,54 @@ export const ProfilePage = ({ profile }: ProfilePageProps) => {
 		return str[0].toUpperCase() + str.slice(1);
 	};
 
+	const decodeBase64 = (base64: string): string => {
+		return atob(base64);
+	};
+
+	const graphHeight = window.innerHeight * 0.8;
+	const graphWidth = window.innerWidth * 0.8;
+
+	const profileDataForProfile = profileData.find((pdata) => pdata.name === profile);
+
+	const renderHistory = () => {
+		return (
+			<div>
+				<table className="table-auto bg-white text-left">
+					<tr className="border-b border-gray-200">
+						<th>Profile snapshot</th>
+					</tr>
+					{profileDataForProfile?.profile.map((data) => {
+						return (
+							<tr
+								className="border-b border-gray-200 cursor-pointer"
+								onClick={() => {
+									selectProfile(profileDataForProfile.profile.indexOf(data));
+								}}
+							>
+								<td>{data.date}</td>
+							</tr>
+						);
+					})}
+				</table>
+			</div>
+		);
+	};
+
+	const selectProfile = (idx: number) => {
+		if (profileDataForProfile?.profile.length === 0) {
+			return setSelectedProfile("");
+		}
+		return setSelectedProfile(profileDataForProfile?.profile[idx]?.data || "");
+	};
+
 	return (
 		<div className="flex flex-col h-full">
+			<div className="flex justify-center">
+				<h3 className="text-xl font-semibold">{capitalizeFirstLetter(profile) + " Profile"}</h3>
+			</div>
 			<div className="flex flex-row justify-between">
 				<div className="w-[15%]">
+					{renderHistory()}
 					{loading ? (
 						<CircularProgress />
 					) : (
@@ -87,22 +134,14 @@ export const ProfilePage = ({ profile }: ProfilePageProps) => {
 						</Button>
 					)}
 				</div>
-				<div className="w-[15%]">
-					<h3 className="text-xl font-semibold">{capitalizeFirstLetter(profile) + " Profile"}</h3>
+				<div className="mt-5 mr-5 mb-5">
+					{selectedProfile != "" && (
+						<Graphviz
+							dot={decodeBase64(selectedProfile)}
+							options={{ fit: true, zoom: true, height: graphHeight, width: graphWidth }}
+						/>
+					)}
 				</div>
-				<div className="w-[15%]" />
-			</div>
-			<div className="mt-5 mr-5 mb-5">
-				{imagesMap.get(profile) && (
-					<TransformWrapper>
-						<TransformComponent>
-							<img
-								src={`data:image/png;base64,${imagesMap.get(profile)}`}
-								alt="test"
-							/>
-						</TransformComponent>
-					</TransformWrapper>
-				)}
 			</div>
 		</div>
 	);
