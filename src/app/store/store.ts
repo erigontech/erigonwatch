@@ -23,6 +23,7 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import headersSlice from "./headersSlice";
 import systemInfoSlice from "./systemInfoSlice";
+import profileSlice from "./profileSlice";
 
 const persistConfig = {
 	key: "root",
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
 	syncStages: syncStagesReducer,
 	issues: issuesReduces,
 	headers: headersSlice,
-	sysInfo: systemInfoSlice
+	sysInfo: systemInfoSlice,
+	profile: profileSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
