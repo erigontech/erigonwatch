@@ -7,6 +7,7 @@ import SortIcon from "@mui/icons-material/Sort";
 
 enum SortColumn {
 	Id = "Id",
+	Name = "Name",
 	Type = "Type",
 	Status = "Status",
 	TotalIn = "TotalIn",
@@ -41,6 +42,8 @@ export const PeersDetailsTable = ({ peers, onPeerClicked }: PeersDetailsTablePro
 		let sortedPeers = prs.sort((a, b) => {
 			if (sotOpt.column === SortColumn.Id) {
 				return compareStrings(a.id, b.id, sotOpt.descending);
+			} else if (sotOpt.column === SortColumn.Name) {
+				return compareStrings(a.name, b.name, sotOpt.descending);
 			} else if (sotOpt.column === SortColumn.Type) {
 				return compareStrings(a.type, b.type, sotOpt.descending);
 			} else if (sotOpt.column === SortColumn.Status) {
@@ -100,7 +103,7 @@ export const PeersDetailsTable = ({ peers, onPeerClicked }: PeersDetailsTablePro
 
 	return (
 		<div className="flex flex-col shadow-lg rounded-md p-2 bg-white min-h-[40px] max-h-[83vh] w-full overflow-auto">
-			<table className="table-fixed text-left w-full">
+			<table className="table-auto text-left w-full">
 				<thead>
 					<tr className="border-b">
 						<th
@@ -115,6 +118,20 @@ export const PeersDetailsTable = ({ peers, onPeerClicked }: PeersDetailsTablePro
 							<div className="flex flex-row">
 								peer ID
 								{getArrowIcon(SortColumn.Id)}
+							</div>
+						</th>
+						<th
+							className="px-4 py-2 cursor-pointer"
+							onClick={() => {
+								sortPeers(visiblePeers, {
+									column: SortColumn.Name,
+									descending: !currentSortState.descending
+								});
+							}}
+						>
+							<div className="flex flex-row">
+								peer Name
+								{getArrowIcon(SortColumn.Name)}
 							</div>
 						</th>
 						<th
@@ -214,6 +231,7 @@ export const PeersDetailsTable = ({ peers, onPeerClicked }: PeersDetailsTablePro
 								}}
 							>
 								<td className="px-4 py-2 overflow-hidden text-ellipsis">{peer.id}</td>
+								<td className="px-4 py-2 overflow-hidden text-ellipsis">{peer.name}</td>
 								<td className="px-4 py-2 overflow-hidden text-ellipsis">{getPeerType(peer)}</td>
 								<td className="px-4 py-2 overflow-hidden text-ellipsis">{peer.active ? "active" : ""}</td>
 								<td className="px-4 py-2 overflow-hidden text-ellipsis">{multipleBytes(peer.network.bytesIn)}</td>
