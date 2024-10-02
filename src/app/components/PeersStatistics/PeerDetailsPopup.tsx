@@ -97,6 +97,7 @@ export const PeerDetailsPopup = ({ peerId, onClose, ...props }: PeerDetailsPopup
 				<thead></thead>
 				<tbody>
 					{renderMainInfoRow("ID", peer.id)}
+					{renderMainInfoRow("Name", peer.name)}
 					{renderMainInfoRow("protocols", peer.protocols)}
 					{renderMainInfoRow("enr", peer.enr)}
 					{renderMainInfoRow("Enode", peer.enode)}
@@ -128,9 +129,9 @@ export const PeerDetailsPopup = ({ peerId, onClose, ...props }: PeerDetailsPopup
 	return (
 		<>
 			<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto inset-0 z-50 outline-none focus:outline-none absolute bg-black/[.4]">
-				<div className="relative w-auto my-6 mx-auto max-w-3xl">
+				<div className="">
 					{/*content*/}
-					<div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none items-center">
+					<div className="border-0 rounded-lg shadow-lg relative flex flex-col w-max bg-white outline-none focus:outline-none items-center">
 						{/*header*/}
 						<h3 className="text-3xl font-semibold mt-5">Peer Details</h3>
 						{/*body*/}
