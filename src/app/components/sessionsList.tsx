@@ -29,7 +29,11 @@ export const SessionsList = ({ onSessionSelected, ...props }: SessionsListProps)
 	};
 
 	const supportCmd = (pin: string) => {
-		return "./build/bin/erigon support --diagnostics.sessions " + pin;
+		let diagUIUrl = "";
+		if (!window.location.origin.includes("127.0.0.1") && !window.location.origin.includes("localhost")) {
+			diagUIUrl = "--diagnostics.addr " + window.location.host;
+		}
+		return "./build/bin/erigon support " + diagUIUrl + " --diagnostics.sessions " + pin;
 	};
 
 	const renderSessionsTable = () => {

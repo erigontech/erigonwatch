@@ -7,7 +7,7 @@ import { Button } from "../components/Button/Button";
 import { BUTTON_BULE, BUTTON_RED } from "../../helpers/colors";
 import { resetNetworkStateToMockState } from "../store/networkSlice";
 import { Popup } from "../components/Popup/Popup";
-import { NodeConnectionType, resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
+import { resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
 
 export const AdminPage = () => {
 	const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export const AdminPage = () => {
 					label="Create Session"
 					onClick={() => setShowCreateSessionPopup(true)}
 					primary
-					disabled={conectionType != NodeConnectionType.Remote}
+					//disabled={conectionType != NodeConnectionType.Remote}
 				/>
 			)}
 			{showClearDataPopup && (
