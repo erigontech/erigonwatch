@@ -17,7 +17,8 @@ import {
 	getHeadersMock,
 	getNetworkSpeedMock,
 	nodeInfoMock,
-	syncStatsMock
+	syncStatsMock,
+	snpDLmock
 } from "./../../tests/mocks";
 
 import { cpuUsageMock, hardwareInfoMock, memoryInfoMock, processesInfoMock } from "../../tests/sysinfo_mock";
@@ -50,6 +51,7 @@ const heapProfileVarName = "pprof/heap";
 const allocsProfileVarName = "pprof/allocs";
 const blockProfileVarName = "pprof/block";
 const mutexProfileVarName = "pprof/mutex";
+const torrentStatsVarName = "torrent-stats";
 
 export const getActiveSessionPin = (): string => {
 	return store.getState().app.activeSessionPin;
@@ -188,6 +190,10 @@ export const blockProfileUrl = () => {
 
 export const mutexProfileUrl = () => {
 	return `${currentNodeUrl(true)}/${mutexProfileVarName}`;
+};
+
+export const torrentStatsUrl = () => {
+	return `${currentNodeUrl(true)}/${torrentStatsVarName}`;
 };
 
 export const fetchBackendUrl = () => {
@@ -457,6 +463,17 @@ export const fetchMemoryInfo = () => {
 		});
 	} else {
 		const request = createRequest(memoryInfoUrl(), "GET");
+		return fetchRequest(request);
+	}
+};
+
+export const fetchTorrentStats = () => {
+	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
+		return new Promise((resolve, reject) => {
+			resolve(snpDLmock);
+		});
+	} else {
+		const request = createRequest(torrentStatsUrl(), "GET");
 		return fetchRequest(request);
 	}
 };
