@@ -35,7 +35,8 @@ import {
 	fetchSnapshotSync,
 	fetchSyncStages,
 	fetchVersion,
-	logListUrl
+	logListUrl,
+	fetchTorrentStats
 } from "./APIHandler";
 import { nodeInfoFromJson, nodeInfoFromJsonLocal } from "../helpers/nodeInfoFromJson";
 import { flagsFromJson } from "../helpers/flagsFromJson";
@@ -444,5 +445,15 @@ export const getMemoryInfo = () => {
 		})
 		.catch((error) => {
 			console.log("Error fetching memory info: ", error);
+		});
+};
+
+export const getTorrentStats = () => {
+	fetchTorrentStats()
+		.then((response) => {
+			//store.dispatch(addOrUpdateTorrentStats({ nodeId: getNodeId(), stats: response }));
+		})
+		.catch((error) => {
+			console.log("Error fetching torrent stats: ", error);
 		});
 };
