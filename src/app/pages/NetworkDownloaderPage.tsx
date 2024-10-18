@@ -8,10 +8,12 @@ import { FlagsDetailsTable } from "../components/Flags/FlagsDetailsTable";
 import { downloaderFlags } from "../components/Flags/flagConstants";
 import { selectNetworkSpeedIssues } from "../store/issuesSlice";
 import { useNavigate } from "react-router-dom";
+import { TorrentPeersDetailsPopup } from "../components/SyncStages/TorrentPeersDetailsPopup";
 
 export const NetworkDownloaderPage = () => {
 	const syncStatus = useSelector(selectSnapshotDownloadStatusesForNode);
 	const [showDetails, setShowDetails] = useState(false);
+	const [showPeerDetail, setShowPeerDetails] = useState(false);
 	const allFlags = useSelector(selectFlagsForNode);
 	const issues = useSelector(selectNetworkSpeedIssues);
 	const navigate = useNavigate();
@@ -101,6 +103,12 @@ export const NetworkDownloaderPage = () => {
 					}
 				</tbody>
 			</table>
+			<button
+				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+				onClick={() => setShowPeerDetails(true)}
+			>
+				{"Show Peers"}
+			</button>
 			<div className="flex flex-col">
 				<p className="font-bold mt-5">Flags related to downloader</p>
 				<FlagsDetailsTable flags={flags} />
@@ -109,6 +117,13 @@ export const NetworkDownloaderPage = () => {
 				<SnapshotDowndloadDetailsPopup
 					onClose={() => {
 						setShowDetails(false);
+					}}
+				/>
+			)}
+			{showPeerDetail && (
+				<TorrentPeersDetailsPopup
+					onClose={() => {
+						setShowPeerDetails(false);
 					}}
 				/>
 			)}

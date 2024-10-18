@@ -1839,2457 +1839,2695 @@ export const getNetworkSpeedMock = {
 };
 
 export const syncStatsMock = {
-	blockExecution: {
-		alloc: 0,
-		batch: 0,
-		blkPerSec: 0,
-		blockNumber: 0,
-		from: 0,
-		gasState: 0,
-		mgasPerSec: 0,
-		sys: 0,
-		timeElapsed: 0,
-		to: 0,
-		txPerSec: 0
-	},
 	snapshotDownload: {
-		alloc: 0,
-		connections: 19,
+		downloaded: 219350364,
+		total: 1662397367,
+		totalTime: 60,
+		downloadRate: 10967518,
+		uploadRate: 0,
+		peers: 9,
+		files: 124,
+		connections: 42,
+		alloc: 2033658320,
+		sys: 2106718968,
 		downloadFinished: false,
-		downloadRate: 11713962,
-		downloaded: 2266163112,
-		files: 56,
-		peers: 18,
 		segmentsDownloading: {
-			"v1-000000-000500-bodies.seg": {
-				downloadedBytes: 4194304,
-				downloadedStats: {
-					averageRate: 63259,
-					timeTook: 110.229638375
-				},
-				name: "v1-000000-000500-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.0-dev-90e7a44d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "\u003cnil\u003e"
-					}
-				],
-				totalBytes: 6973070,
-				webseeds: [
-					{
-						downloadRate: 33252,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 26863,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-000000-000500-headers.seg": {
-				downloadedBytes: 40079792,
-				downloadedStats: {
-					averageRate: 385959,
-					timeTook: 174.481601833
-				},
-				name: "v1-000000-000500-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-rc1-64f677a4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.56.2-c9216ce1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-dev-0be04e6d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					}
-				],
-				totalBytes: 67342768,
-				webseeds: [
-					{
-						downloadRate: 42770,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 130697,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 128312,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 106910,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-000500-001000-bodies.seg": {
-				downloadedBytes: 5847723,
-				downloadedStats: {
-					averageRate: 45214,
-					timeTook: 129.332917416
-				},
-				name: "v1-000500-001000-bodies.seg",
+			"v1-000000-000100-bodies.idx": {
+				name: "v1-000000-000100-bodies.idx",
+				totalBytes: 544999,
+				downloadedBytes: 544999,
+				webseeds: [],
 				peers: [],
-				totalBytes: 5847723,
-				webseeds: []
-			},
-			"v1-000500-001000-headers.seg": {
-				downloadedBytes: 50331648,
 				downloadedStats: {
-					averageRate: 377209,
-					timeTook: 177.755341834
+					timeTook: 2.070599333,
+					averageRate: 263208
 				},
-				name: "v1-000500-001000-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					}
-				],
-				totalBytes: 67051048,
-				webseeds: [
-					{
-						downloadRate: 124331,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 88807,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 106558,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 106569,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-001000-001500-bodies.seg": {
-				downloadedBytes: 8171368,
-				downloadedStats: {
-					averageRate: 49942,
-					timeTook: 163.616193708
-				},
-				name: "v1-001000-001500-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "\u003cnil\u003e"
-					}
-				],
-				totalBytes: 8171368,
-				webseeds: []
-			},
-			"v1-001000-001500-headers.seg": {
-				downloadedBytes: 80057398,
-				downloadedStats: {
-					averageRate: 501812,
-					timeTook: 163.715650041
-				},
-				name: "v1-001000-001500-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-dev-b7668209"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.0-dev-66b0aa7a"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3-705814b1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					}
-				],
-				totalBytes: 82154550,
-				webseeds: [
-					{
-						downloadRate: 185703,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 102067,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 137776,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 118585,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-001500-002000-bodies.seg": {
-				downloadedBytes: 0,
-				downloadedStats: {
-					averageRate: 24577,
-					timeTook: 162.755802458
-				},
-				name: "v1-001500-002000-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.1"
-					}
-				],
-				totalBytes: 4000085,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-001500-002000-headers.seg": {
-				downloadedBytes: 69820577,
-				downloadedStats: {
-					averageRate: 521961,
-					timeTook: 177.961997
-				},
-				name: "v1-001500-002000-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-dev-b7668209"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					}
-				],
-				totalBytes: 92889249,
-				webseeds: [
-					{
-						downloadRate: 159863,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 94018,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 159862,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 177625,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-002000-002500-bodies.seg": {
-				downloadedBytes: 2097152,
-				downloadedStats: {
-					averageRate: 30623,
-					timeTook: 130.643780167
-				},
-				name: "v1-002000-002500-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					}
-				],
-				totalBytes: 4000819,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 17760,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-002000-002500-headers.seg": {
-				downloadedBytes: 84048627,
-				downloadedStats: {
-					averageRate: 546632,
-					timeTook: 172.939462625
-				},
-				name: "v1-002000-002500-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-dev-0be04e6d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.49.2-stable-1b54c31c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "\u003cnil\u003e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-rc1-32f7775c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.1-9f1cd651"
-					}
-				],
-				totalBytes: 94534387,
-				webseeds: [
-					{
-						downloadRate: 198638,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 136703,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 121514,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 151893,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-002500-003000-bodies.seg": {
-				downloadedBytes: 2661724,
-				downloadedStats: {
-					averageRate: 28025,
-					timeTook: 169.80499875
-				},
-				name: "v1-002500-003000-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.0-dev-90e7a44d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					}
-				],
-				totalBytes: 4758876,
-				webseeds: [
-					{
-						downloadRate: 7410,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 13267,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-002500-003000-headers.seg": {
-				downloadedBytes: 31753897,
-				downloadedStats: {
-					averageRate: 603924,
-					timeTook: 167.173041417
-				},
-				name: "v1-002500-003000-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.1-9f1cd651"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.1-9f1cd651"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.49.2-stable-1b54c31c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.1-9f1cd651"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3-705814b1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					}
-				],
-				totalBytes: 100959913,
-				webseeds: [
-					{
-						downloadRate: 93222,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 163118,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 96518,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-003000-003500-bodies.seg": {
-				downloadedBytes: 47890145,
-				downloadedStats: {
-					averageRate: 349208,
-					timeTook: 167.166222625
-				},
-				name: "v1-003000-003500-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.0-4f6eda76"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.49.2-stable-1b54c31c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					}
-				],
-				totalBytes: 58375905,
-				webseeds: [
-					{
-						downloadRate: 88642,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 106325,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 136703,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 15189,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-003000-003500-headers.seg": {
-				downloadedBytes: 18874368,
-				downloadedStats: {
-					averageRate: 959731,
-					timeTook: 177.026019209
-				},
-				name: "v1-003000-003500-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-rc1-32f7775c"
-					}
-				],
-				totalBytes: 169897389,
-				webseeds: [
-					{
-						downloadRate: 232139,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 232138,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 580340,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-003500-004000-bodies.seg": {
-				downloadedBytes: 64651872,
-				downloadedStats: {
-					averageRate: 383539,
-					timeTook: 168.566612
-				},
-				name: "v1-003500-004000-bodies.seg",
+			"v1-000000-000100-bodies.seg": {
+				name: "v1-000000-000100-bodies.seg",
+				totalBytes: 22300326,
+				downloadedBytes: 22300326,
+				webseeds: [],
 				peers: [],
-				totalBytes: 64651872,
-				webseeds: []
-			},
-			"v1-003500-004000-headers.seg": {
-				downloadedBytes: 106954752,
 				downloadedStats: {
-					averageRate: 1161849,
-					timeTook: 179.010738709
+					timeTook: 4.883625458,
+					averageRate: 4566346
 				},
-				name: "v1-003500-004000-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.49.2-stable-1b54c31c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.0-0f0a4452"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.1-9f1cd651"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					}
-				],
-				totalBytes: 207983600,
-				webseeds: [
-					{
-						downloadRate: 299391,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 64155,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 278006,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 449087,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 11,
+				piecesCompleted: 11,
+				piecesPartialyCompleted: 0
 			},
-			"v1-004000-004100-bodies.seg": {
-				downloadedBytes: 0,
-				downloadedStats: {
-					averageRate: 80870,
-					timeTook: 156.396735583
-				},
-				name: "v1-004000-004100-bodies.seg",
-				peers: null,
-				totalBytes: 0,
-				webseeds: null
-			},
-			"v1-004000-004100-headers.seg": {
-				downloadedBytes: 0,
-				downloadedStats: {
-					averageRate: 282002,
-					timeTook: 158.740396208
-				},
-				name: "v1-004000-004100-headers.seg",
-				peers: null,
-				totalBytes: 0,
-				webseeds: null
-			},
-			"v1-004100-004200-bodies.seg": {
-				downloadedBytes: 4194304,
-				downloadedStats: {
-					averageRate: 106493,
-					timeTook: 118.032239667
-				},
-				name: "v1-004100-004200-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.1-02c9d4ba"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					}
-				],
-				totalBytes: 12569613,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 26864,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 26858,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004100-004200-headers.seg": {
-				downloadedBytes: 22244343,
-				downloadedStats: {
-					averageRate: 303225,
-					timeTook: 149.4368175
-				},
-				name: "v1-004100-004200-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 27019,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.0-dev-66b0aa7a"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					}
-				],
-				totalBytes: 45313015,
-				webseeds: [
-					{
-						downloadRate: 32269,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 16134,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 32269,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 74332,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004200-004300-bodies.seg": {
-				downloadedBytes: 13692341,
-				downloadedStats: {
-					averageRate: 92544,
-					timeTook: 147.953828542
-				},
-				name: "v1-004200-004300-bodies.seg",
+			"v1-000000-000100-headers.idx": {
+				name: "v1-000000-000100-headers.idx",
+				totalBytes: 641015,
+				downloadedBytes: 641015,
+				webseeds: [],
 				peers: [],
-				totalBytes: 13692341,
-				webseeds: []
-			},
-			"v1-004200-004300-headers.seg": {
-				downloadedBytes: 0,
 				downloadedStats: {
-					averageRate: 240606,
-					timeTook: 183.734589709
+					timeTook: 2.032969125,
+					averageRate: 315309
 				},
-				name: "v1-004200-004300-headers.seg",
-				peers: null,
-				totalBytes: 0,
-				webseeds: null
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-004300-004400-bodies.seg": {
-				downloadedBytes: 4194304,
-				downloadedStats: {
-					averageRate: 80494,
-					timeTook: 152.798696542
-				},
-				name: "v1-004300-004400-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					}
-				],
-				totalBytes: 12299440,
-				webseeds: [
-					{
-						downloadRate: 26863,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 26858,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004300-004400-headers.seg": {
-				downloadedBytes: 0,
-				downloadedStats: {
-					averageRate: 271899,
-					timeTook: 169.33102875
-				},
-				name: "v1-004300-004400-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					}
-				],
-				totalBytes: 46040969,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004400-004500-bodies.seg": {
-				downloadedBytes: 0,
-				downloadedStats: {
-					averageRate: 97255,
-					timeTook: 134.934557458
-				},
-				name: "v1-004400-004500-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					}
-				],
-				totalBytes: 13123195,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004400-004500-headers.seg": {
-				downloadedBytes: 39989707,
-				downloadedStats: {
-					averageRate: 269021,
-					timeTook: 172.035453042
-				},
-				name: "v1-004400-004500-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					}
-				],
-				totalBytes: 46281163,
-				webseeds: [
-					{
-						downloadRate: 122659,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 15189,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 60757,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 91136,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004500-004600-bodies.seg": {
-				downloadedBytes: 6322976,
-				downloadedStats: {
-					averageRate: 82209,
-					timeTook: 153.441611709
-				},
-				name: "v1-004500-004600-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					}
-				],
-				totalBytes: 12614432,
-				webseeds: [
-					{
-						downloadRate: 321,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 21391,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 24089,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 21385,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004500-004600-headers.seg": {
-				downloadedBytes: 42019757,
-				downloadedStats: {
-					averageRate: 264865,
-					timeTook: 174.481039542
-				},
-				name: "v1-004500-004600-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3-705814b1"
-					}
-				],
-				totalBytes: 46214061,
-				webseeds: [
-					{
-						downloadRate: 66822,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 102434,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 70063,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 39802,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004600-004700-bodies.seg": {
-				downloadedBytes: 13295803,
-				downloadedStats: {
-					averageRate: 90094,
-					timeTook: 147.576713791
-				},
-				name: "v1-004600-004700-bodies.seg",
+			"v1-000000-000100-headers.seg": {
+				name: "v1-000000-000100-headers.seg",
+				totalBytes: 18138936,
+				downloadedBytes: 18138936,
+				webseeds: [],
 				peers: [],
-				totalBytes: 13295803,
-				webseeds: []
-			},
-			"v1-004600-004700-headers.seg": {
-				downloadedBytes: 29891524,
 				downloadedStats: {
-					averageRate: 277879,
-					timeTook: 167.946186209
+					timeTook: 10.284240084,
+					averageRate: 1763760
 				},
-				name: "v1-004600-004700-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					}
-				],
-				totalBytes: 46668740,
-				webseeds: [
-					{
-						downloadRate: 80675,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 52493,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 96811,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 9,
+				piecesCompleted: 9,
+				piecesPartialyCompleted: 0
 			},
-			"v1-004700-004800-bodies.seg": {
-				downloadedBytes: 8388608,
+			"v1-000100-000200-bodies.idx": {
+				name: "v1-000100-000200-bodies.idx",
+				totalBytes: 546383,
+				downloadedBytes: 546383,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 94781,
-					timeTook: 141.407781875
+					timeTook: 2.070541791,
+					averageRate: 263884
 				},
-				name: "v1-004700-004800-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.0-0f0a4452"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					}
-				],
-				totalBytes: 13402793,
-				webseeds: [
-					{
-						downloadRate: 25247,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 21385,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 25247,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 23083,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-004700-004800-headers.seg": {
-				downloadedBytes: 43135229,
+			"v1-000100-000200-bodies.seg": {
+				name: "v1-000100-000200-bodies.seg",
+				totalBytes: 23746260,
+				downloadedBytes: 23746260,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 308093,
-					timeTook: 153.620926792
+					timeTook: 9.790933208,
+					averageRate: 2425331
 				},
-				name: "v1-004700-004800-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.0-0f0a4452"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 25116,
-						url: "erigon: 3.00.0-dev-fb07623d"
-					}
-				],
-				totalBytes: 47329533,
-				webseeds: [
-					{
-						downloadRate: 91135,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 89201,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 69392,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 78387,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 12,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
 			},
-			"v1-004800-004900-bodies.seg": {
+			"v1-000100-000200-headers.idx": {
+				name: "v1-000100-000200-headers.idx",
+				totalBytes: 642807,
+				downloadedBytes: 642807,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.148289583,
+					averageRate: 559795
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000100-000200-headers.seg": {
+				name: "v1-000100-000200-headers.seg",
+				totalBytes: 20022731,
+				downloadedBytes: 20022731,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 7.81519525,
+					averageRate: 2562025
+				},
+				piecesCount: 10,
+				piecesCompleted: 10,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000200-000300-bodies.idx": {
+				name: "v1-000200-000300-bodies.idx",
+				totalBytes: 547271,
+				downloadedBytes: 547271,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 2.264090625,
+					averageRate: 241717
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000200-000300-bodies.seg": {
+				name: "v1-000200-000300-bodies.seg",
+				totalBytes: 24654896,
+				downloadedBytes: 24654896,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 8.842965917,
+					averageRate: 2788079
+				},
+				piecesCount: 12,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000200-000300-headers.idx": {
+				name: "v1-000200-000300-headers.idx",
+				totalBytes: 646207,
+				downloadedBytes: 646207,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.071802542,
+					averageRate: 602916
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000200-000300-headers.seg": {
+				name: "v1-000200-000300-headers.seg",
+				totalBytes: 23490380,
+				downloadedBytes: 23490380,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 7.26250725,
+					averageRate: 3234472
+				},
+				piecesCount: 12,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000300-000400-bodies.idx": {
+				name: "v1-000300-000400-bodies.idx",
+				totalBytes: 546839,
+				downloadedBytes: 546839,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.768785959,
+					averageRate: 711302
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000300-000400-bodies.seg": {
+				name: "v1-000300-000400-bodies.seg",
+				totalBytes: 24225521,
+				downloadedBytes: 24225521,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 4.14266775,
+					averageRate: 5847806
+				},
+				piecesCount: 12,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000300-000400-headers.idx": {
+				name: "v1-000300-000400-headers.idx",
+				totalBytes: 646455,
+				downloadedBytes: 646455,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.503108083,
+					averageRate: 1284922
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000300-000400-headers.seg": {
+				name: "v1-000300-000400-headers.seg",
+				totalBytes: 23759342,
 				downloadedBytes: 2097152,
-				downloadedStats: {
-					averageRate: 75160,
-					timeTook: 171.339461
-				},
-				name: "v1-004800-004900-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					}
-				],
-				totalBytes: 12878020,
 				webseeds: [
 					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 36104,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004800-004900-headers.seg": {
-				downloadedBytes: 23068672,
-				downloadedStats: {
-					averageRate: 316555,
-					timeTook: 151.3641605
-				},
-				name: "v1-004800-004900-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105013,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
 				],
-				totalBytes: 47915131,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 104898,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 279729,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-004900-005000-bodies.seg": {
-				downloadedBytes: 10485760,
-				downloadedStats: {
-					averageRate: 85483,
-					timeTook: 175.703951042
-				},
-				name: "v1-004900-005000-bodies.seg",
 				peers: [
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
+						piecesCount: 12,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
 					},
 					{
+						url: "erigon: 2.60.5-4cad1f95",
 						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
+						piecesCount: 12,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
 					},
 					{
+						url: "erigon: 2.58.1-f12e451c",
 						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
+						piecesCount: 12,
+						remoteAddr: "147.28.163.12:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 117, 100, 188, 161, 130, 52, 10, 40, 239, 50, 28, 42]
 					},
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.58.1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
+						piecesCount: 12,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
 					}
 				],
-				totalBytes: 15019825,
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 12,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000400-000500-bodies.idx": {
+				name: "v1-000400-000500-bodies.idx",
+				totalBytes: 546847,
+				downloadedBytes: 546847,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.42499125,
+					averageRate: 1286725
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000400-000500-bodies.seg": {
+				name: "v1-000400-000500-bodies.seg",
+				totalBytes: 24213579,
+				downloadedBytes: 24213579,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 15.466219542,
+					averageRate: 1565578
+				},
+				piecesCount: 12,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000400-000500-headers.idx": {
+				name: "v1-000400-000500-headers.idx",
+				totalBytes: 646527,
+				downloadedBytes: 646527,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.102511459,
+					averageRate: 586412
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000400-000500-headers.seg": {
+				name: "v1-000400-000500-headers.seg",
+				totalBytes: 23853375,
+				downloadedBytes: 16777216,
 				webseeds: [
 					{
-						downloadRate: 13868,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 13266,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 14659,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 26536,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 840910,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
-			},
-			"v1-004900-005000-headers.seg": {
-				downloadedBytes: 222809,
+				],
+				peers: [],
 				downloadedStats: {
-					averageRate: 273600,
-					timeTook: 177.11002675
+					timeTook: 0,
+					averageRate: 0
 				},
-				name: "v1-004900-005000-headers.seg",
+				piecesCount: 12,
+				piecesCompleted: 8,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000500-000600-bodies.idx": {
+				name: "v1-000500-000600-bodies.idx",
+				totalBytes: 547047,
+				downloadedBytes: 547047,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.530051166,
+					averageRate: 1032064
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000500-000600-bodies.seg": {
+				name: "v1-000500-000600-bodies.seg",
+				totalBytes: 24424884,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105018,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
 				peers: [
 					{
+						url: "erigon: 2.60.5-4cad1f95",
 						downloadRate: 0,
-						url: "erigon: 2.58.2-72bc4fe0"
+						piecesCount: 12,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
 					},
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
+						piecesCount: 12,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
 					},
 					{
+						url: "erigon: 2.60.7",
 						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
+						piecesCount: 12,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
 					}
 				],
-				totalBytes: 48457305,
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 12,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000500-000600-headers.idx": {
+				name: "v1-000500-000600-headers.idx",
+				totalBytes: 646831,
+				downloadedBytes: 646831,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.250493208,
+					averageRate: 517260
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000500-000600-headers.seg": {
+				name: "v1-000500-000600-headers.seg",
+				totalBytes: 24152533,
+				downloadedBytes: 16777216,
 				webseeds: [
 					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon2-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 12334,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 689416,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
-			},
-			"v1-005000-005100-bodies.seg": {
-				downloadedBytes: 9580281,
-				downloadedStats: {
-					averageRate: 82717,
-					timeTook: 166.525320709
-				},
-				name: "v1-005000-005100-bodies.seg",
+				],
 				peers: [
 					{
+						url: "erigon: 2.60.7",
 						downloadRate: 0,
-						url: "erigon: 2.57.2-ffb6b83c"
+						piecesCount: 12,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
 					},
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.58.0-dev-96b508c0"
+						piecesCount: 12,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
 					},
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
+						piecesCount: 12,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
 					},
 					{
+						url: "erigon: 2.60.5-4cad1f95",
 						downloadRate: 0,
-						url: "erigon: 2.57.3-705814b1"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3"
+						piecesCount: 12,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
 					}
 				],
-				totalBytes: 13774585,
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 12,
+				piecesCompleted: 8,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000600-000700-bodies.idx": {
+				name: "v1-000600-000700-bodies.idx",
+				totalBytes: 546399,
+				downloadedBytes: 546399,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 2.040703375,
+					averageRate: 267750
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000600-000700-bodies.seg": {
+				name: "v1-000600-000700-bodies.seg",
+				totalBytes: 23752981,
+				downloadedBytes: 21655829,
 				webseeds: [
 					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
 						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 43485,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 21928,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
+				],
+				peers: [
+					{
+						url: "erigon: 3.00.0-alpha3-82e0d46c",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "68.72.23.1:20178",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 23, 228, 18, 129, 98, 148, 0, 145, 243, 150, 139, 249]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "37.59.18.113:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 49, 63, 98, 124, 88, 15, 193, 188, 197, 232, 154, 176]
+					},
+					{
+						url: "erigon: 2.60.5",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "34.145.46.159:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 36, 219, 154, 72, 225, 144, 18, 10, 161, 219, 218, 228]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8ef8ca2a",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "68.72.23.1:50174",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 189, 165, 86, 162, 153, 208, 173, 148, 206, 212, 182, 241]
+					},
+					{
+						url: "erigon: 2.60.5-4cad1f95",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "37.59.18.114:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 187, 134, 29, 23, 73, 63, 74, 158, 56, 33, 155, 248]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8e4715b1",
+						downloadRate: 0,
+						piecesCount: 12,
+						remoteAddr: "51.178.92.239:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 223, 133, 16, 97, 92, 50, 146, 244, 31, 243, 100, 95]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 12,
+				piecesCompleted: 11,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005000-005100-headers.seg": {
+			"v1-000600-000700-headers.idx": {
+				name: "v1-000600-000700-headers.idx",
+				totalBytes: 647255,
+				downloadedBytes: 647255,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 6.965207333,
+					averageRate: 92926
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000600-000700-headers.seg": {
+				name: "v1-000600-000700-headers.seg",
+				totalBytes: 24622296,
+				downloadedBytes: 24622296,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 23.517495459,
+					averageRate: 1046977
+				},
+				piecesCount: 12,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000700-000800-bodies.idx": {
+				name: "v1-000700-000800-bodies.idx",
+				totalBytes: 546455,
+				downloadedBytes: 546455,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.634970791,
+					averageRate: 860598
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000700-000800-bodies.seg": {
+				name: "v1-000700-000800-bodies.seg",
+				totalBytes: 23817926,
+				downloadedBytes: 23817926,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 23.457139583,
+					averageRate: 1015380
+				},
+				piecesCount: 12,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000700-000800-headers.idx": {
+				name: "v1-000700-000800-headers.idx",
+				totalBytes: 652063,
+				downloadedBytes: 652063,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.214827375,
+					averageRate: 125040
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000700-000800-headers.seg": {
+				name: "v1-000700-000800-headers.seg",
+				totalBytes: 33433369,
+				downloadedBytes: 33433369,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 22.651572959,
+					averageRate: 1475984
+				},
+				piecesCount: 16,
+				piecesCompleted: 16,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000800-000900-bodies.idx": {
+				name: "v1-000800-000900-bodies.idx",
+				totalBytes: 548503,
+				downloadedBytes: 548503,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 4.794626583,
+					averageRate: 114399
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000800-000900-bodies.seg": {
+				name: "v1-000800-000900-bodies.seg",
+				totalBytes: 26152591,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105380,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 13,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 13,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000800-000900-headers.idx": {
+				name: "v1-000800-000900-headers.idx",
+				totalBytes: 655727,
+				downloadedBytes: 655727,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.080536542,
+					averageRate: 129066
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000800-000900-headers.seg": {
+				name: "v1-000800-000900-headers.seg",
+				totalBytes: 40806984,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105289,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 20,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000900-001000-bodies.idx": {
+				name: "v1-000900-001000-bodies.idx",
+				totalBytes: 550127,
+				downloadedBytes: 550127,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.889767042,
+					averageRate: 618282
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000900-001000-bodies.seg": {
+				name: "v1-000900-001000-bodies.seg",
+				totalBytes: 29480405,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105346,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 15,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000900-001000-headers.idx": {
+				name: "v1-000900-001000-headers.idx",
+				totalBytes: 655879,
+				downloadedBytes: 655879,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 9.405294125,
+					averageRate: 69735
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-000900-001000-headers.seg": {
+				name: "v1-000900-001000-headers.seg",
+				totalBytes: 41074909,
+				downloadedBytes: 15909085,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 797182,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 20,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 20,
+				piecesCompleted: 8,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001000-001100-bodies.idx": {
+				name: "v1-001000-001100-bodies.idx",
+				totalBytes: 548055,
+				downloadedBytes: 548055,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.529916458,
+					averageRate: 1034229
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001000-001100-bodies.seg": {
+				name: "v1-001000-001100-bodies.seg",
+				totalBytes: 25434454,
+				downloadedBytes: 25434454,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 16.788701958,
+					averageRate: 1514974
+				},
+				piecesCount: 13,
+				piecesCompleted: 13,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001000-001100-headers.idx": {
+				name: "v1-001000-001100-headers.idx",
+				totalBytes: 656615,
+				downloadedBytes: 656615,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.2209533750000001,
+					averageRate: 537788
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001000-001100-headers.seg": {
+				name: "v1-001000-001100-headers.seg",
+				totalBytes: 42807380,
+				downloadedBytes: 40710228,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 213393,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "37.59.18.113:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 49, 63, 98, 124, 88, 15, 193, 188, 197, 232, 154, 176]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 3.00.0-alpha3-82e0d46c",
+						downloadRate: 892237,
+						piecesCount: 21,
+						remoteAddr: "68.72.23.1:20178",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 23, 228, 18, 129, 98, 148, 0, 145, 243, 150, 139, 249]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8e4715b1",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "51.178.92.239:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 223, 133, 16, 97, 92, 50, 146, 244, 31, 243, 100, 95]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "37.59.18.114:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 187, 134, 29, 23, 73, 63, 74, 158, 56, 33, 155, 248]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "49.12.130.92:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 30, 87, 133, 101, 188, 57, 221, 88, 169, 131, 22, 141]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8ef8ca2a",
+						downloadRate: 428856,
+						piecesCount: 21,
+						remoteAddr: "68.72.23.1:50174",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 189, 165, 86, 162, 153, 208, 173, 148, 206, 212, 182, 241]
+					},
+					{
+						url: "erigon: 2.60.5-4cad1f95",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 21,
+				piecesCompleted: 20,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001100-001200-bodies.idx": {
+				name: "v1-001100-001200-bodies.idx",
+				totalBytes: 552735,
+				downloadedBytes: 552735,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 8.096361875,
+					averageRate: 68269
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001100-001200-bodies.seg": {
+				name: "v1-001100-001200-bodies.seg",
+				totalBytes: 34825043,
+				downloadedBytes: 30630739,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1536242,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 20.824047042,
+					averageRate: 1672347
+				},
+				piecesCount: 17,
+				piecesCompleted: 15,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001100-001200-headers.idx": {
+				name: "v1-001100-001200-headers.idx",
+				totalBytes: 657151,
+				downloadedBytes: 657151,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 8.790135042,
+					averageRate: 74760
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001100-001200-headers.seg": {
+				name: "v1-001100-001200-headers.seg",
+				totalBytes: 43845475,
+				downloadedBytes: 41748323,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 2094587,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 21,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 21,
+				piecesCompleted: 20,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001200-001300-bodies.idx": {
+				name: "v1-001200-001300-bodies.idx",
+				totalBytes: 551847,
+				downloadedBytes: 551847,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 8.292546,
+					averageRate: 66547
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001200-001300-bodies.seg": {
+				name: "v1-001200-001300-bodies.seg",
+				totalBytes: 33001717,
+				downloadedBytes: 22515957,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1128942,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.5-4cad1f95",
+						downloadRate: 0,
+						piecesCount: 16,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 16,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 16,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 16,
+				piecesCompleted: 11,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001200-001300-headers.idx": {
+				name: "v1-001200-001300-headers.idx",
+				totalBytes: 658207,
+				downloadedBytes: 658207,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.009290625,
+					averageRate: 652148
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001200-001300-headers.seg": {
+				name: "v1-001200-001300-headers.seg",
+				totalBytes: 45934844,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105345,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 22,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001300-001400-bodies.idx": {
+				name: "v1-001300-001400-bodies.idx",
+				totalBytes: 551263,
+				downloadedBytes: 551263,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 8.533583083,
+					averageRate: 64599
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001300-001400-bodies.seg": {
+				name: "v1-001300-001400-bodies.seg",
+				totalBytes: 31793577,
+				downloadedBytes: 29696425,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1490231,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 16,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 16,
+				piecesCompleted: 15,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001300-001400-headers.idx": {
+				name: "v1-001300-001400-headers.idx",
+				totalBytes: 660127,
+				downloadedBytes: 660127,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.560777458,
+					averageRate: 422947
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001300-001400-headers.seg": {
+				name: "v1-001300-001400-headers.seg",
+				totalBytes: 49807505,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 104950,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					},
+					{
+						url: "erigon: 2.60.5-4cad1f95",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 24,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001400-001500-bodies.idx": {
+				name: "v1-001400-001500-bodies.idx",
+				totalBytes: 552871,
+				downloadedBytes: 552871,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 8.614260167,
+					averageRate: 64180
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001400-001500-bodies.seg": {
+				name: "v1-001400-001500-bodies.seg",
+				totalBytes: 35093953,
+				downloadedBytes: 9928129,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 498137,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 17,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 17,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 17,
+				piecesCompleted: 5,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001400-001500-headers.idx": {
+				name: "v1-001400-001500-headers.idx",
+				totalBytes: 660527,
+				downloadedBytes: 660527,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.608841833,
+					averageRate: 410560
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001400-001500-headers.seg": {
+				name: "v1-001400-001500-headers.seg",
+				totalBytes: 50562517,
+				downloadedBytes: 6291456,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 315922,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 25,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 25,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 25,
+						remoteAddr: "37.59.18.114:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 187, 134, 29, 23, 73, 63, 74, 158, 56, 33, 155, 248]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 25,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.5-4cad1f95",
+						downloadRate: 0,
+						piecesCount: 25,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
+					},
+					{
+						url: "erigon: 3.00.0-alpha3-82e0d46c",
+						downloadRate: 0,
+						piecesCount: 25,
+						remoteAddr: "68.72.23.1:20178",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 23, 228, 18, 129, 98, 148, 0, 145, 243, 150, 139, 249]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 25,
+				piecesCompleted: 3,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001500-001600-bodies.idx": {
+				name: "v1-001500-001600-bodies.idx",
+				totalBytes: 551951,
 				downloadedBytes: 0,
-				downloadedStats: {
-					averageRate: 287020,
-					timeTook: 168.659210958
-				},
-				name: "v1-005000-005100-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.1-9f1cd651"
-					}
-				],
-				totalBytes: 48408635,
 				webseeds: [
 					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
 						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 8.305106417,
+					averageRate: 66459
+				},
+				piecesCount: 1,
+				piecesCompleted: 0,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005100-005200-bodies.seg": {
+			"v1-001500-001600-bodies.seg": {
+				name: "v1-001500-001600-bodies.seg",
+				totalBytes: 33224465,
 				downloadedBytes: 2097152,
-				downloadedStats: {
-					averageRate: 84999,
-					timeTook: 150.471197459
-				},
-				name: "v1-005100-005200-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					}
-				],
-				totalBytes: 12790005,
 				webseeds: [
 					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 116103,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-005100-005200-headers.seg": {
-				downloadedBytes: 27902557,
-				downloadedStats: {
-					averageRate: 307222,
-					timeTook: 159.083408583
-				},
-				name: "v1-005100-005200-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-dev-b7668209"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105223,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
 				],
-				totalBytes: 48874077,
-				webseeds: [
-					{
-						downloadRate: 252787,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 36112,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 191575,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-005200-005300-bodies.seg": {
-				downloadedBytes: 4318856,
-				downloadedStats: {
-					averageRate: 80083,
-					timeTook: 158.677085083
-				},
-				name: "v1-005200-005300-bodies.seg",
 				peers: [
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.2-125509e4"
-					},
-					{
-						downloadRate: 25335,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3-705814b1"
+						piecesCount: 16,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
 					}
 				],
-				totalBytes: 12707464,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 19066,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 19066,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-005200-005300-headers.seg": {
-				downloadedBytes: 15560267,
 				downloadedStats: {
-					averageRate: 294874,
-					timeTook: 173.673145542
+					timeTook: 0,
+					averageRate: 0
 				},
-				name: "v1-005200-005300-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 3.00.0-dev-fb07623d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.2-ffb6b83c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.2"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					}
-				],
-				totalBytes: 51211851,
-				webseeds: [
-					{
-						downloadRate: 110135,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 110182,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 188395,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 16,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005300-005400-bodies.seg": {
-				downloadedBytes: 12416595,
+			"v1-001500-001600-headers.idx": {
+				name: "v1-001500-001600-headers.idx",
+				totalBytes: 659911,
+				downloadedBytes: 659911,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 83905,
-					timeTook: 147.983276167
+					timeTook: 1.210181667,
+					averageRate: 545299
 				},
-				name: "v1-005300-005400-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "\u003cnil\u003e"
-					}
-				],
-				totalBytes: 12416595,
-				webseeds: []
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005300-005400-headers.seg": {
-				downloadedBytes: 6985641,
-				downloadedStats: {
-					averageRate: 303009,
-					timeTook: 168.396535208
-				},
-				name: "v1-005300-005400-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.2-a013ec25"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 3.00.0-dev-fb07623d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					}
-				],
-				totalBytes: 51025833,
-				webseeds: [
-					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 63517,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-005400-005500-bodies.seg": {
+			"v1-001500-001600-headers.seg": {
+				name: "v1-001500-001600-headers.seg",
+				totalBytes: 49315406,
 				downloadedBytes: 2097152,
-				downloadedStats: {
-					averageRate: 88907,
-					timeTook: 145.8828385
-				},
-				name: "v1-005400-005500-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 23307,
-						url: "erigon: 3.00.0-dev-fb07623d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.0"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.1-9f1cd651"
-					}
-				],
-				totalBytes: 12970057,
 				webseeds: [
 					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-005400-005500-headers.seg": {
-				downloadedBytes: 40583903,
-				downloadedStats: {
-					averageRate: 305500,
-					timeTook: 167.167334375
-				},
-				name: "v1-005400-005500-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105361,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
 				],
-				totalBytes: 51069663,
-				webseeds: [
-					{
-						downloadRate: 91136,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 121516,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 81292,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					}
-				]
-			},
-			"v1-005500-005600-bodies.seg": {
-				downloadedBytes: 2199859,
-				downloadedStats: {
-					averageRate: 75958,
-					timeTook: 167.008131541
-				},
-				name: "v1-005500-005600-bodies.seg",
 				peers: [
 					{
+						url: "erigon: 2.60.7",
 						downloadRate: 0,
-						url: "erigon: 2.60.0-dev-b7668209"
+						piecesCount: 24,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
 					},
 					{
+						url: "erigon: 3.00.0-alpha3-82e0d46c",
 						downloadRate: 0,
-						url: "erigon: 2.59.3"
+						piecesCount: 24,
+						remoteAddr: "68.72.23.1:20178",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 23, 228, 18, 129, 98, 148, 0, 145, 243, 150, 139, 249]
 					},
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.60.0"
+						piecesCount: 24,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "37.59.18.114:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 187, 134, 29, 23, 73, 63, 74, 158, 56, 33, 155, 248]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8e4715b1",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "51.178.92.239:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 223, 133, 16, 97, 92, 50, 146, 244, 31, 243, 100, 95]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8ef8ca2a",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "68.72.23.1:50174",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 189, 165, 86, 162, 153, 208, 173, 148, 206, 212, 182, 241]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.5-4cad1f95",
+						downloadRate: 0,
+						piecesCount: 24,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
 					}
 				],
-				totalBytes: 12685619,
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 24,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001600-001700-bodies.idx": {
+				name: "v1-001600-001700-bodies.idx",
+				totalBytes: 552015,
+				downloadedBytes: 552015,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.258344375,
+					averageRate: 438683
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001600-001700-bodies.seg": {
+				name: "v1-001600-001700-bodies.seg",
+				totalBytes: 33354463,
+				downloadedBytes: 2097152,
 				webseeds: [
 					{
-						downloadRate: 0,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 1047,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 21385,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105400,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
-			},
-			"v1-005500-005600-headers.seg": {
-				downloadedBytes: 4194304,
-				downloadedStats: {
-					averageRate: 309608,
-					timeTook: 165.536468792
-				},
-				name: "v1-005500-005600-headers.seg",
+				],
 				peers: [
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.59.3"
+						piecesCount: 16,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
 					},
 					{
+						url: "erigon: 2.60.5-4cad1f95",
 						downloadRate: 0,
-						url: "erigon: 2.59.3"
+						piecesCount: 16,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
 					},
 					{
+						url: "erigon: 3.00.0-alpha3-82e0d46c",
 						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
+						piecesCount: 16,
+						remoteAddr: "68.72.23.1:20178",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 23, 228, 18, 129, 98, 148, 0, 145, 243, 150, 139, 249]
 					},
 					{
+						url: "erigon: 2.60.8",
 						downloadRate: 0,
-						url: "erigon: 2.60.0"
+						piecesCount: 16,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 16,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
 					}
 				],
-				totalBytes: 51251548,
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 16,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001600-001700-headers.idx": {
+				name: "v1-001600-001700-headers.idx",
+				totalBytes: 659375,
+				downloadedBytes: 659375,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.231088125,
+					averageRate: 535603
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001600-001700-headers.seg": {
+				name: "v1-001600-001700-headers.seg",
+				totalBytes: 48185339,
+				downloadedBytes: 31408123,
 				webseeds: [
 					{
-						downloadRate: 55090,
-						url: "erigon2-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 55091,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1573214,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.5-4cad1f95",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "91.156.70.204:42069",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 6, 89, 1, 212, 8, 224, 176, 232, 172, 37, 87, 209]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8ef8ca2a",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "68.72.23.1:50174",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 189, 165, 86, 162, 153, 208, 173, 148, 206, 212, 182, 241]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "167.235.184.100:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 146, 132, 72, 43, 205, 194, 79, 37, 27, 172, 192, 228]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 23,
+				piecesCompleted: 15,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005600-005700-bodies.seg": {
+			"v1-001700-001800-bodies.idx": {
+				name: "v1-001700-001800-bodies.idx",
+				totalBytes: 550951,
+				downloadedBytes: 550951,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 3.381797917,
+					averageRate: 162916
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001700-001800-bodies.seg": {
+				name: "v1-001700-001800-bodies.seg",
+				totalBytes: 31194990,
+				downloadedBytes: 20709230,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1039479,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 15,
+				piecesCompleted: 10,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001700-001800-headers.idx": {
+				name: "v1-001700-001800-headers.idx",
+				totalBytes: 658055,
+				downloadedBytes: 658055,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 2.880474583,
+					averageRate: 228453
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001700-001800-headers.seg": {
+				name: "v1-001700-001800-headers.seg",
+				totalBytes: 45574022,
+				downloadedBytes: 27262976,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1369089,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 22,
+				piecesCompleted: 13,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001800-001900-bodies.idx": {
+				name: "v1-001800-001900-bodies.idx",
+				totalBytes: 552999,
+				downloadedBytes: 552999,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.762712042,
+					averageRate: 313720
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001800-001900-bodies.seg": {
+				name: "v1-001800-001900-bodies.seg",
+				totalBytes: 35331160,
+				downloadedBytes: 29039704,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1455885,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 17,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 17,
+				piecesCompleted: 14,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001800-001900-headers.idx": {
+				name: "v1-001800-001900-headers.idx",
+				totalBytes: 658591,
+				downloadedBytes: 658591,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.411705625,
+					averageRate: 121697
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001800-001900-headers.seg": {
+				name: "v1-001800-001900-headers.seg",
+				totalBytes: 46607689,
+				downloadedBytes: 15150409,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 760886,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 23,
+				piecesCompleted: 8,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001900-002000-bodies.idx": {
+				name: "v1-001900-002000-bodies.idx",
+				totalBytes: 550407,
+				downloadedBytes: 550407,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 7.450502083,
+					averageRate: 73875
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001900-002000-bodies.seg": {
+				name: "v1-001900-002000-bodies.seg",
+				totalBytes: 30043918,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105050,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					},
+					{
+						url: "erigon: 3.00.0-alpha4-8ef8ca2a",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "68.72.23.1:50174",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 189, 165, 86, 162, 153, 208, 173, 148, 206, 212, 182, 241]
+					},
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 3.00.0-alpha3-82e0d46c",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "68.72.23.1:20178",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 23, 228, 18, 129, 98, 148, 0, 145, 243, 150, 139, 249]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 15,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001900-002000-headers.idx": {
+				name: "v1-001900-002000-headers.idx",
+				totalBytes: 657575,
+				downloadedBytes: 657575,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.416828208,
+					averageRate: 464117
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-001900-002000-headers.seg": {
+				name: "v1-001900-002000-headers.seg",
+				totalBytes: 44715362,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105023,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 22,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002000-002100-bodies.idx": {
+				name: "v1-002000-002100-bodies.idx",
+				totalBytes: 551167,
+				downloadedBytes: 551167,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.0667755,
+					averageRate: 516666
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002000-002100-bodies.seg": {
+				name: "v1-002000-002100-bodies.seg",
+				totalBytes: 31619590,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105173,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 16,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002000-002100-headers.idx": {
+				name: "v1-002000-002100-headers.idx",
+				totalBytes: 656855,
+				downloadedBytes: 656855,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 2.96484925,
+					averageRate: 221547
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002000-002100-headers.seg": {
+				name: "v1-002000-002100-headers.seg",
+				totalBytes: 43151927,
+				downloadedBytes: 25165824,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1263290,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 21,
+				piecesCompleted: 12,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002100-002200-bodies.idx": {
+				name: "v1-002100-002200-bodies.idx",
+				totalBytes: 550767,
+				downloadedBytes: 550767,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 7.553946667,
+					averageRate: 72911
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002100-002200-bodies.seg": {
+				name: "v1-002100-002200-bodies.seg",
+				totalBytes: 30770007,
+				downloadedBytes: 28672855,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1438620,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 15,
+				piecesCompleted: 14,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002100-002200-headers.idx": {
+				name: "v1-002100-002200-headers.idx",
+				totalBytes: 658695,
+				downloadedBytes: 658695,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 6.323856667,
+					averageRate: 104160
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002100-002200-headers.seg": {
+				name: "v1-002100-002200-headers.seg",
+				totalBytes: 46851019,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105355,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 23,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002200-002300-bodies.idx": {
+				name: "v1-002200-002300-bodies.idx",
+				totalBytes: 550479,
+				downloadedBytes: 550479,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 3.498680083,
+					averageRate: 157339
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002200-002300-bodies.seg": {
+				name: "v1-002200-002300-bodies.seg",
+				totalBytes: 30209427,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105393,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					},
+					{
+						url: "erigon: 2.60.7",
+						downloadRate: 0,
+						piecesCount: 15,
+						remoteAddr: "15.235.13.29:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 208, 213, 199, 116, 136, 191, 186, 153, 206, 4, 136, 190]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 15,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002200-002300-headers.idx": {
+				name: "v1-002200-002300-headers.idx",
+				totalBytes: 658815,
+				downloadedBytes: 658815,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 6.875753959,
+					averageRate: 95817
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002200-002300-headers.seg": {
+				name: "v1-002200-002300-headers.seg",
+				totalBytes: 47141948,
+				downloadedBytes: 26170428,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1315121,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 23,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 23,
+				piecesCompleted: 13,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002300-002400-bodies.idx": {
+				name: "v1-002300-002400-bodies.idx",
+				totalBytes: 549111,
+				downloadedBytes: 549111,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 4.729575334,
+					averageRate: 116101
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002300-002400-bodies.seg": {
+				name: "v1-002300-002400-bodies.seg",
+				totalBytes: 27398097,
+				downloadedBytes: 2097152,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105312,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [
+					{
+						url: "erigon: 2.60.8",
+						downloadRate: 0,
+						piecesCount: 14,
+						remoteAddr: "141.94.141.63:30313",
+						peerId: [45, 71, 84, 48, 48, 48, 51, 45, 7, 217, 67, 241, 7, 36, 239, 215, 109, 169, 21, 56]
+					}
+				],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 14,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002300-002400-headers.idx": {
+				name: "v1-002300-002400-headers.idx",
+				totalBytes: 657735,
+				downloadedBytes: 657735,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.240402584,
+					averageRate: 530259
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002300-002400-headers.seg": {
+				name: "v1-002300-002400-headers.seg",
+				totalBytes: 44786302,
+				downloadedBytes: 34300542,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 1719827,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 22,
+				piecesCompleted: 17,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002400-002410-bodies.idx": {
+				name: "v1-002400-002410-bodies.idx",
+				totalBytes: 45031,
 				downloadedBytes: 0,
-				downloadedStats: {
-					averageRate: 69435,
-					timeTook: 174.906785542
-				},
-				name: "v1-005600-005700-bodies.seg",
-				peers: null,
-				totalBytes: 0,
-				webseeds: null
-			},
-			"v1-005600-005700-headers.seg": {
-				downloadedBytes: 39845888,
-				downloadedStats: {
-					averageRate: 329231,
-					timeTook: 156.4972875
-				},
-				name: "v1-005600-005700-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.0-7883a4e3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.59.3-088fd8ef"
-					}
-				],
-				totalBytes: 51523859,
 				webseeds: [
 					{
-						downloadRate: 139834,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 192272,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 0,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 3.069105375,
+					averageRate: 14672
+				},
+				piecesCount: 1,
+				piecesCompleted: 0,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005700-005800-bodies.seg": {
+			"v1-002400-002410-bodies.seg": {
+				name: "v1-002400-002410-bodies.seg",
+				totalBytes: 2466077,
+				downloadedBytes: 368925,
+				webseeds: [
+					{
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 18532,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+					}
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 2,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002400-002410-headers.idx": {
+				name: "v1-002400-002410-headers.idx",
+				totalBytes: 56207,
+				downloadedBytes: 56207,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 4.792242792,
+					averageRate: 11728
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002400-002410-headers.seg": {
+				name: "v1-002400-002410-headers.seg",
+				totalBytes: 4756967,
+				downloadedBytes: 4756967,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 12.063780416,
+					averageRate: 394318
+				},
+				piecesCount: 3,
+				piecesCompleted: 3,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002410-002420-bodies.idx": {
+				name: "v1-002410-002420-bodies.idx",
+				totalBytes: 45239,
+				downloadedBytes: 45239,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 4.448931416,
+					averageRate: 10168
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002410-002420-bodies.seg": {
+				name: "v1-002410-002420-bodies.seg",
+				totalBytes: 2767251,
 				downloadedBytes: 2097152,
-				downloadedStats: {
-					averageRate: 75664,
-					timeTook: 163.22090825
-				},
-				name: "v1-005700-005800-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.57.3"
-					}
-				],
-				totalBytes: 12350076,
 				webseeds: [
 					{
-						downloadRate: 115990,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
+						url: "erigon3-v1-snapshots-holesky.erigon.network",
+						downloadRate: 105231,
+						piecesCount: 0,
+						remoteAddr: "erigon3-v1-snapshots-holesky.erigon.network",
+						peerId: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 					}
-				]
+				],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0,
+					averageRate: 0
+				},
+				piecesCount: 2,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005700-005800-headers.seg": {
-				downloadedBytes: 4194304,
+			"v1-002410-002420-headers.idx": {
+				name: "v1-002410-002420-headers.idx",
+				totalBytes: 56191,
+				downloadedBytes: 56191,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 307202,
-					timeTook: 166.158636958
+					timeTook: 6.86302975,
+					averageRate: 8187
 				},
-				name: "v1-005700-005800-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					}
-				],
-				totalBytes: 51044320,
-				webseeds: [
-					{
-						downloadRate: 232196,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon3-v3-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005800-005900-bodies.seg": {
-				downloadedBytes: 11155008,
+			"v1-002410-002420-headers.seg": {
+				name: "v1-002410-002420-headers.seg",
+				totalBytes: 4712243,
+				downloadedBytes: 4712243,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 102764,
-					timeTook: 128.956807042
+					timeTook: 8.764000167,
+					averageRate: 537681
 				},
-				name: "v1-005800-005900-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 2.58.1-f12e451c"
-					}
-				],
-				totalBytes: 13252160,
-				webseeds: [
-					{
-						downloadRate: 92976,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 3,
+				piecesCompleted: 3,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005800-005900-headers.seg": {
-				downloadedBytes: 33025615,
+			"v1-002420-002421-bodies.idx": {
+				name: "v1-002420-002421-bodies.idx",
+				totalBytes: 4967,
+				downloadedBytes: 4967,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 331202,
-					timeTook: 156.701844584
+					timeTook: 5.424443042,
+					averageRate: 915
 				},
-				name: "v1-005800-005900-headers.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 2.60.1-9471c44e"
-					}
-				],
-				totalBytes: 51899983,
-				webseeds: [
-					{
-						downloadRate: 412913,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005900-006000-bodies.seg": {
-				downloadedBytes: 6348029,
+			"v1-002420-002421-bodies.seg": {
+				name: "v1-002420-002421-bodies.seg",
+				totalBytes: 558433,
+				downloadedBytes: 558433,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 78018,
-					timeTook: 162.007083833
+					timeTook: 6.565482709,
+					averageRate: 85055
 				},
-				name: "v1-005900-006000-bodies.seg",
-				peers: [
-					{
-						downloadRate: 0,
-						url: "erigon: 3.00.0-dev-0445dc34"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 3.00.0-dev-fb07623d"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 3.00.0-dev-3c99afeb"
-					}
-				],
-				totalBytes: 12639485,
-				webseeds: [
-					{
-						downloadRate: 52908,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			},
-			"v1-005900-006000-headers.seg": {
-				downloadedBytes: 45696653,
+			"v1-002420-002421-headers.idx": {
+				name: "v1-002420-002421-headers.idx",
+				totalBytes: 5983,
+				downloadedBytes: 5983,
+				webseeds: [],
+				peers: [],
 				downloadedStats: {
-					averageRate: 309552,
-					timeTook: 167.945973417
+					timeTook: 0,
+					averageRate: 0
 				},
-				name: "v1-005900-006000-headers.seg",
-				peers: [
-					{
-						downloadRate: 30148,
-						url: "erigon: 3.00.0-dev-fb07623d"
-					},
-					{
-						downloadRate: 40508,
-						url: "erigon: 3.00.0-dev-3c99afeb"
-					},
-					{
-						downloadRate: 0,
-						url: "erigon: 3.00.0-dev-0445dc34"
-					}
-				],
-				totalBytes: 51988109,
-				webseeds: [
-					{
-						downloadRate: 248774,
-						url: "erigon3-v1-snapshots-sepolia.erigon.network"
-					}
-				]
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002420-002421-headers.seg": {
+				name: "v1-002420-002421-headers.seg",
+				totalBytes: 598646,
+				downloadedBytes: 598646,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 2.4038934579999998,
+					averageRate: 249031
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002421-002422-bodies.idx": {
+				name: "v1-002421-002422-bodies.idx",
+				totalBytes: 4975,
+				downloadedBytes: 4975,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.546872125,
+					averageRate: 9097
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002421-002422-bodies.seg": {
+				name: "v1-002421-002422-bodies.seg",
+				totalBytes: 570789,
+				downloadedBytes: 570789,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 2.665603208,
+					averageRate: 214131
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002421-002422-headers.idx": {
+				name: "v1-002421-002422-headers.idx",
+				totalBytes: 5983,
+				downloadedBytes: 5983,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.867412,
+					averageRate: 1019
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002421-002422-headers.seg": {
+				name: "v1-002421-002422-headers.seg",
+				totalBytes: 598197,
+				downloadedBytes: 598197,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.9047996249999999,
+					averageRate: 314047
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002422-002423-bodies.idx": {
+				name: "v1-002422-002423-bodies.idx",
+				totalBytes: 4975,
+				downloadedBytes: 4975,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.866063333,
+					averageRate: 848
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002422-002423-bodies.seg": {
+				name: "v1-002422-002423-bodies.seg",
+				totalBytes: 574470,
+				downloadedBytes: 574470,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.220923458,
+					averageRate: 470520
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002422-002423-headers.idx": {
+				name: "v1-002422-002423-headers.idx",
+				totalBytes: 5983,
+				downloadedBytes: 5983,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.4284215,
+					averageRate: 13965
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002422-002423-headers.seg": {
+				name: "v1-002422-002423-headers.seg",
+				totalBytes: 598309,
+				downloadedBytes: 598309,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.999704875,
+					averageRate: 99723
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002423-002424-bodies.idx": {
+				name: "v1-002423-002424-bodies.idx",
+				totalBytes: 4975,
+				downloadedBytes: 4975,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.424524125,
+					averageRate: 917
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002423-002424-bodies.seg": {
+				name: "v1-002423-002424-bodies.seg",
+				totalBytes: 574392,
+				downloadedBytes: 574392,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 1.67841125,
+					averageRate: 342223
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002423-002424-headers.idx": {
+				name: "v1-002423-002424-headers.idx",
+				totalBytes: 5983,
+				downloadedBytes: 5983,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 5.123289084,
+					averageRate: 1167
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002423-002424-headers.seg": {
+				name: "v1-002423-002424-headers.seg",
+				totalBytes: 598789,
+				downloadedBytes: 598789,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 6.348831625,
+					averageRate: 94314
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002424-002425-bodies.idx": {
+				name: "v1-002424-002425-bodies.idx",
+				totalBytes: 4975,
+				downloadedBytes: 4975,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.534214833,
+					averageRate: 9312
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002424-002425-bodies.seg": {
+				name: "v1-002424-002425-bodies.seg",
+				totalBytes: 574420,
+				downloadedBytes: 574420,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 6.870358541,
+					averageRate: 83608
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002424-002425-headers.idx": {
+				name: "v1-002424-002425-headers.idx",
+				totalBytes: 5983,
+				downloadedBytes: 5983,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 0.727729125,
+					averageRate: 8221
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
+			},
+			"v1-002424-002425-headers.seg": {
+				name: "v1-002424-002425-headers.seg",
+				totalBytes: 598626,
+				downloadedBytes: 598626,
+				webseeds: [],
+				peers: [],
+				downloadedStats: {
+					timeTook: 7.752779375,
+					averageRate: 77214
+				},
+				piecesCount: 1,
+				piecesCompleted: 1,
+				piecesPartialyCompleted: 0
 			}
 		},
-		sys: 0,
-		torrentMetadataReady: 56,
-		total: 2270357416,
-		totalTime: 200,
-		uploadRate: 0
+		torrentMetadataReady: 124
 	},
 	snapshotIndexing: {
 		segments: null,
-		timeElapsed: 0
+		timeElapsed: 0,
+		indexingFinished: false
 	},
-	syncFinished: false,
-	syncStages: [
-		{
-			id: "Snapshots",
-			state: 1,
-			subStages: [
-				{
-					state: 1,
-					id: "Download header-chain"
-				},
-				{
-					state: 0,
-					id: "Download snapshots"
-				},
-				{
-					state: 0,
-					id: "Indexing"
-				},
-				{
-					state: 0,
-					id: "Fill DB"
-				}
-			]
-		},
-		{
-			id: "BlockHashes",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "Senders",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "Execution",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "HashState",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "IntermediateHashes",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "CallTraces",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "AccountHistoryIndex",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "StorageHistoryIndex",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "LogIndex",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "TxLookup",
-			state: 0,
-			subStages: []
-		},
-		{
-			id: "Finish",
-			state: 0,
-			subStages: []
-		}
-	]
+	snapshotFillDB: {
+		stages: null
+	},
+	syncFinished: false
 };
 
 export const snpDLmock = {
