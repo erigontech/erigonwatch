@@ -50,6 +50,10 @@ export interface DownloadedStats {
 export interface SegmentPeer {
 	url: string;
 	downloadRate: number;
+	remoteAddr: string;
+	peerId: number[];
+	piecesCount: number;
+	torrentName: string;
 }
 
 export interface NodeSnapshotIndexStatus {
@@ -191,6 +195,25 @@ export const selectSnapshotDownloadStatusesForNode = createSelector(
 		});
 
 		return result;
+	}
+);
+
+export const selectTorrrentPeersForNode = createSelector(
+	[selectSnapshotDownloadStatus, selectActiveNodeId],
+	(downloadStatus, activeNodeId): SegmentPeer[] => {
+		let result: SegmentPeer[] = [] as SegmentPeer[];
+		downloadStatus.forEach((status) => {
+			if (status.nodeId === activeNodeId) {
+				status.downloadStatus.segments.forEach((segment) => {
+					result.push(...segment.peers);
+				});
+			}
+		});
+
+		const uniqueArray = [...new Set(result)];
+
+		//const uniqueArray = Array.from(new Set(result));
+		return uniqueArray;
 	}
 );
 

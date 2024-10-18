@@ -134,7 +134,11 @@ const peersFromJson = (json: any): SegmentPeer[] => {
 		json.forEach((val: any) => {
 			peers.push({
 				url: val.url,
-				downloadRate: val.downloadRate
+				downloadRate: val.downloadRate,
+				remoteAddr: val.remoteAddr,
+				peerId: val.peerId,
+				piecesCount: val.piecesCount,
+				torrentName: val.torrentName
 			});
 		});
 		return peers;
