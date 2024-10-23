@@ -1,54 +1,98 @@
 import { useSelector } from "react-redux";
-import { bytesToSpeedPerSecond, calculatePercentDownloaded, clculateDownloadTimeLeft, multipleBytes, secondsToHms } from "../../helpers/converters";
 import { SnapshotDowndloadDetailsPopup } from "../components/SyncStages/SnapshotDowndloadDetailsPopup";
 import { useState } from "react";
-import { selectSnapshotDownloadStatusesForNode } from "../store/syncStagesSlice";
+import { selectSegmentPeersDiagDataForNode, selectSnapshotDownloadStatusesForNode, selectTorrrentPeersForNode } from "../store/syncStagesSlice";
 import { selectFlagsForNode } from "../store/appSlice";
 import { FlagsDetailsTable } from "../components/Flags/FlagsDetailsTable";
 import { downloaderFlags } from "../components/Flags/flagConstants";
 import { selectNetworkSpeedIssues } from "../store/issuesSlice";
 import { useNavigate } from "react-router-dom";
-import { TorrentPeersDetailsPopup } from "../components/SyncStages/TorrentPeersDetailsPopup";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Box from "@mui/material/Box";
+import { DownloaderOverviewTable, OverviewTableColumn } from "../components/Downloader/DownloaderOverviewTable";
+import { TorrentPeersTable } from "../components/SyncStages/TorrentPeersTable";
 
 export const NetworkDownloaderPage = () => {
 	const syncStatus = useSelector(selectSnapshotDownloadStatusesForNode);
+	const peersDiagData = useSelector(selectSegmentPeersDiagDataForNode);
 	const [showDetails, setShowDetails] = useState(false);
 	const [showPeerDetail, setShowPeerDetails] = useState(false);
 	const allFlags = useSelector(selectFlagsForNode);
 	const issues = useSelector(selectNetworkSpeedIssues);
 	const navigate = useNavigate();
 	const handleIssuesClick = () => navigate("/issues");
+	const peers = useSelector(selectTorrrentPeersForNode);
 
 	const flags = allFlags.filter((flag) => {
 		return downloaderFlags.includes(flag.flag);
 	});
 
-	const snapshotStatus = () => {
-		if (!syncStatus.downloadFinished && syncStatus.indexed < 100 && syncStatus.torrentMetadataReady < syncStatus.files) {
-			if (syncStatus.downloaded > 0) {
-				return "downloading and waiting for metadata";
-			} else {
-				return "waiting for metadata";
-			}
-		} else if (!syncStatus.downloadFinished && syncStatus.indexed < 100) {
-			return "Downloading";
-		} else if (syncStatus.indexed < 100) {
-			return "Indexing";
+	const renderTotalsTable = () => {
+		return (
+			<DownloaderOverviewTable
+				onColumnClick={(column) => {
+					console.log("colunm", column);
+					if (column === OverviewTableColumn.Peers) {
+						if (showPeerDetail) {
+							setShowPeerDetails(false);
+						} else {
+							setShowPeerDetails(true);
+						}
+					}
+				}}
+			/>
+		);
+	};
+
+	const renderContent = () => {
+		if (showPeerDetail) {
+			return (
+				<TorrentPeersTable
+					peers={peers}
+					peerSelected={false}
+					onPeerClicked={(peer) => {
+						//let res = findPeerById(peer.peerId.toString());
+						//console.log("res", res);
+						//setSelectedPeer(res);
+						console.log("peer clicked", peer);
+					}}
+				/>
+			);
 		} else {
-			return "Finished";
+			return "Not implemented";
 		}
 	};
 
-	const totalTime = () => {
-		let ttime = 0;
-		syncStatus.totalTime.forEach((time) => {
-			ttime += time;
-		});
-		return secondsToHms(ttime);
+	const [expanded, setExpanded] = useState<string | false>(false);
+
+	// Function to handle accordion open/close
+	const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+		setExpanded(isExpanded ? panel : false);
+
+		if (!isExpanded) {
+			setShowPeerDetails(false);
+			console.log("AccordionDetails closed!");
+			// You can trigger any close event handling logic here.
+		}
 	};
 
 	return (
-		<div>
+		<Box
+			sx={{
+				display: "flex", // Enables Flexbox
+				flexDirection: "column", // Stacks items vertically
+				alignItems: "center", // Centers items vertically
+				//justifyContent: "center", // Centers items horizontally
+				height: "100vh", // Full viewport height to center content vertically
+				width: "100%", // maxWidth of the Box
+				border: "1px solid black", // Optional: just to show the boundaries of the Box
+				overflow: "auto", // Enables vertical scrolling
+				paddingBottom: "50px" // Centers the Box horizontally
+			}}
+		>
 			{issues.length > 0 && (
 				<p
 					className="font-bold mt-5 mb-5 text-yellow-400 cursor-pointer"
@@ -57,62 +101,66 @@ export const NetworkDownloaderPage = () => {
 					{"Found " + issues.length + " download speed issues"}
 				</p>
 			)}
-			<table className="table-auto w-fit border-0 rounded-lg shadow-lg relative bg-white outline-none focus:outline-none mb-4">
-				<thead>
-					<tr className="border-b">
-						<th className="px-4 py-2">Name</th>
-						<th className="px-4 py-2">Status</th>
-						<th className="px-4 py-2">Progress</th>
-						<th className="px-4 py-2">Downaloaded</th>
-						<th className="px-4 py-2">Total</th>
-						<th className="px-4 py-2">Time Left</th>
-						<th className="px-4 py-2">Total Time</th>
-						<th className="px-4 py-2">Download Rate</th>
-						<th className="px-4 py-2">Upload Rate</th>
-						<th className="px-4 py-2">Peers</th>
-						<th className="px-4 py-2">Files</th>
-						<th className="px-4 py-2">Connections</th>
-						<th className="px-4 py-2">Alloc</th>
-						<th className="px-4 py-2">Sys</th>
-					</tr>
-				</thead>
-				<tbody>
-					{
-						//syncStatus?.downloaded && (
-						<tr
-							onClick={() => {
-								setShowDetails(true);
-							}}
-						>
-							<td className="px-4 py-2">{"Snapshots"}</td>
-							<td className="px-4 py-2 text-center">{snapshotStatus()}</td>
-							<td className="px-4 py-2">{calculatePercentDownloaded(syncStatus.downloaded, syncStatus.total)}</td>
-							<td className="px-4 py-2">{multipleBytes(syncStatus.downloaded)}</td>
-							<td className="px-4 py-2">{multipleBytes(syncStatus.total)}</td>
-							<td className="px-4 py-2">{clculateDownloadTimeLeft(syncStatus.downloaded, syncStatus.total, syncStatus.downloadRate)}</td>
-							<td className="px-4 py-2">{totalTime()}</td>
-							<td className="px-4 py-2">{bytesToSpeedPerSecond(syncStatus.downloadRate)}</td>
-							<td className="px-4 py-2">{bytesToSpeedPerSecond(syncStatus.uploadRate)}</td>
-							<td className="px-4 py-2">{syncStatus.peers}</td>
-							<td className="px-4 py-2">{syncStatus.files}</td>
-							<td className="px-4 py-2">{syncStatus.connections}</td>
-							<td className="px-4 py-2">{multipleBytes(syncStatus.alloc)}</td>
-							<td className="px-4 py-2">{multipleBytes(syncStatus.sys)}</td>
-						</tr>
-						//)
-					}
-				</tbody>
-			</table>
-			<button
-				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+
+			<Accordion
+				sx={{ padding: "0px", width: "100%", marginBottom: "10px" }}
+				expanded={expanded === "panel2"}
+				onChange={handleChange("panel2")}
+			>
+				<AccordionSummary>{renderTotalsTable()}</AccordionSummary>
+				<AccordionDetails>{renderContent()}</AccordionDetails>
+			</Accordion>
+			{/*<ToggleButtonGroup
+				color="primary"
+				value={alignment}
+				exclusive
+				onChange={handleChange}
+				aria-label="Platform"
+			>
+				<ToggleButton value="torrents">Torrents</ToggleButton>
+				<ToggleButton value="peers">Peers</ToggleButton>
+				<ToggleButton value="flags">Flags</ToggleButton>
+			</ToggleButtonGroup>*/}
+			{/*<button
+				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5"
 				onClick={() => setShowPeerDetails(true)}
 			>
 				{"Show Peers"}
-			</button>
-			<div className="flex flex-col">
-				<p className="font-bold mt-5">Flags related to downloader</p>
-				<FlagsDetailsTable flags={flags} />
-			</div>
+			</button>*/}
+
+			<Accordion>
+				<AccordionSummary
+					expandIcon={<ExpandMoreIcon />}
+					aria-controls="panel1-content"
+					id="panel1-header"
+					sx={{
+						fontWeight: "bold",
+						width: "100%" // maxWidth of the Box
+					}}
+				>
+					Downloader flags
+				</AccordionSummary>
+				<AccordionDetails>
+					<FlagsDetailsTable flags={flags} />
+				</AccordionDetails>
+			</Accordion>
+			{/*<Accordion>
+				<AccordionSummary
+					expandIcon={<ExpandMoreIcon />}
+					aria-controls="panel1-content"
+					id="panel1-header"
+					sx={{ fontWeight: "bold" }}
+				>
+					Peers
+				</AccordionSummary>
+				<AccordionDetails>
+					<TorrentPeersTable
+						peers={peers}
+						peerSelected={false}
+						onPeerClicked={(peer) => {}}
+					/>
+				</AccordionDetails>
+			</Accordion>*/}
 			{showDetails && (
 				<SnapshotDowndloadDetailsPopup
 					onClose={() => {
@@ -120,13 +168,13 @@ export const NetworkDownloaderPage = () => {
 					}}
 				/>
 			)}
-			{showPeerDetail && (
+			{/*showPeerDetail && (
 				<TorrentPeersDetailsPopup
 					onClose={() => {
 						setShowPeerDetails(false);
 					}}
 				/>
-			)}
-		</div>
+			)*/}
+		</Box>
 	);
 };

@@ -30,6 +30,7 @@ export interface SnapshotDownloadStatus {
 	segments: SnapshotSegmentDownloadStatus[];
 	indexed: number;
 	torrentMetadataReady: number;
+	diagramData: PeerDiagramData[];
 }
 
 export interface SnapshotSegmentDownloadStatus {
@@ -50,6 +51,7 @@ export interface DownloadedStats {
 export interface SegmentPeer {
 	url: string;
 	downloadRate: number;
+	uploadRate: number;
 	remoteAddr: string;
 	peerId: number[];
 	piecesCount: number;
@@ -114,12 +116,36 @@ export interface BlockExecution {
 	timeElapsed: number;
 }
 
+export interface NodeSegmentPeerDiagData {
+	nodeId: string;
+	data: SegmentPeerDiagData[];
+}
+
+export interface SegmentPeerDiagData {
+	peerId: string;
+	diagramData: PeerDiagramData[];
+}
+
+export interface SegmentPeerDiagValues {
+	value: number;
+	time: number;
+}
+
+export interface PeerDiagramData {
+	time: number;
+	pieces: number;
+	dLspeed: number;
+	uPspeed: number;
+}
+
 export interface SyncStagesState {
 	snapshotFilesList: NodeSnapshotFileList[];
 	snapshotDownloadStatus: NodeSnapshotDownloadStatus[];
 	snapshotIndexStatus: NodeSnapshotIndexStatus[];
 	syncStages: NodeSyncStage[];
 	testSnpSyncMsgIdx: number;
+	peersDiagramData: NodeSegmentPeerDiagData[];
+	diagramTime: number;
 }
 
 const initialState: SyncStagesState = {
@@ -128,7 +154,9 @@ const initialState: SyncStagesState = {
 	snapshotIndexStatus: [],
 	syncStages: [],
 	//testSnpSyncMsgIdx: 439
-	testSnpSyncMsgIdx: 0
+	testSnpSyncMsgIdx: 0,
+	peersDiagramData: [],
+	diagramTime: 0
 };
 
 export const syncStagesSlice = createSlice({
@@ -144,12 +172,97 @@ export const syncStagesSlice = createSlice({
 			}
 		},
 		setSnapshotDownloadStatus: (state, action: PayloadAction<NodeSnapshotDownloadStatus>) => {
+			let totalPieces = 0;
+
 			let nodeIdx = state.snapshotDownloadStatus.findIndex((downloadStatus) => downloadStatus.nodeId === action.payload.nodeId);
 			if (nodeIdx !== -1) {
+				action.payload.downloadStatus.segments.forEach((segment) => {
+					segment.peers.forEach((peer) => {
+						if (peer.peerId === undefined) {
+							return;
+						}
+
+						totalPieces += peer.piecesCount;
+						let peerIdx = state.peersDiagramData[nodeIdx].data.findIndex(
+							(peersDiagramData) => peersDiagramData.peerId.toString() === peer.peerId.toString()
+						);
+
+						if (peerIdx !== -1) {
+							state.peersDiagramData[nodeIdx].data[peerIdx].diagramData.push({
+								time: state.diagramTime,
+								pieces: peer.piecesCount,
+								dLspeed: peer.downloadRate,
+								uPspeed: peer.uploadRate
+							});
+						} else {
+							let peerDiagData: SegmentPeerDiagData = {
+								peerId: peer.peerId.toString(),
+								diagramData: Array<PeerDiagramData>({
+									time: state.diagramTime,
+									pieces: peer.piecesCount,
+									dLspeed: peer.downloadRate,
+									uPspeed: peer.uploadRate
+								})
+							};
+							state.peersDiagramData[nodeIdx].data.push(peerDiagData);
+						}
+					});
+				});
+			} else {
+				let arr = Array<SegmentPeerDiagData>();
+				action.payload.downloadStatus.segments.forEach((segment) => {
+					segment.peers.forEach((peer) => {
+						if (peer.peerId === undefined) {
+							return;
+						}
+						totalPieces += peer.piecesCount;
+						let peerIdx = arr.findIndex((peersDiagramData) => peersDiagramData.peerId.toString() === peer.peerId.toString());
+						if (peerIdx !== -1) {
+							arr[peerIdx].diagramData.push({
+								time: state.diagramTime,
+								pieces: peer.piecesCount,
+								dLspeed: peer.downloadRate,
+								uPspeed: peer.uploadRate
+							});
+						} else {
+							let peerDiagData: SegmentPeerDiagData = {
+								peerId: peer.peerId.toString(),
+								diagramData: Array<PeerDiagramData>({
+									time: state.diagramTime,
+									pieces: peer.piecesCount,
+									dLspeed: peer.downloadRate,
+									uPspeed: peer.uploadRate
+								})
+							};
+							arr.push(peerDiagData);
+						}
+					});
+				});
+
+				state.peersDiagramData.push({ nodeId: action.payload.nodeId, data: arr });
+			}
+
+			if (nodeIdx !== -1) {
+				let prevStatus = state.snapshotDownloadStatus[nodeIdx].downloadStatus.diagramData;
+				prevStatus.push({
+					time: state.diagramTime,
+					pieces: totalPieces,
+					dLspeed: action.payload.downloadStatus.downloadRate,
+					uPspeed: action.payload.downloadStatus.uploadRate
+				});
+				action.payload.downloadStatus.diagramData = prevStatus;
 				state.snapshotDownloadStatus[nodeIdx].downloadStatus = action.payload.downloadStatus;
 			} else {
+				action.payload.downloadStatus.diagramData = Array<PeerDiagramData>({
+					time: state.diagramTime,
+					pieces: totalPieces,
+					dLspeed: action.payload.downloadStatus.downloadRate,
+					uPspeed: action.payload.downloadStatus.uploadRate
+				});
 				state.snapshotDownloadStatus.push(action.payload);
 			}
+
+			state.diagramTime += 1;
 		},
 		setSnapshotIndexStatus: (state, action: PayloadAction<NodeSnapshotIndexStatus>) => {
 			let nodeIdx = state.snapshotIndexStatus.findIndex((indexStatus) => indexStatus.nodeId === action.payload.nodeId);
@@ -191,6 +304,21 @@ export const selectSnapshotDownloadStatusesForNode = createSelector(
 		downloadStatus.forEach((status) => {
 			if (status.nodeId === activeNodeId) {
 				result = status.downloadStatus;
+			}
+		});
+
+		return result;
+	}
+);
+
+export const selectSegmentPeersDiagData = (state: RootState): NodeSegmentPeerDiagData[] => state.syncStages.peersDiagramData;
+export const selectSegmentPeersDiagDataForNode = createSelector(
+	[selectSegmentPeersDiagData, selectActiveNodeId],
+	(segmentPeerDiagData, activeNodeId): SegmentPeerDiagData[] => {
+		let result: SegmentPeerDiagData[] = [];
+		segmentPeerDiagData.forEach((data) => {
+			if (data.nodeId === activeNodeId) {
+				result = data.data;
 			}
 		});
 

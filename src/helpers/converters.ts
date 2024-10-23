@@ -61,3 +61,34 @@ export const calculatePercentDownloaded = (downloaded: number, total: number): s
 export const bytesToSpeedPerSecond = (bytes: number): string => {
 	return multipleBytes(bytes) + "/s";
 };
+
+export const PeerIdToString = (bts: number[]): string => {
+	//let s = bytes.map((byte) => String.fromCharCode(byte)).join("");
+	const bytes = new Uint8Array(bts);
+	let res = Uint8ToString(bytes);
+	return res;
+};
+
+const Uint8ToString = (id: Uint8Array): string => {
+	// Equivalent of the Go code checking `me[0] == '-' && me[7] == '-'`
+	if (id[0] === 45 && id[7] === 45) {
+		// 45 is the ASCII code for '-'
+		//return byteArrayToString(id.slice(0, 8)) + byteArrayToHex(id.slice(8));
+		return byteArrayToHex(id.slice(8));
+	}
+
+	// Hex encoding of the entire array if no condition is met
+	return byteArrayToHex(id);
+};
+
+// Helper function to convert byte array to string
+const byteArrayToString = (bytes: Uint8Array): string => {
+	return new TextDecoder().decode(bytes);
+};
+
+// Helper function to convert byte array to hex string
+const byteArrayToHex = (bytes: Uint8Array): string => {
+	return Array.from(bytes)
+		.map((b) => b.toString(16).padStart(2, "0"))
+		.join("");
+};

@@ -91,7 +91,8 @@ export const snapshotDownloadStatusFromJson = (
 		segments: segs,
 		indexingFinished: indexingFinished,
 		indexed: indexed,
-		torrentMetadataReady: json.torrentMetadataReady
+		torrentMetadataReady: json.torrentMetadataReady,
+		diagramData: []
 	};
 };
 
@@ -135,6 +136,7 @@ const peersFromJson = (json: any): SegmentPeer[] => {
 			peers.push({
 				url: val.url,
 				downloadRate: val.downloadRate,
+				uploadRate: val.uploadRate,
 				remoteAddr: val.remoteAddr,
 				peerId: val.peerId,
 				piecesCount: val.piecesCount,

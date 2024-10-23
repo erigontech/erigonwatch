@@ -1,17 +1,21 @@
-import { useState } from "react";
-import { multipleBytes } from "../../../helpers/converters";
+import { useEffect, useState } from "react";
+import { multipleBytes, PeerIdToString } from "../../../helpers/converters";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import SortIcon from "@mui/icons-material/Sort";
-import { SegmentPeer } from "../../store/syncStagesSlice";
+import { SegmentPeer, SegmentPeerDiagData, selectSegmentPeersDiagDataForNode } from "../../store/syncStagesSlice";
+import { Box, Modal, Typography } from "@mui/material";
+import { TorrentPeersHistory } from "./TorrentPeerHistory";
+import { useSelector } from "react-redux";
 
 enum SortColumn {
 	Url = "Url",
 	DlRate = "DlRate",
+	UlRate = "UlRate",
 	Address = "Address",
 	ID = "ID",
 	PiecesCount = "PiecesCount",
-	TorrentName = "TorrentName"
+	Torrents = "Torrents"
 }
 
 interface SortState {
@@ -25,15 +29,49 @@ export interface TorrentPeersTableProps {
 	onPeerClicked: (segment: SegmentPeer) => void;
 }
 
+interface DisplayPeers {
+	url: string;
+	downloadRate: number;
+	uploadRate: number;
+	remoteAddr: string;
+	peerId: number[];
+	piecesCount: number;
+	torrents: string[];
+}
+
 export const TorrentPeersTable = ({ peers, peerSelected, onPeerClicked }: TorrentPeersTableProps) => {
-	const [visibleSegments, setVisibleSegments] = useState<SegmentPeer[]>(peers);
+	const displayPeers = (peers: SegmentPeer[]): DisplayPeers[] => {
+		let displayPeers: DisplayPeers[] = [];
+		peers.forEach((peer) => {
+			let displayPeer = displayPeers.find((p) => p.peerId.toString() === peer.peerId.toString());
+			if (displayPeer) {
+				displayPeer.downloadRate += peer.downloadRate;
+				displayPeer.uploadRate += peer.uploadRate;
+				displayPeer.piecesCount += peer.piecesCount;
+				displayPeer.torrents.push(peer.torrentName);
+			} else {
+				displayPeers.push({
+					url: peer.url,
+					downloadRate: peer.downloadRate,
+					uploadRate: peer.uploadRate,
+					remoteAddr: peer.remoteAddr,
+					peerId: peer.peerId,
+					piecesCount: peer.piecesCount,
+					torrents: [peer.torrentName]
+				});
+			}
+		});
+		return displayPeers;
+	};
+
+	const [visibleSegments, setVisibleSegments] = useState<DisplayPeers[]>([]);
 
 	const [currentSortState, setCurrentSortState] = useState<SortState>({
 		column: SortColumn.Url,
 		descending: true
 	});
 
-	const sortSegments = (seg: SegmentPeer[], sotOpt: SortState): void => {
+	const sortSegments = (seg: DisplayPeers[], sotOpt: SortState): void => {
 		console.log("sortSegments", seg[0]);
 		let tosort = [...seg];
 		let sortedSegments = tosort.sort((a, b) => {
@@ -41,18 +79,18 @@ export const TorrentPeersTable = ({ peers, peerSelected, onPeerClicked }: Torren
 				return compareStrings(a.url, b.url, sotOpt.descending);
 			} else if (sotOpt.column === SortColumn.DlRate) {
 				return compareNumbers(a.downloadRate, b.downloadRate, sotOpt.descending);
+			} else if (sotOpt.column === SortColumn.UlRate) {
+				return compareNumbers(a.uploadRate, b.uploadRate, sotOpt.descending);
 			} else if (sotOpt.column === SortColumn.PiecesCount) {
 				return compareNumbers(a.piecesCount, b.piecesCount, sotOpt.descending);
 			} else if (sotOpt.column === SortColumn.Address) {
 				return compareStrings(a.remoteAddr, b.remoteAddr, sotOpt.descending);
 			} else if (sotOpt.column === SortColumn.ID) {
-				return compareStrings(bytesToString(a.peerId), bytesToString(b.peerId), sotOpt.descending);
+				return compareStrings(PeerIdToString(a.peerId), PeerIdToString(b.peerId), sotOpt.descending);
 			} else {
-				return compareStrings(a.torrentName, b.torrentName, sotOpt.descending);
+				return compareNumbers(a.torrents.length, b.torrents.length, sotOpt.descending);
 			}
 		});
-
-		console.log("sortedSegments", sortedSegments[0]);
 
 		setCurrentSortState(sotOpt);
 		setVisibleSegments(sortedSegments);
@@ -86,43 +124,71 @@ export const TorrentPeersTable = ({ peers, peerSelected, onPeerClicked }: Torren
 		}
 	};
 
-	const bytesToString = (bts: number[]): string => {
-		//let s = bytes.map((byte) => String.fromCharCode(byte)).join("");
-		const bytes = new Uint8Array(bts);
-		let res = toString(bytes);
-		return res;
+	const [peer, setPeer] = useState<SegmentPeerDiagData | undefined>(undefined);
+	const handleOpen = (peer: SegmentPeerDiagData) => setPeer(peer);
+	const handleClose = () => setPeer(undefined);
+
+	useEffect(() => {
+		if (peer) {
+			peers.forEach((p) => {
+				if (p.peerId.toString() === peer.peerId) {
+					findPeerById(p.peerId.toString());
+					return;
+				}
+			});
+		}
+	}, [peers]);
+
+	const style = {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		maxWidth: "80%",
+		bgcolor: "background.paper",
+		border: "2px solid #000",
+		boxShadow: 24,
+		p: 4
 	};
 
-	function toString(id: Uint8Array): string {
-		// Equivalent of the Go code checking `me[0] == '-' && me[7] == '-'`
-		if (id[0] === 45 && id[7] === 45) {
-			// 45 is the ASCII code for '-'
-			//return byteArrayToString(id.slice(0, 8)) + byteArrayToHex(id.slice(8));
-			return byteArrayToHex(id.slice(8));
+	useEffect(() => {
+		sortSegments(displayPeers(peers), currentSortState);
+	}, [peers]);
+
+	const perrsdiagData = useSelector(selectSegmentPeersDiagDataForNode);
+
+	const findPeerById = (peerId: string) => {
+		let result = perrsdiagData.find((peer) => {
+			return peer.peerId === peerId;
+		});
+
+		if (result) {
+			handleOpen(result);
+		}
+	};
+
+	const convertPid = (pid: string, short: boolean): string => {
+		let arr = pid.split(",");
+		let nums = arr.map((num) => parseInt(num));
+		let res = PeerIdToString(nums);
+		let result = res;
+
+		if (short) {
+			let charsArray = res.split("");
+			if (charsArray.length > 10) {
+				result = res.slice(0, 4) + "..." + res.slice(-4);
+			}
 		}
 
-		// Hex encoding of the entire array if no condition is met
-		return byteArrayToHex(id);
-	}
-
-	// Helper function to convert byte array to string
-	function byteArrayToString(bytes: Uint8Array): string {
-		return new TextDecoder().decode(bytes);
-	}
-
-	// Helper function to convert byte array to hex string
-	function byteArrayToHex(bytes: Uint8Array): string {
-		return Array.from(bytes)
-			.map((b) => b.toString(16).padStart(2, "0"))
-			.join("");
-	}
+		return result;
+	};
 
 	return (
 		<div
 			className="w-full h-[95%]"
 			style={{ overflowY: !peerSelected ? "scroll" : "hidden" }}
 		>
-			<table className="table-fixed text-left">
+			<table className="table-fixed text-left w-full">
 				<thead>
 					<tr className="border-b">
 						<th
@@ -151,6 +217,20 @@ export const TorrentPeersTable = ({ peers, peerSelected, onPeerClicked }: Torren
 							<div className="flex flex-row">
 								Download Rate
 								{getArrowIcon(SortColumn.DlRate)}
+							</div>
+						</th>
+						<th
+							className="px-4 py-2 cursor-pointer"
+							onClick={() => {
+								sortSegments(visibleSegments, {
+									column: SortColumn.UlRate,
+									descending: !currentSortState.descending
+								});
+							}}
+						>
+							<div className="flex flex-row">
+								Upload Rate
+								{getArrowIcon(SortColumn.UlRate)}
 							</div>
 						</th>
 						<th
@@ -199,14 +279,14 @@ export const TorrentPeersTable = ({ peers, peerSelected, onPeerClicked }: Torren
 							className="px-4 py-2 cursor-pointer"
 							onClick={() => {
 								sortSegments(visibleSegments, {
-									column: SortColumn.TorrentName,
+									column: SortColumn.Torrents,
 									descending: !currentSortState.descending
 								});
 							}}
 						>
 							<div className="flex flex-row">
-								Torrent Name
-								{getArrowIcon(SortColumn.TorrentName)}
+								Torrents Count
+								{getArrowIcon(SortColumn.Torrents)}
 							</div>
 						</th>
 					</tr>
@@ -216,19 +296,48 @@ export const TorrentPeersTable = ({ peers, peerSelected, onPeerClicked }: Torren
 						return (
 							<tr
 								key={uniqueId()}
-								className="border-b"
+								className="border-b hover:bg-gray-100 cursor-pointer"
+								onClick={() => {
+									findPeerById(peer.peerId.toString());
+								}}
 							>
 								<td className="px-4 py-2">{peer.url}</td>
 								<td className="px-4 py-2">{multipleBytes(peer.downloadRate)}</td>
+								<td className="px-4 py-2">{multipleBytes(peer.uploadRate)}</td>
 								<td className="px-4 py-2">{peer.remoteAddr}</td>
-								<td className="px-4 py-2">{bytesToString(peer.peerId)}</td>
+								<td className="px-4 py-2">{PeerIdToString(peer.peerId)}</td>
 								<td className="px-4 py-2">{peer.piecesCount}</td>
-								<td className="px-4 py-2">{peer.torrentName}</td>
+								<td className="px-4 py-2">{peer.torrents.length}</td>
 							</tr>
 						);
 					})}
 				</tbody>
 			</table>
+
+			<Modal
+				open={peer !== undefined}
+				onClose={handleClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<Typography
+						id="modal-modal-title"
+						variant="h6"
+						component="h2"
+					>
+						{peer ? "Peer ID: " + convertPid(peer.peerId, true) : "Peer ID: unknown"}
+					</Typography>
+					<TorrentPeersHistory
+						peer={
+							peer || {
+								peerId: "",
+								diagramData: []
+							}
+						}
+					/>
+				</Box>
+			</Modal>
 		</div>
 	);
 
