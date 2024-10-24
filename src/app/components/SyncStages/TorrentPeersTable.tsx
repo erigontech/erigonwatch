@@ -72,7 +72,6 @@ export const TorrentPeersTable = ({ peers, peerSelected, onPeerClicked }: Torren
 	});
 
 	const sortSegments = (seg: DisplayPeers[], sotOpt: SortState): void => {
-		console.log("sortSegments", seg[0]);
 		let tosort = [...seg];
 		let sortedSegments = tosort.sort((a, b) => {
 			if (sotOpt.column === SortColumn.Url) {

@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
-import { SnapshotDowndloadDetailsPopup } from "../components/SyncStages/SnapshotDowndloadDetailsPopup";
 import { useState } from "react";
-import { selectSegmentPeersDiagDataForNode, selectSnapshotDownloadStatusesForNode, selectTorrrentPeersForNode } from "../store/syncStagesSlice";
+import { selectSnapshotDownloadStatusesForNode, selectTorrrentPeersForNode } from "../store/syncStagesSlice";
 import { selectFlagsForNode } from "../store/appSlice";
 import { FlagsDetailsTable } from "../components/Flags/FlagsDetailsTable";
 import { downloaderFlags } from "../components/Flags/flagConstants";
@@ -14,12 +13,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import { DownloaderOverviewTable, OverviewTableColumn } from "../components/Downloader/DownloaderOverviewTable";
 import { TorrentPeersTable } from "../components/SyncStages/TorrentPeersTable";
+import { SegmentsTable } from "../components/SyncStages/SegmentsTable";
+import { LineChart } from "@mui/x-charts";
+import { LineChartData } from "../components/SyncStages/TorrentPeerHistory";
 
 export const NetworkDownloaderPage = () => {
 	const syncStatus = useSelector(selectSnapshotDownloadStatusesForNode);
-	const peersDiagData = useSelector(selectSegmentPeersDiagDataForNode);
-	const [showDetails, setShowDetails] = useState(false);
-	const [showPeerDetail, setShowPeerDetails] = useState(false);
+	const [showDetails, setShowDetails] = useState("");
 	const allFlags = useSelector(selectFlagsForNode);
 	const issues = useSelector(selectNetworkSpeedIssues);
 	const navigate = useNavigate();
@@ -34,13 +34,10 @@ export const NetworkDownloaderPage = () => {
 		return (
 			<DownloaderOverviewTable
 				onColumnClick={(column) => {
-					console.log("colunm", column);
-					if (column === OverviewTableColumn.Peers) {
-						if (showPeerDetail) {
-							setShowPeerDetails(false);
-						} else {
-							setShowPeerDetails(true);
-						}
+					if (showDetails === "") {
+						setShowDetails(OverviewTableColumn[column]);
+					} else {
+						setShowDetails("");
 					}
 				}}
 			/>
@@ -48,34 +45,119 @@ export const NetworkDownloaderPage = () => {
 	};
 
 	const renderContent = () => {
-		if (showPeerDetail) {
+		if (showDetails === OverviewTableColumn[OverviewTableColumn.Peers]) {
 			return (
-				<TorrentPeersTable
-					peers={peers}
-					peerSelected={false}
-					onPeerClicked={(peer) => {
-						//let res = findPeerById(peer.peerId.toString());
-						//console.log("res", res);
-						//setSelectedPeer(res);
-						console.log("peer clicked", peer);
+				<Box
+					sx={{
+						maxHeight: "80vh",
+						overflow: "auto"
 					}}
-				/>
+				>
+					<p>{showDetails}</p>
+					<TorrentPeersTable
+						peers={peers}
+						peerSelected={false}
+						onPeerClicked={() => {}}
+					/>
+				</Box>
 			);
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Files]) {
+			return (
+				<Box
+					sx={{
+						maxHeight: "80vh",
+						overflow: "auto" // Enables vertical scrolling
+					}}
+				>
+					<p>{showDetails}</p>
+					<SegmentsTable
+						segments={syncStatus.segments}
+						segmentSelected={false}
+						onSegmentClicked={() => {}}
+					/>
+				</Box>
+			);
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Connections]) {
+			let data = {
+				xAxis: [{ data: syncStatus.diagramData.map((d) => d.time) }],
+				series: [{ data: syncStatus.diagramData.map((d) => d.connections) }]
+			};
+
+			return renderChart(data, showDetails);
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.DownloadRate]) {
+			let data = {
+				xAxis: [{ data: syncStatus.diagramData.map((d) => d.time) }],
+				series: [{ data: syncStatus.diagramData.map((d) => d.downloadRate / 1024 / 1024) }]
+			};
+
+			return renderChart(data, showDetails + " (MB/s)");
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.UploadRate]) {
+			let data = {
+				xAxis: [{ data: syncStatus.diagramData.map((d) => d.time) }],
+				series: [{ data: syncStatus.diagramData.map((d) => d.uploadRate / 1024 / 1024) }]
+			};
+
+			return renderChart(data, showDetails + " (MB/s)");
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Downloaded]) {
+			let data = {
+				xAxis: [{ data: syncStatus.diagramData.map((d) => d.time) }],
+				series: [{ data: syncStatus.diagramData.map((d) => d.downloaded / 1024 / 1024) }]
+			};
+
+			return renderChart(data, showDetails + " (MB)");
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Total]) {
+			let data = {
+				xAxis: [{ data: syncStatus.diagramData.map((d) => d.time) }],
+				series: [{ data: syncStatus.diagramData.map((d) => d.total / 1024 / 1024) }]
+			};
+
+			return renderChart(data, showDetails + " (MB)");
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Alloc]) {
+			let data = {
+				xAxis: [{ data: syncStatus.diagramData.map((d) => d.time) }],
+				series: [{ data: syncStatus.diagramData.map((d) => d.alloc / 1024 / 1024 / 1024) }]
+			};
+
+			return renderChart(data, showDetails + " (GB)");
+		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Sys]) {
+			let data = {
+				xAxis: [{ data: syncStatus.diagramData.map((d) => d.time) }],
+				series: [{ data: syncStatus.diagramData.map((d) => d.sys / 1024 / 1024 / 1024) }]
+			};
+
+			return renderChart(data, showDetails + " (GB)");
 		} else {
 			return "Not implemented";
 		}
 	};
 
+	const renderChart = (data: LineChartData, title: string) => {
+		return (
+			<Box
+				sx={{
+					maxHeight: "80vh",
+					overflow: "auto" // Enables vertical scrolling
+				}}
+			>
+				<p>{title}</p>
+				<LineChart
+					sx={{ width: "100%" }}
+					xAxis={data.xAxis}
+					series={data.series}
+					height={250}
+					margin={{ top: 50, right: 50, bottom: 50, left: 70 }}
+				/>
+			</Box>
+		);
+	};
+
 	const [expanded, setExpanded] = useState<string | false>(false);
 
-	// Function to handle accordion open/close
 	const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
 		setExpanded(isExpanded ? panel : false);
 
 		if (!isExpanded) {
-			setShowPeerDetails(false);
-			console.log("AccordionDetails closed!");
-			// You can trigger any close event handling logic here.
+			setShowDetails("");
 		}
 	};
 
@@ -85,7 +167,6 @@ export const NetworkDownloaderPage = () => {
 				display: "flex", // Enables Flexbox
 				flexDirection: "column", // Stacks items vertically
 				alignItems: "center", // Centers items vertically
-				//justifyContent: "center", // Centers items horizontally
 				height: "100vh", // Full viewport height to center content vertically
 				width: "100%", // maxWidth of the Box
 				border: "1px solid black", // Optional: just to show the boundaries of the Box
@@ -110,24 +191,6 @@ export const NetworkDownloaderPage = () => {
 				<AccordionSummary>{renderTotalsTable()}</AccordionSummary>
 				<AccordionDetails>{renderContent()}</AccordionDetails>
 			</Accordion>
-			{/*<ToggleButtonGroup
-				color="primary"
-				value={alignment}
-				exclusive
-				onChange={handleChange}
-				aria-label="Platform"
-			>
-				<ToggleButton value="torrents">Torrents</ToggleButton>
-				<ToggleButton value="peers">Peers</ToggleButton>
-				<ToggleButton value="flags">Flags</ToggleButton>
-			</ToggleButtonGroup>*/}
-			{/*<button
-				className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-5"
-				onClick={() => setShowPeerDetails(true)}
-			>
-				{"Show Peers"}
-			</button>*/}
-
 			<Accordion>
 				<AccordionSummary
 					expandIcon={<ExpandMoreIcon />}
@@ -135,7 +198,7 @@ export const NetworkDownloaderPage = () => {
 					id="panel1-header"
 					sx={{
 						fontWeight: "bold",
-						width: "100%" // maxWidth of the Box
+						width: "100%"
 					}}
 				>
 					Downloader flags
@@ -144,37 +207,6 @@ export const NetworkDownloaderPage = () => {
 					<FlagsDetailsTable flags={flags} />
 				</AccordionDetails>
 			</Accordion>
-			{/*<Accordion>
-				<AccordionSummary
-					expandIcon={<ExpandMoreIcon />}
-					aria-controls="panel1-content"
-					id="panel1-header"
-					sx={{ fontWeight: "bold" }}
-				>
-					Peers
-				</AccordionSummary>
-				<AccordionDetails>
-					<TorrentPeersTable
-						peers={peers}
-						peerSelected={false}
-						onPeerClicked={(peer) => {}}
-					/>
-				</AccordionDetails>
-			</Accordion>*/}
-			{showDetails && (
-				<SnapshotDowndloadDetailsPopup
-					onClose={() => {
-						setShowDetails(false);
-					}}
-				/>
-			)}
-			{/*showPeerDetail && (
-				<TorrentPeersDetailsPopup
-					onClose={() => {
-						setShowPeerDetails(false);
-					}}
-				/>
-			)*/}
 		</Box>
 	);
 };

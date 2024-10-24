@@ -77,6 +77,14 @@ export const DownloaderOverviewTable = ({ onColumnClick }: DownloaderOverviewTab
 	};
 
 	const renderHowerableCell = (column: OverviewTableColumn, value: string) => {
+		return renderCell(column, value, true);
+	};
+
+	const renderNonHoverableCell = (column: OverviewTableColumn, value: string) => {
+		return renderCell(column, value, false);
+	};
+
+	const renderCell = (column: OverviewTableColumn, value: string, hoverable: boolean) => {
 		return (
 			<TableCell
 				key={column}
@@ -84,9 +92,9 @@ export const DownloaderOverviewTable = ({ onColumnClick }: DownloaderOverviewTab
 				onMouseLeave={handleMouseLeave}
 				onClick={() => handleClick(column)}
 				sx={{
-					cursor: "pointer",
-					backgroundColor: hoveredCell === column ? "#f0f0f0" : "inherit",
-					transition: "background-color 0.3s"
+					cursor: hoverable ? "pointer" : "default",
+					backgroundColor: hoverable ? (hoveredCell === column ? "#f0f0f0" : "inherit") : "inherit",
+					transition: hoverable ? "background-color 0.3s" : "inherit"
 				}}
 			>
 				{value}
@@ -117,16 +125,16 @@ export const DownloaderOverviewTable = ({ onColumnClick }: DownloaderOverviewTab
 				</TableHead>
 				<TableBody>
 					<TableRow>
-						{renderHowerableCell(OverviewTableColumn.Name, "Snapshots")}
-						{renderHowerableCell(OverviewTableColumn.Status, snapshotStatus())}
-						{renderHowerableCell(OverviewTableColumn.Progress, calculatePercentDownloaded(syncStatus.downloaded, syncStatus.total))}
+						{renderNonHoverableCell(OverviewTableColumn.Name, "Snapshots")}
+						{renderNonHoverableCell(OverviewTableColumn.Status, snapshotStatus())}
+						{renderNonHoverableCell(OverviewTableColumn.Progress, calculatePercentDownloaded(syncStatus.downloaded, syncStatus.total))}
 						{renderHowerableCell(OverviewTableColumn.Downloaded, multipleBytes(syncStatus.downloaded))}
 						{renderHowerableCell(OverviewTableColumn.Total, multipleBytes(syncStatus.total))}
-						{renderHowerableCell(
+						{renderNonHoverableCell(
 							OverviewTableColumn.TimeLeft,
 							clculateDownloadTimeLeft(syncStatus.downloaded, syncStatus.total, syncStatus.downloadRate)
 						)}
-						{renderHowerableCell(OverviewTableColumn.TotalTime, totalTime())}
+						{renderNonHoverableCell(OverviewTableColumn.TotalTime, totalTime())}
 						{renderHowerableCell(OverviewTableColumn.DownloadRate, bytesToSpeedPerSecond(syncStatus.downloadRate))}
 						{renderHowerableCell(OverviewTableColumn.UploadRate, bytesToSpeedPerSecond(syncStatus.uploadRate))}
 						{renderHowerableCell(OverviewTableColumn.Peers, syncStatus?.peers?.toString() || "0")}
