@@ -4,7 +4,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import SortIcon from "@mui/icons-material/Sort";
 import { SnapshotSegmentDownloadStatus } from "../../store/syncStagesSlice";
-import { FormControlLabel, Switch } from "@mui/material";
+import { Box, Modal } from "@mui/material";
+import { SegmentDetailsView } from "./SegmentDetailsView";
 
 enum SortColumn {
 	Name = "Name",
@@ -177,12 +178,28 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 		setVisibleSegments(filtered);
 	};
 
+	const [dlStatus, setDlStatus] = useState<SnapshotSegmentDownloadStatus | null>(null);
+	const handleOpen = (status: SnapshotSegmentDownloadStatus) => setDlStatus(status);
+	const handleClose = () => setDlStatus(null);
+
+	const style = {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		maxWidth: "80%",
+		bgcolor: "background.paper",
+		border: "2px solid #000",
+		boxShadow: 24,
+		p: 4
+	};
+
 	return (
 		<div
 			className="w-full h-[95%]"
 			style={{ overflowY: !segmentSelected ? "scroll" : "hidden" }}
 		>
-			<div className="flex flex-row justify-around">
+			{/*<div className="flex flex-row justify-around">
 				<FormControlLabel
 					control={
 						<Switch
@@ -201,8 +218,8 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 					}
 					label="Hide files with no progress"
 				/>
-			</div>
-			<table className="table-fixed text-left">
+			</div>*/}
+			<table className="table-fixed text-left w-full">
 				<thead>
 					<tr className="border-b">
 						<th
@@ -326,7 +343,8 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 								key={segment.status.name}
 								className="border-b hover:bg-gray-100 cursor-pointer"
 								onClick={() => {
-									onSegmentClicked(segment.status);
+									handleOpen(segment.status);
+									//onSegmentClicked(segment.status);
 								}}
 							>
 								<td className="px-4 py-2">{segment.status.name}</td>
@@ -342,6 +360,16 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 					})}
 				</tbody>
 			</table>
+			<Modal
+				open={dlStatus !== null}
+				onClose={handleClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<SegmentDetailsView segment={dlStatus} />
+				</Box>
+			</Modal>
 		</div>
 	);
 };

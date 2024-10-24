@@ -38,7 +38,6 @@ export const connectionSlice = createSlice({
 		},
 		setBackendAddress: (state, action: PayloadAction<string>) => {
 			state.backendAddress = action.payload;
-			console.log("Backend address set to: " + action.payload);
 		},
 		resetConectionState: () => initialState
 	}

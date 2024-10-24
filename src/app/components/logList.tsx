@@ -1,4 +1,3 @@
-import React from "react";
 import { LogFile } from "../store/appSlice";
 import CheckIcon from "@mui/icons-material/Check";
 import DownloadIcon from "@mui/icons-material/Download";

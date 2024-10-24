@@ -8,7 +8,7 @@ export interface TorrentPeersHistoryProps {
 	peer: SegmentPeerDiagData;
 }
 
-interface LineChartData {
+export interface LineChartData {
 	xAxis: { data: number[] }[];
 	series: { data: number[] }[];
 }
@@ -39,8 +39,8 @@ export const TorrentPeersHistory = ({ peer }: TorrentPeersHistoryProps) => {
 
 		syncStatus.diagramData.forEach((d) => {
 			timeTable.push(d.time);
-			allDlRates.push(bytesToMB(d.dLspeed));
-			allUpRates.push(bytesToMB(d.uPspeed));
+			allDlRates.push(bytesToMB(d.downloadRate));
+			allUpRates.push(bytesToMB(d.uploadRate));
 			allPieces.push(d.pieces);
 		});
 

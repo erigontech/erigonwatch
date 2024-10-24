@@ -30,7 +30,7 @@ export interface SnapshotDownloadStatus {
 	segments: SnapshotSegmentDownloadStatus[];
 	indexed: number;
 	torrentMetadataReady: number;
-	diagramData: PeerDiagramData[];
+	diagramData: ShapshotDiagramData[];
 }
 
 export interface SnapshotSegmentDownloadStatus {
@@ -138,6 +138,18 @@ export interface PeerDiagramData {
 	uPspeed: number;
 }
 
+export interface ShapshotDiagramData {
+	time: number;
+	downloaded: number;
+	total: number;
+	downloadRate: number;
+	uploadRate: number;
+	connections: number;
+	alloc: number;
+	sys: number;
+	pieces: number;
+}
+
 export interface SyncStagesState {
 	snapshotFilesList: NodeSnapshotFileList[];
 	snapshotDownloadStatus: NodeSnapshotDownloadStatus[];
@@ -242,23 +254,25 @@ export const syncStagesSlice = createSlice({
 				state.peersDiagramData.push({ nodeId: action.payload.nodeId, data: arr });
 			}
 
+			let diagramData = {
+				time: state.diagramTime,
+				downloaded: action.payload.downloadStatus.downloaded,
+				total: action.payload.downloadStatus.total,
+				downloadRate: action.payload.downloadStatus.downloadRate,
+				uploadRate: action.payload.downloadStatus.uploadRate,
+				connections: action.payload.downloadStatus.connections,
+				alloc: action.payload.downloadStatus.alloc,
+				sys: action.payload.downloadStatus.sys,
+				pieces: totalPieces
+			};
+
 			if (nodeIdx !== -1) {
 				let prevStatus = state.snapshotDownloadStatus[nodeIdx].downloadStatus.diagramData;
-				prevStatus.push({
-					time: state.diagramTime,
-					pieces: totalPieces,
-					dLspeed: action.payload.downloadStatus.downloadRate,
-					uPspeed: action.payload.downloadStatus.uploadRate
-				});
+				prevStatus.push(diagramData);
 				action.payload.downloadStatus.diagramData = prevStatus;
 				state.snapshotDownloadStatus[nodeIdx].downloadStatus = action.payload.downloadStatus;
 			} else {
-				action.payload.downloadStatus.diagramData = Array<PeerDiagramData>({
-					time: state.diagramTime,
-					pieces: totalPieces,
-					dLspeed: action.payload.downloadStatus.downloadRate,
-					uPspeed: action.payload.downloadStatus.uploadRate
-				});
+				action.payload.downloadStatus.diagramData = Array<ShapshotDiagramData>(diagramData);
 				state.snapshotDownloadStatus.push(action.payload);
 			}
 
