@@ -101,8 +101,18 @@ export const PeersDetailsTable = ({ peers, onPeerClicked }: PeersDetailsTablePro
 		}
 	};
 
+	const convertPid = (pid: string): string => {
+		let result = pid;
+		let charsArray = pid.split("");
+		if (charsArray.length > 10) {
+			result = pid.slice(0, 4) + "..." + pid.slice(-4);
+		}
+
+		return result;
+	};
+
 	return (
-		<div className="flex flex-col shadow-lg rounded-md p-2 bg-white min-h-[40px] max-h-[83vh] w-full overflow-auto">
+		<div className="min-h-[40px] max-h-[83vh] w-full overflow-auto">
 			<table className="table-auto text-left w-full">
 				<thead>
 					<tr className="border-b">
@@ -230,7 +240,7 @@ export const PeersDetailsTable = ({ peers, onPeerClicked }: PeersDetailsTablePro
 									onPeerClicked(peer.id);
 								}}
 							>
-								<td className="px-4 py-2 overflow-hidden text-ellipsis">{peer.id}</td>
+								<td className="px-4 py-2 overflow-hidden text-ellipsis">{convertPid(peer.id)}</td>
 								<td className="px-4 py-2 overflow-hidden text-ellipsis">{peer.name}</td>
 								<td className="px-4 py-2 overflow-hidden text-ellipsis">{getPeerType(peer)}</td>
 								<td className="px-4 py-2 overflow-hidden text-ellipsis">{peer.active ? "active" : ""}</td>

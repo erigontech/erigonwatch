@@ -14,6 +14,18 @@ export interface NodePeers {
 	peers: Peer[];
 }
 
+export interface NetworkDiagramData {
+	time: number;
+	active: number;
+	static: number;
+	total: number;
+	inRate: number;
+	networkIn: number;
+	outRate: number;
+	networkOut: number;
+	totalNetwork: number;
+}
+
 export interface Peer {
 	enr: string;
 	enode: string;
@@ -25,6 +37,7 @@ export interface Peer {
 	active: boolean;
 	type: string;
 	lastUpdateTime: number;
+	diagramData: NetworkDiagramData[];
 }
 
 export interface Network {
@@ -60,79 +73,84 @@ export interface PeersStatistics {
 export interface NetworkState {
 	peers: NodePeers[];
 	bootnodes: NodeBootnode[];
+	diagramData: NetworkDiagramData[];
+	diagramTime: number;
+	testPeersMsgIdx: number;
 }
 
 const initialState: NetworkState = {
 	peers: [],
-	bootnodes: []
+	bootnodes: [],
+	diagramTime: 0,
+	diagramData: [],
+	testPeersMsgIdx: 0
 };
 
 export const networkSlice = createSlice({
 	name: "network",
 	initialState,
 	reducers: {
-		updatePeersState: (state, action: PayloadAction<{ activeNodeId: string; countInterval: number }>) => {
-			const nodeIdx = state.peers.findIndex((peer) => peer.nodeId === action.payload.activeNodeId);
-			if (nodeIdx !== -1) {
-				state.peers[nodeIdx].peers.forEach((peer) => {
-					if (peer.lastUpdateTime < Date.now() - 30 * Time.second) {
-						peer.active = false;
-						peer.network.inRate = 0;
-						peer.network.outRate = 0;
-						peer.network.sCountedBytesIn = peer.network.bytesIn;
-						peer.network.sCountedBytesOut = peer.network.bytesOut;
-					} else {
-						let bytesInTransferedInLast30Seconds = peer.network.bytesIn - peer.network.sCountedBytesIn;
-						let bytesOutTransferedInLast30Seconds = peer.network.bytesOut - peer.network.sCountedBytesOut;
-
-						let inRate = 0;
-						if (bytesInTransferedInLast30Seconds > 0) {
-							inRate = bytesInTransferedInLast30Seconds / action.payload.countInterval;
-						}
-
-						let outRate = 0;
-						if (bytesOutTransferedInLast30Seconds > 0) {
-							outRate = bytesOutTransferedInLast30Seconds / action.payload.countInterval;
-						}
-
-						let newCalcBytesIn = peer.network.bytesIn;
-						let newCalcBytesOut = peer.network.bytesOut;
-
-						peer.network.inRate = inRate * 8;
-						peer.network.outRate = outRate * 8;
-						peer.network.sCountedBytesIn = newCalcBytesIn;
-						peer.network.sCountedBytesOut = newCalcBytesOut;
-					}
-				});
-			}
-		},
 		addOrUpdatePeer: (state, action: PayloadAction<{ peer: Peer; nodeId: string }>) => {
-			const activeNodeId = action.payload.nodeId;
-			let peerToAdd = action.payload.peer;
+			const { nodeId: activeNodeId, peer: peerToAdd } = action.payload;
 			peerToAdd.lastUpdateTime = Date.now();
 
-			let nodeIdx = state.peers.findIndex((peer) => peer.nodeId === activeNodeId);
-			if (nodeIdx !== -1) {
-				let peerIdx = state.peers[nodeIdx].peers.findIndex((peer) => peer.id === peerToAdd.id);
-				if (peerIdx !== -1) {
-					peerToAdd.network.inRate = state.peers[nodeIdx].peers[peerIdx].network.inRate;
-					peerToAdd.network.outRate = state.peers[nodeIdx].peers[peerIdx].network.outRate;
-					peerToAdd.network.sCountedBytesIn = state.peers[nodeIdx].peers[peerIdx].network.sCountedBytesIn;
-					peerToAdd.network.sCountedBytesOut = state.peers[nodeIdx].peers[peerIdx].network.sCountedBytesOut;
-					peerToAdd.network.bytesIn += state.peers[nodeIdx].peers[peerIdx].network.bytesIn;
-					peerToAdd.network.bytesOut += state.peers[nodeIdx].peers[peerIdx].network.bytesOut;
+			// Helper function to create diagram data
+			const createDiagramData = (peer: Peer): NetworkDiagramData => ({
+				time: state.diagramTime,
+				active: peer.active ? 1 : 0,
+				static: peer.network.static ? 1 : 0,
+				total: 1,
+				inRate: peer.network.inRate || 0,
+				networkIn: peer.network.bytesIn,
+				outRate: peer.network.outRate || 0,
+				networkOut: peer.network.bytesOut,
+				totalNetwork: peer.network.bytesIn + peer.network.bytesOut
+			});
 
+			// Find the index of the node in the peers list
+			const nodeIdx = state.peers.findIndex((node) => node.nodeId === activeNodeId);
+
+			// Update rates and byte counts based on previous peer state
+			const updateNetworkRates = (existingPeer: Peer, newPeer: Peer) => {
+				const timeDiffSeconds = (newPeer.lastUpdateTime - existingPeer.lastUpdateTime) / Time.second;
+				newPeer.network.inRate = newPeer.network.bytesIn / timeDiffSeconds;
+				newPeer.network.outRate = newPeer.network.bytesOut / timeDiffSeconds;
+				newPeer.network.sCountedBytesIn = existingPeer.network.sCountedBytesIn;
+				newPeer.network.sCountedBytesOut = existingPeer.network.sCountedBytesOut;
+				newPeer.network.bytesIn += existingPeer.network.bytesIn;
+				newPeer.network.bytesOut += existingPeer.network.bytesOut;
+			};
+
+			if (nodeIdx !== -1) {
+				const peerIdx = state.peers[nodeIdx].peers.findIndex((peer) => peer.id === peerToAdd.id);
+
+				if (peerIdx !== -1) {
+					// Existing peer, update network rates and diagram data
+					updateNetworkRates(state.peers[nodeIdx].peers[peerIdx], peerToAdd);
+
+					const diagramData = createDiagramData(peerToAdd);
+					peerToAdd.diagramData = peerToAdd.diagramData.concat(state.peers[nodeIdx].peers[peerIdx].diagramData, diagramData);
+
+					// Merge totals for capBytesIn, capBytesOut, typeBytesIn, typeBytesOut
 					mergeObjValue(state.peers[nodeIdx].peers[peerIdx].network, peerToAdd.network, "capBytesIn");
 					mergeObjValue(state.peers[nodeIdx].peers[peerIdx].network, peerToAdd.network, "capBytesOut");
 					mergeObjValue(state.peers[nodeIdx].peers[peerIdx].network, peerToAdd.network, "typeBytesIn");
 					mergeObjValue(state.peers[nodeIdx].peers[peerIdx].network, peerToAdd.network, "typeBytesOut");
 
+					// Replace the old peer with the updated one
 					state.peers[nodeIdx].peers[peerIdx] = peerToAdd;
 				} else {
+					// New peer for existing node, add diagram data and push to peers list
+					peerToAdd.diagramData.push(createDiagramData(peerToAdd));
 					state.peers[nodeIdx].peers.push(peerToAdd);
 				}
 			} else {
-				state.peers.push({ nodeId: activeNodeId, peers: [peerToAdd] });
+				// New node entirely, add it to the peers list with diagram data
+				peerToAdd.diagramData.push(createDiagramData(peerToAdd));
+				state.peers.push({
+					nodeId: activeNodeId,
+					peers: [peerToAdd]
+				});
 			}
 		},
 		addOrUpdateBootnodes: (state, action: PayloadAction<NodeBootnode>) => {
@@ -142,6 +160,12 @@ export const networkSlice = createSlice({
 			} else {
 				state.bootnodes.push(action.payload);
 			}
+		},
+		increaseDiagramTime: (state) => {
+			state.diagramTime++;
+		},
+		setTestPeersMsgIdx: (state, action: PayloadAction<number>) => {
+			state.testPeersMsgIdx = action.payload;
 		},
 		resetNetworkStateToMockState: () => initialState
 	}
@@ -164,49 +188,32 @@ const mergeObjValue = (existingObject: any, newObject: any, valueKey: string): v
 	}
 };
 
-export const { resetNetworkStateToMockState, addOrUpdatePeer, addOrUpdateBootnodes, updatePeersState } = networkSlice.actions;
+export const { resetNetworkStateToMockState, addOrUpdatePeer, addOrUpdateBootnodes, increaseDiagramTime, setTestPeersMsgIdx } = networkSlice.actions;
 
 export const selectPeers = (state: RootState): NodePeers[] => state.network.peers;
 export const selectBootnodes = (state: RootState): NodeBootnode[] => state.network.bootnodes;
 
 export const selectPeersForActiveNode = createSelector([selectPeers, selectActiveNodeId], (peers, activeNodeId): Peer[] => {
-	let result: Peer[] = [];
-	peers.forEach((peer) => {
-		if (peer.nodeId === activeNodeId) {
-			result = peer.peers;
-		}
-	});
-	return result;
+	const nodePeers = peers.find((p) => p.nodeId === activeNodeId);
+	return nodePeers ? nodePeers.peers : ([] as Peer[]);
 });
 
 export const makeSelectItemById = () =>
 	createSelector([selectPeersForActiveNode, (_, peerId: string) => peerId], (peers, peerId) => {
-		let result: Peer = {} as Peer;
-		peers.forEach((p) => {
-			if (p.id === peerId) {
-				result = p;
-			}
-		});
-		return result;
+		return peers.find((p) => p.id === peerId) || ({} as Peer);
 	});
 
-export const selectSentryPeersForNode = createSelector([selectPeersForActiveNode, selectActiveNodeId], (peers, activeNodeId): Peer[] => {
-	return selectPeersByType(activeNodeId, "Sentry", peers);
+export const selectSentryPeersForNode = createSelector([selectPeersForActiveNode], (peers): Peer[] => {
+	return selectPeersByType("Sentry", peers);
 });
 
-export const selectSentinelPeersForNode = createSelector([selectPeersForActiveNode, selectActiveNodeId], (peers, activeNodeId): Peer[] => {
-	return selectPeersByType(activeNodeId, "Sentinel", peers);
+export const selectSentinelPeersForNode = createSelector([selectPeersForActiveNode], (peers): Peer[] => {
+	return selectPeersByType("Sentinel", peers);
 });
 
-const selectPeersByType = (activeNodeId: string, type: string, peers: Peer[]): Peer[] => {
-	let result: Peer[] = [];
-	peers.forEach((p) => {
-		if (p.type.toLowerCase() === type.toLowerCase()) {
-			result.push(p);
-		}
-	});
-
-	return result;
+const selectPeersByType = (type: string, peers: Peer[]): Peer[] => {
+	const typeLowerCase = type.toLowerCase();
+	return peers.filter((p) => p.type.toLowerCase() === typeLowerCase);
 };
 
 export const selectSentryActivePeersForNode = createSelector([selectSentryPeersForNode], (peers): Peer[] => {
@@ -218,13 +225,7 @@ export const selectSentinelActivePeersForNode = createSelector([selectSentinelPe
 });
 
 const selectActivePeers = (peers: Peer[]): Peer[] => {
-	let result: Peer[] = [];
-	peers.forEach((peer) => {
-		if (peer.active) {
-			result.push(peer);
-		}
-	});
-	return result;
+	return peers.filter((peer) => peer.active);
 };
 
 export const selectSentryStaticPeersForNode = createSelector([selectSentryPeersForNode], (peers): Peer[] => {
@@ -236,13 +237,7 @@ export const selectSentinelStaticPeersForNode = createSelector([selectSentinelPe
 });
 
 const selectStaticPeers = (peers: Peer[]): Peer[] => {
-	let result: Peer[] = [];
-	peers.forEach((peer) => {
-		if (peer.network.static) {
-			result.push(peer);
-		}
-	});
-	return result;
+	return peers.filter((peer) => peer.network.static);
 };
 
 export const selectSentryPeersStatistics = createSelector([selectSentryPeersForNode], (peers): PeersStatistics => {
@@ -254,33 +249,72 @@ export const selectSentinelPeersStatistics = createSelector([selectSentinelPeers
 });
 
 const selectPeersStatistics = (peers: Peer[]): PeersStatistics => {
-	let result: PeersStatistics = {
-		activePeers: 0,
-		totalPeers: peers.length,
-		staticPeers: 0,
-		totalErrors: 0,
-		totalInBytes: 0,
-		totalOutBytes: 0,
-		totalInRate: 0,
-		totalOutRate: 0
-	};
+	return peers.reduce(
+		(acc, peer) => {
+			acc.totalInBytes += peer.network.bytesIn;
+			acc.totalOutBytes += peer.network.bytesOut;
+			acc.totalInRate += peer.network.inRate;
+			acc.totalOutRate += peer.network.outRate;
 
-	peers.forEach((peer) => {
-		result.totalInBytes += peer.network.bytesIn;
-		result.totalOutBytes += peer.network.bytesOut;
-		result.totalInRate += peer.network.inRate;
-		result.totalOutRate += peer.network.outRate;
+			if (peer.active) acc.activePeers++;
+			if (peer.network.static) acc.staticPeers++;
 
-		if (peer.active) {
-			result.activePeers++;
-		}
-
-		if (peer.network.static) {
-			result.staticPeers++;
-		}
-	});
-
-	return result;
+			return acc;
+		},
+		// Initial accumulator value
+		{
+			activePeers: 0,
+			totalPeers: peers.length,
+			staticPeers: 0,
+			totalErrors: 0, // Will be calculated later
+			totalInBytes: 0,
+			totalOutBytes: 0,
+			totalInRate: 0,
+			totalOutRate: 0
+		} as PeersStatistics
+	);
 };
+
+export const selectDiagramTime = (state: RootState): number => state.network.diagramTime;
+
+export const selectNetworkDiagramDataForNode = createSelector(
+	[selectPeersForActiveNode, selectDiagramTime],
+	(peers, diagramTime): NetworkDiagramData[] => {
+		return Array.from({ length: diagramTime }, (_, timeIndex) => {
+			return peers.reduce(
+				(acc, peer) => {
+					// Filter diagram data entries that match the current time index
+					const matchingData = peer.diagramData.filter((data) => data.time === timeIndex);
+
+					// Aggregate values for the current time index
+					matchingData.forEach((data) => {
+						acc.active += data.active;
+						acc.static += data.static;
+						acc.total += data.total;
+						acc.inRate += data.inRate;
+						acc.networkIn += data.networkIn;
+						acc.outRate += data.outRate;
+						acc.networkOut += data.networkOut;
+						acc.totalNetwork += data.totalNetwork;
+					});
+
+					return acc;
+				},
+				// Initial accumulator value for each time index
+				{
+					time: timeIndex,
+					active: 0,
+					static: 0,
+					total: 0,
+					inRate: 0,
+					networkIn: 0,
+					outRate: 0,
+					networkOut: 0,
+					totalNetwork: 0
+				} as NetworkDiagramData
+			);
+		});
+	}
+);
 
 export default networkSlice.reducer;

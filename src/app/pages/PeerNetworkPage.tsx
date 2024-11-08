@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
 	Peer,
 	PeersStatistics,
+	selectNetworkDiagramDataForNode,
 	selectSentinelActivePeersForNode,
 	selectSentinelPeersForNode,
 	selectSentinelPeersStatistics,
@@ -12,9 +13,17 @@ import {
 	selectSentryPeersStatistics,
 	selectSentryStaticPeersForNode
 } from "../store/networkSlice";
-import { PeersStatisticsTable } from "../components/PeersStatistics/PeersStatisticsTable";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Modal } from "@mui/material";
+import { PeersStatisticsTable, TableColumn } from "../components/PeersStatistics/PeersStatisticsTable";
 import { PeersDetailsTable } from "../components/PeersStatistics/PeerDetailsTable";
-import { PeerDetailsPopup } from "../components/PeersStatistics/PeerDetailsPopup";
+import { LineChart } from "@mui/x-charts";
+import { LineChartData } from "../components/SyncStages/TorrentPeerHistory";
+import { PeerDetails } from "../components/PeersStatistics/PeerDetails";
+
+export interface ChartData {
+	x: number;
+	y: number;
+}
 
 export enum PeersStatisticsType {
 	Active = "active",
@@ -55,6 +64,10 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 		staticPeers = useSelector(selectSentinelStaticPeersForNode);
 	}
 
+	const diagramData = useSelector(selectNetworkDiagramDataForNode);
+
+	const [showDetails, setShowDetails] = useState("");
+
 	const [selectedPeer, setSelectedPeer] = useState<string | null>(null);
 
 	const [selectedStatistic, setSelectedStatistic] = useState<PeersStatisticsType>(PeersStatisticsType.None);
@@ -72,53 +85,196 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 		);
 	};
 
-	return (
-		<div className="flex items-center flex-col">
-			<div className="flex justify-center items-center flex-row mb-5">
-				<p className="mb-2 font-bold text-2xl">{type === "sentry" ? "eth/6x P2P" : "Beacon chain P2P"}</p>
-				<div className="w-5" />
-				<PeersStatisticsTable
-					statistics={statistics}
-					selectedStatistics={selectedStatistic}
-					onRowClicked={(statistic: PeersStatisticsType) => {
-						setSelectedStatistic(statistic);
+	const renderContent = () => {
+		if (
+			showDetails === TableColumn[TableColumn.Active] ||
+			showDetails === TableColumn[TableColumn.Static] ||
+			showDetails === TableColumn[TableColumn.TotalSeen]
+		) {
+			return (
+				<Box
+					sx={{
+						display: "flex", // Enables Flexbox
+						flexDirection: "column" // Stacks items vertically
 					}}
-				/>
-			</div>
-			{selectedStatistic === PeersStatisticsType.Active && (
-				<PeersDetailsTable
-					peers={activePeers}
-					onPeerClicked={(peer: string) => {
-						setSelectedPeer(peer);
-					}}
-				/>
-			)}
-			{selectedStatistic === PeersStatisticsType.Static && (
-				<PeersDetailsTable
-					peers={staticPeers}
-					onPeerClicked={(peer: string) => {
-						setSelectedPeer(peer);
-					}}
-				/>
-			)}
-			{selectedStatistic === PeersStatisticsType.Total && (
-				<PeersDetailsTable
-					peers={peers}
-					onPeerClicked={(peer: string) => {
-						setSelectedPeer(peer);
-					}}
-				/>
-			)}
-			{selectedStatistic === PeersStatisticsType.Errors && renderPeersErrorsTable()}
+				>
+					<p>{showDetails}</p>
+					<PeersDetailsTable
+						peers={
+							showDetails === TableColumn[TableColumn.Active] ? activePeers : showDetails === TableColumn[TableColumn.Static] ? staticPeers : peers
+						}
+						onPeerClicked={(peer: string) => {
+							setSelectedPeer(peer);
+						}}
+					/>
+				</Box>
+			);
+		} else if (showDetails === TableColumn[TableColumn.InRate]) {
+			let data = {
+				xAxis: [{ data: diagramData.map((d) => d.time) }],
+				series: [{ data: diagramData.map((d) => d.inRate) }]
+			};
 
-			{selectedPeer && (
-				<PeerDetailsPopup
-					peerId={selectedPeer}
-					onClose={() => {
-						setSelectedPeer(null);
-					}}
+			return renderChart(data, showDetails);
+		} else if (showDetails === TableColumn[TableColumn.NetworkIn]) {
+			let data = {
+				xAxis: [{ data: diagramData.map((d) => d.time) }],
+				series: [{ data: diagramData.map((d) => d.networkIn) }]
+			};
+
+			return renderChart(data, showDetails);
+		} else if (showDetails === TableColumn[TableColumn.OutRate]) {
+			let data = {
+				xAxis: [{ data: diagramData.map((d) => d.time) }],
+				series: [{ data: diagramData.map((d) => d.outRate) }]
+			};
+
+			return renderChart(data, showDetails);
+		} else if (showDetails === TableColumn[TableColumn.NetworkOut]) {
+			let data = {
+				xAxis: [{ data: diagramData.map((d) => d.time) }],
+				series: [{ data: diagramData.map((d) => d.networkOut) }]
+			};
+
+			return renderChart(data, showDetails);
+		} else if (showDetails === TableColumn[TableColumn.TotalNetwork]) {
+			let data: ChartData[] = diagramData.map((d) => ({ x: d.time, y: d.totalNetwork }));
+			/*let data = {
+				xAxis: [{ data: diagramData.map((d) => d.time) }],
+				series: [{ data: diagramData.map((d) => d.totalNetwork) }]
+			};*/
+
+			return urenderChart(data, showDetails);
+		}
+	};
+
+	const formatSpeed = (bytes: number) => {
+		return formatNetwork(bytes) + "/s";
+	};
+
+	const formatNetwork = (bytes: number) => {
+		if (bytes >= 1e6) {
+			return (bytes / 1e6).toFixed(2) + " MB";
+		} else if (bytes >= 1e3) {
+			return (bytes / 1e3).toFixed(2) + " KB";
+		} else {
+			return bytes + " B";
+		}
+	};
+
+	const urenderChart = (data: ChartData[], title: string) => {
+		return (
+			<Box
+				sx={{
+					maxHeight: "80vh",
+					overflow: "auto" // Enables vertical scrolling
+				}}
+			>
+				<p>{title}</p>
+				<LineChart
+					series={[
+						{
+							data: data.map((d) => d.y),
+							label: "Total Network",
+							valueFormatter: (v) => formatNetwork(v || 0)
+						}
+					]}
+					yAxis={[{ data: data.map((d) => d.y), valueFormatter: (v) => formatNetwork(v || 0) }]}
+					height={250}
+					margin={{ top: 50, right: 50, bottom: 50, left: 70 }}
+					sx={{ width: "100%" }}
 				/>
-			)}
-		</div>
+			</Box>
+		);
+	};
+
+	const renderChart = (data: LineChartData, title: string) => {
+		return (
+			<Box
+				sx={{
+					maxHeight: "80vh",
+					overflow: "auto" // Enables vertical scrolling
+				}}
+			>
+				<p>{title}</p>
+				<LineChart
+					sx={{ width: "100%" }}
+					xAxis={data.xAxis}
+					series={data.series}
+					height={250}
+					margin={{ top: 50, right: 50, bottom: 50, left: 70 }}
+				/>
+			</Box>
+		);
+	};
+
+	const [expanded, setExpanded] = useState<string | false>(false);
+
+	const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+		setExpanded(isExpanded ? panel : false);
+
+		if (!isExpanded) {
+			setSelectedPeer(null);
+		}
+	};
+
+	const style = {
+		position: "absolute",
+		top: "50%",
+		left: "50%",
+		transform: "translate(-50%, -50%)",
+		maxWidth: "80%",
+		bgcolor: "background.paper",
+		border: "2px solid #000",
+		boxShadow: 24,
+		p: 4
+	};
+
+	return (
+		<Box
+			sx={{
+				display: "flex", // Enables Flexbox
+				flexDirection: "column", // Stacks items vertically
+				alignItems: "center", // Centers items vertically
+				height: "100vh", // Full viewport height to center content vertically
+				width: "100%", // maxWidth of the Box
+				border: "1px solid black", // Optional: just to show the boundaries of the Box
+				overflow: "auto", // Enables vertical scrolling
+				paddingBottom: "50px" // Centers the Box horizontally
+			}}
+		>
+			<Accordion
+				sx={{ padding: "0px", width: "100%", marginBottom: "10px" }}
+				expanded={expanded === "panel2"}
+				onChange={handleChange("panel2")}
+			>
+				<AccordionSummary>
+					<PeersStatisticsTable
+						statistics={statistics}
+						onColumnClick={(column: TableColumn) => {
+							if (showDetails === "") {
+								setShowDetails(TableColumn[column]);
+							} else {
+								setShowDetails("");
+							}
+						}}
+					/>
+				</AccordionSummary>
+				<AccordionDetails>{renderContent()}</AccordionDetails>
+			</Accordion>
+
+			<Modal
+				open={selectedPeer !== null}
+				onClose={() => {
+					setSelectedPeer(null);
+				}}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<PeerDetails peerId={selectedPeer || ""} />
+				</Box>
+			</Modal>
+		</Box>
 	);
 };

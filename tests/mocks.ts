@@ -1205,6 +1205,41 @@ export const getPeersJsonMock = [
 			}
 		},
 		protocols: null
+	},
+	{
+		enode: "",
+		id: "8c3148ab1c5ea102b9f044345898d8b0b08b1be17feb63196fd440ca14ccc1b5",
+		name: "",
+		errorCount: 0,
+		lastSeenError: "",
+		type: "sentry",
+		caps: [],
+		network: {
+			localAddress: "",
+			remoteAddress: "",
+			inbound: false,
+			trusted: false,
+			static: false,
+			bytesIn: 33222,
+			bytesOut: 35002,
+			capBytesIn: {
+				"eth/68": 33222
+			},
+			capBytesOut: {
+				"eth/68": 35002
+			},
+			typeBytesIn: {
+				GET_POOLED_TRANSACTIONS_66: 15903,
+				NEW_POOLED_TRANSACTION_HASHES_68: 4075,
+				POOLED_TRANSACTIONS_66: 30675,
+				TRANSACTIONS_66: 814
+			},
+			typeBytesOut: {
+				GET_POOLED_TRANSACTIONS_66: 2111,
+				POOLED_TRANSACTIONS_66: 208973
+			}
+		},
+		protocols: null
 	}
 ];
 /*[

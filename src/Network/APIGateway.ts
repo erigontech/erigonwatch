@@ -45,7 +45,7 @@ import { syncStagesFromJson } from "../helpers/syncStagesFromJson";
 import { store } from "../app/store/store";
 import { NodeInfo } from "../entities";
 import { peerFromJson } from "../helpers/peerFromJson";
-import { Peer, addOrUpdatePeer, addOrUpdateBootnodes } from "../app/store/networkSlice";
+import { Peer, addOrUpdatePeer, addOrUpdateBootnodes, increaseDiagramTime } from "../app/store/networkSlice";
 import { snapshotDownloadStatusFromJson, snapshotIndexStatusFromJson } from "../helpers/snapshoSyncFromJson";
 import {
 	SnapshotDownloadStatus,
@@ -281,6 +281,7 @@ export const getPeers = () => {
 				let peer: Peer = peerFromJson(val, bootnodes);
 				store.dispatch(addOrUpdatePeer({ peer: peer, nodeId: getNodeId() }));
 			});
+			store.dispatch(increaseDiagramTime());
 		})
 		.catch((error) => {
 			console.log("Error fetching peers: ", error);
