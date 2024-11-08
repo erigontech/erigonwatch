@@ -13,7 +13,6 @@ import {
 	getSyncStagesResponseJsonMock,
 	getVersionJsonMock,
 	getSnapshotFilesListMock,
-	getPeersJsonMock,
 	getHeadersMock,
 	getNetworkSpeedMock,
 	nodeInfoMock,
@@ -21,8 +20,9 @@ import {
 } from "./../../tests/mocks";
 
 import { cpuUsageMock, hardwareInfoMock, memoryInfoMock, processesInfoMock } from "../../tests/sysinfo_mock";
-import { getSyncData } from "./mockData/SnapshotDownloadMock";
+import { getPeersData, getSyncData } from "./mockData/SnapshotDownloadMock";
 import { setTestSnpSyncMsgIdx } from "../app/store/syncStagesSlice";
+import { setTestPeersMsgIdx } from "../app/store/networkSlice";
 
 const sessionVarName = "sessions";
 const nodeVarName = "nodes";
@@ -350,8 +350,16 @@ export const fetchReorgs = () => {
 
 export const fetchPeers = () => {
 	if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
-		return new Promise((resolve, reject) => {
+		/*return new Promise((resolve, reject) => {
 			resolve(getPeersJsonMock);
+		});*/
+		return new Promise((resolve, reject) => {
+			let idx = store.getState().network.testPeersMsgIdx;
+			let resp = getPeersData(idx);
+			store.dispatch(setTestPeersMsgIdx(idx + 1));
+			if (resp !== null) {
+				resolve(resp);
+			}
 		});
 	} else {
 		const request = createRequest(peersUrl(), "GET");

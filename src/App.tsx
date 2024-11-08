@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProcessPage } from "./app/pages/ProcessPage";
 import { LogsPage } from "./app/pages/LogsPage";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +36,7 @@ import { StatusBar } from "./app/components/statusBar";
 import { SessionsModal } from "./app/components/SessionsModal";
 import { NodesModal } from "./app/components/nodesModal";
 import { SidebarComponent } from "./app/components/SidebarComponent/SidebarComponent";
-import { resetNetworkStateToMockState, updatePeersState } from "./app/store/networkSlice";
+import { resetNetworkStateToMockState } from "./app/store/networkSlice";
 import { NetworkDownloaderPage } from "./app/pages/NetworkDownloaderPage";
 import { Time } from "./helpers/time";
 import { PeerNetworkPage } from "./app/pages/PeerNetworkPage";
@@ -204,20 +204,25 @@ function Layout() {
 	}, []);
 
 	/*useEffect(() => {
+		//let prefix = "SyncStatistics";
+		let prefix = "Peers stats";
 		fetch(raw)
 			.then((r) => r.text())
 			.then((text) => {
 				let arr = stringToArrayBySeparator(text, "\n");
-				let bbbb = filterStringsByPrefix(arr, "SyncStatistics");
+				let bbbb = filterStringsByPrefix(arr, prefix);
 				let arrdddd: any[] = [];
 				bbbb.forEach((str) => {
 					let str2 = getStringByKeyFromString(str, "stats=");
 					let obj = JSON.parse(str2);
-					let obj2 = JSON.parse(obj);
-					arrdddd.push(obj2);
-					console.log(obj2);
+					//check is object empty
+					if (typeof obj === "string") {
+						let obj2 = JSON.parse(obj);
+						arrdddd.push(obj2);
+						console.log(obj2);
+					}
 				});
-				saveObjectToFile(arrdddd, "syncStats");
+				saveObjectToFile(arrdddd, "peersStats");
 			});
 	}, []);
 
@@ -270,9 +275,14 @@ function Layout() {
 		}
 	}, [conectionType]);
 
+	const isInitialMount = useRef(true);
+
 	useEffect(() => {
 		if (activeNodeId !== "" && activeSessionPin !== "") {
-			queryData();
+			if (isInitialMount.current) {
+				isInitialMount.current = false;
+				queryData();
+			}
 		}
 	}, [activeNodeId]);
 
@@ -287,7 +297,6 @@ function Layout() {
 		getSyncStages();
 		getDBsList();
 		getReorgs();
-		getPeers();
 		setInterval(() => {
 			getPeers();
 		}, 5 * Time.second);
@@ -297,15 +306,11 @@ function Layout() {
 			getSnapshotDownloadStatus();
 		}, 5 * Time.second);
 
-		setInterval(() => {
-			//checkForNoPeersForSnapshotSegment();
-			//getNetworkSpeed();
-			//checkForNetworkSpeedIssue();
-		}, 2 * Time.second);
-
-		setInterval(() => {
-			dispatch(updatePeersState({ activeNodeId: activeNodeId, countInterval: 15 }));
-		}, 15 * Time.second);
+		/*setInterval(() => {
+			checkForNoPeersForSnapshotSegment();
+			getNetworkSpeed();
+			checkForNetworkSpeedIssue();
+		}, 2 * Time.second);*/
 
 		getHeaders();
 	};

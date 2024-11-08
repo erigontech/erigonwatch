@@ -10,7 +10,8 @@ export const peerFromJson = (json: any, bootnodes: string[]): Peer => {
 		network: networkFromJson(json, bootnodes),
 		protocols: json.protocols,
 		type: json.type,
-		lastUpdateTime: 0,
+		lastUpdateTime: new Date().getTime(),
+		diagramData: [],
 		active: true //Set peer active by default as we are receiving only active peers from node, as soon as node don't return this particular peer, it will be set to inactive
 	};
 };

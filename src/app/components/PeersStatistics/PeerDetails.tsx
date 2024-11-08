@@ -1,20 +1,17 @@
-import { BUTTON_BULE } from "../../../helpers/colors";
 import { multipleBps, multipleBytes } from "../../../helpers/converters";
 import { makeSelectItemById } from "../../store/networkSlice";
 import { store } from "../../store/store";
-import { Button } from "../Button/Button";
 
 interface NetworkUsage {
 	key: string;
 	bytesIn: number;
 	bytesOut: number;
 }
-interface PeerDetailsPopupProps {
+interface PeerDetailsProps {
 	peerId: string;
-	onClose: () => void;
 }
 
-export const PeerDetailsPopup = ({ peerId, onClose, ...props }: PeerDetailsPopupProps) => {
+export const PeerDetails = ({ peerId }: PeerDetailsProps) => {
 	const selectItemById = makeSelectItemById();
 	const peer = selectItemById(store.getState(), peerId);
 
@@ -126,38 +123,29 @@ export const PeerDetailsPopup = ({ peerId, onClose, ...props }: PeerDetailsPopup
 		);
 	};
 
+	const convertPid = (pid: string): string => {
+		let result = pid;
+		let charsArray = pid.split("");
+		if (charsArray.length > 10) {
+			result = pid.slice(0, 4) + "..." + pid.slice(-4);
+		}
+
+		return result;
+	};
+
 	return (
-		<>
-			<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto inset-0 z-50 outline-none focus:outline-none absolute bg-black/[.4]">
-				<div className="">
-					{/*content*/}
-					<div className="border-0 rounded-lg shadow-lg relative flex flex-col w-max bg-white outline-none focus:outline-none items-center">
-						{/*header*/}
-						<h3 className="text-3xl font-semibold mt-5">Peer Details</h3>
-						{/*body*/}
-						<div className="flex flex-col relative p-6 flex-auto justify-center items-center max-h-[70vh] overflow-scroll">
-							<p className="font-bold underline">Main info :</p>
-							{renderMainInfo()}
-							<div className="h-5" />
-							<p className="font-bold underline">Network Usage By Capability :</p>
-							{renderCapabilityNetworkUsage()}
-							<div className="h-5" />
-							<p className="font-bold underline">Network Usage By Type :</p>
-							{renderTypeNetworkUsage()}
-						</div>
-						{/*footer*/}
-						<div className="flex items-center justify-end p-6">
-							<Button
-								backgroundColor={BUTTON_BULE}
-								label="Close"
-								onClick={() => onClose()}
-								primary
-							/>
-						</div>
-					</div>
-				</div>
+		<div className="relative flex flex-col w-max bg-white outline-none focus:outline-none items-center">
+			<h3 className="text-3xl font-semibold mt-5">{"Peer: " + convertPid(peer.id)}</h3>
+			<div className="flex flex-col relative p-6 flex-auto justify-center items-center max-h-[70vh] overflow-scroll">
+				<p className="font-bold underline">Main info :</p>
+				{renderMainInfo()}
+				<div className="h-5" />
+				<p className="font-bold underline">Network Usage By Capability :</p>
+				{renderCapabilityNetworkUsage()}
+				<div className="h-5" />
+				<p className="font-bold underline">Network Usage By Type :</p>
+				{renderTypeNetworkUsage()}
 			</div>
-			<div className="opacity-25 inset-0 z-40 bg-black"></div>
-		</>
+		</div>
 	);
 };
