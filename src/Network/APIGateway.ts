@@ -96,7 +96,6 @@ export const getBackendUrl = () => {
 			}
 		})
 		.catch((error) => {
-			store.dispatch(setBackendAddress(window.location.origin));
 			store.dispatch(setNodeConnectionType(NodeConnectionType.Remote));
 		});
 };
