@@ -70,8 +70,6 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 
 	const [selectedPeer, setSelectedPeer] = useState<string | null>(null);
 
-	const [selectedStatistic, setSelectedStatistic] = useState<PeersStatisticsType>(PeersStatisticsType.None);
-
 	const renderPeersErrorsTable = () => {
 		return (
 			<table className="table-fixed rounded-lg shadow-lg bg-white text-left mb-4 w-full h-fit">
@@ -139,17 +137,9 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 			return renderChart(data, showDetails);
 		} else if (showDetails === TableColumn[TableColumn.TotalNetwork]) {
 			let data: ChartData[] = diagramData.map((d) => ({ x: d.time, y: d.totalNetwork }));
-			/*let data = {
-				xAxis: [{ data: diagramData.map((d) => d.time) }],
-				series: [{ data: diagramData.map((d) => d.totalNetwork) }]
-			};*/
 
 			return urenderChart(data, showDetails);
 		}
-	};
-
-	const formatSpeed = (bytes: number) => {
-		return formatNetwork(bytes) + "/s";
 	};
 
 	const formatNetwork = (bytes: number) => {
