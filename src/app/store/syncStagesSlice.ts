@@ -353,8 +353,6 @@ export const selectTorrrentPeersForNode = createSelector(
 		});
 
 		const uniqueArray = [...new Set(result)];
-
-		//const uniqueArray = Array.from(new Set(result));
 		return uniqueArray;
 	}
 );
