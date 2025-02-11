@@ -38,9 +38,4 @@ export const TableHeader = ({ title, filter = false, sort = true, onFilterChange
 			</div>
 		</th>
 	);
-	/*return (
-		<>
-			<th className="px-4 py-2">{title}</th>
-		</>
-	);*/
 };
