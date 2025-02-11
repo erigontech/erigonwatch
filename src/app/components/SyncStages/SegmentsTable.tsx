@@ -43,8 +43,6 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 	}));
 
 	const [visibleSegments, setVisibleSegments] = useState<UISegment[]>(initialVisibleSegments);
-	const [hideCompletedChecked, setHideCompletedChecked] = useState(false);
-	const [hideZeroProgressChecked, setHideZeroProgressChecked] = useState(false);
 
 	const [currentSortState, setCurrentSortState] = useState<SortState>({
 		column: SortColumn.Name,
@@ -139,45 +137,6 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 		}
 	};
 
-	const handleHideCompletedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setHideCompletedChecked(event.target.checked);
-		let filtered = visibleSegments;
-
-		filtered.forEach((seg) => {
-			if (event.target.checked) {
-				if (getDownloadedPercentNumber(seg.status.downloadedBytes, seg.status.totalBytes) === 100) {
-					seg.visible = false;
-				}
-			} else {
-				if (getDownloadedPercentNumber(seg.status.downloadedBytes, seg.status.totalBytes) === 100) {
-					seg.visible = true;
-				}
-			}
-		});
-
-		setVisibleSegments(filtered);
-	};
-
-	const handleHideZeroProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setHideZeroProgressChecked(event.target.checked);
-
-		let filtered = visibleSegments;
-
-		filtered.forEach((seg) => {
-			if (event.target.checked) {
-				if (getDownloadedPercentNumber(seg.status.downloadedBytes, seg.status.totalBytes) === 0) {
-					seg.visible = false;
-				}
-			} else {
-				if (getDownloadedPercentNumber(seg.status.downloadedBytes, seg.status.totalBytes) === 0) {
-					seg.visible = true;
-				}
-			}
-		});
-
-		setVisibleSegments(filtered);
-	};
-
 	const [dlStatus, setDlStatus] = useState<SnapshotSegmentDownloadStatus | null>(null);
 	const handleOpen = (status: SnapshotSegmentDownloadStatus) => setDlStatus(status);
 	const handleClose = () => setDlStatus(null);
@@ -199,26 +158,6 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 			className="w-full h-[95%]"
 			style={{ overflowY: !segmentSelected ? "scroll" : "hidden" }}
 		>
-			{/*<div className="flex flex-row justify-around">
-				<FormControlLabel
-					control={
-						<Switch
-							checked={hideCompletedChecked}
-							onChange={handleHideCompletedChange}
-						/>
-					}
-					label="Hide downloaded files"
-				/>
-				<FormControlLabel
-					control={
-						<Switch
-							checked={hideZeroProgressChecked}
-							onChange={handleHideZeroProgressChange}
-						/>
-					}
-					label="Hide files with no progress"
-				/>
-			</div>*/}
 			<table className="table-fixed text-left w-full">
 				<thead>
 					<tr className="border-b">
@@ -344,7 +283,6 @@ export const SegmentsTable = ({ segments, segmentSelected, onSegmentClicked }: S
 								className="border-b hover:bg-gray-100 cursor-pointer"
 								onClick={() => {
 									handleOpen(segment.status);
-									//onSegmentClicked(segment.status);
 								}}
 							>
 								<td className="px-4 py-2">{segment.status.name}</td>
