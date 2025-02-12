@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { calculatePercentDownloaded, multipleBps, multipleBytes } from "../../../helpers/converters";
-import { Peer } from "../../store/networkSlice";
+import { multipleBytes } from "../../../helpers/converters";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import SortIcon from "@mui/icons-material/Sort";
-import { SegmentPeer, SnapshotSegmentDownloadStatus } from "../../store/syncStagesSlice";
+import { SegmentPeer } from "../../store/syncStagesSlice";
 
 enum SortColumn {
 	Url = "Url",
