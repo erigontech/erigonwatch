@@ -57,6 +57,7 @@ import { resetSystemInfoState } from "./app/store/systemInfoSlice";
 import { SystemProcessesPage } from "./app/pages/SystemProcessesPage";
 import { SystemCPUUsage } from "./app/pages/SystemCPUUsage";
 import { ProfilePage } from "./app/pages/ProfilePage";
+import { client } from "./Network/WebsocketClient";
 
 function App() {
 	return (
@@ -289,7 +290,7 @@ function Layout() {
 	const perrsdiagData = useSelector(selectSegmentPeersDiagDataForNode);
 
 	const queryData = () => {
-		getHardwareInfo();
+		/*getHardwareInfo();
 		getNodeCmdLineArgs();
 		getNodeFlags();
 		getNodeVersion();
@@ -304,7 +305,7 @@ function Layout() {
 		getSnapshotDownloadStatus();
 		setInterval(() => {
 			getSnapshotDownloadStatus();
-		}, 5 * Time.second);
+		}, 5 * Time.second);*/
 
 		/*setInterval(() => {
 			checkForNoPeersForSnapshotSegment();

@@ -458,3 +458,13 @@ export const getTorrentStats = () => {
 			console.log("Error fetching torrent stats: ", error);
 		});
 };
+
+export const establish = () => {
+	fetchTorrentStats()
+		.then((response) => {
+			//store.dispatch(addOrUpdateTorrentStats({ nodeId: getNodeId(), stats: response }));
+		})
+		.catch((error) => {
+			console.log("Error fetching torrent stats: ", error);
+		});
+};
