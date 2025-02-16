@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { NodeInfo } from "../../../../entities";
 import { NodeInfoTable } from "./nodeInfoTable";
 
