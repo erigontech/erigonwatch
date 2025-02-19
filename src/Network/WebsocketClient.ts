@@ -1,4 +1,5 @@
 import { currentNodeUrl } from "./APIHandler";
+import { randomIncommingTxnUpdate } from "./mockData/RandomTxGenerator";
 
 let wsUrl = "ws";
 
@@ -13,6 +14,10 @@ export class WebSocketClient {
 	private subscriptions: { [key: string]: (data: any) => void } = {};
 
 	private constructor() {
+		this.connect();
+	}
+
+	private connect() {
 		this.socket = new WebSocket(websocketUrl());
 
 		this.socket.onopen = () => {
@@ -56,20 +61,57 @@ export class WebSocketClient {
 		return WebSocketClient.instance;
 	}
 
+	randomString(length: number) {
+		const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+		let randomstring = "";
+		for (let i = 0; i < length; i++) {
+			const rnum = Math.floor(Math.random() * chars.length);
+			randomstring += chars.substring(rnum, rnum + 1);
+		}
+		return randomstring;
+	}
+
 	subscribe(type: string, callback: (data: any) => void) {
+		setInterval(() => {
+			const txns = randomIncommingTxnUpdate();
+			callback(txns);
+		}, 100);
+
+		/*if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
+			this.connect();
+		}
 		this.subscriptions[type] = callback;
-		this.sendMessage({
-			service: "txpool",
-			action: "subscribe"
-		});
+		this.waitForConnection(() => {
+			this.sendMessage({
+				service: "txpool",
+				action: "subscribe"
+			});
+		});*/
 	}
 
 	unsubscribe(type: string) {
+		if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
+			this.connect();
+		}
 		delete this.subscriptions[type];
-		this.sendMessage({
-			service: "txpool",
-			action: "unsubscribe"
+		this.waitForConnection(() => {
+			this.sendMessage({
+				service: "txpool",
+				action: "unsubscribe"
+			});
 		});
+	}
+
+	private waitForConnection(callback: () => void) {
+		const interval = 100; // ms
+		const checkConnection = () => {
+			if (this.socket.readyState === WebSocket.OPEN) {
+				callback();
+			} else {
+				setTimeout(checkConnection, interval);
+			}
+		};
+		checkConnection();
 	}
 
 	sendMessage(data: any) {

@@ -57,6 +57,8 @@ import { resetSystemInfoState } from "./app/store/systemInfoSlice";
 import { SystemProcessesPage } from "./app/pages/SystemProcessesPage";
 import { SystemCPUUsage } from "./app/pages/SystemCPUUsage";
 import { ProfilePage } from "./app/pages/ProfilePage";
+import TxPoolDashboard from "./app/pages/TxPoolDashboard";
+import NewTxPoolDashboard from "./app/pages/NewTxPoolDashboard";
 
 function App() {
 	return (
@@ -152,6 +154,10 @@ function App() {
 					<Route
 						path="mutex"
 						element={<ProfilePage profile="mutex" />}
+					/>
+					<Route
+						path="txpool"
+						element={<NewTxPoolDashboard />}
 					/>
 					<Route
 						path="admin"
@@ -298,12 +304,12 @@ function Layout() {
 		getDBsList();
 		getReorgs();
 		setInterval(() => {
-			getPeers();
+			//getPeers();
 		}, 5 * Time.second);
 		getBootnodes();
 		getSnapshotDownloadStatus();
 		setInterval(() => {
-			getSnapshotDownloadStatus();
+			//getSnapshotDownloadStatus();
 		}, 5 * Time.second);
 
 		/*setInterval(() => {
@@ -319,7 +325,7 @@ function Layout() {
 	useEffect(() => {
 		if (shouldFetchFilesList) {
 			intervalID = setInterval(() => {
-				getSnapshotFilesList();
+				//getSnapshotFilesList();
 			}, 5 * Time.second);
 		} else {
 			clearInterval(intervalID);
