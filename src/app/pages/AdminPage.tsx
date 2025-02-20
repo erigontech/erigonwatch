@@ -7,7 +7,7 @@ import { Button } from "../components/Button/Button";
 import { BUTTON_BULE, BUTTON_RED } from "../../helpers/colors";
 import { resetNetworkStateToMockState } from "../store/networkSlice";
 import { Popup } from "../components/Popup/Popup";
-import { resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
+import { NodeConnectionType, resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
 import { client, WebSocketClient } from "../../Network/WebsocketClient";
 
 export const AdminPage = () => {
@@ -15,8 +15,6 @@ export const AdminPage = () => {
 	const [showCreateSessionPopup, setShowCreateSessionPopup] = useState(false);
 	const [showClearDataPopup, setShowClearDataPopup] = useState(false);
 	const conectionType = useSelector(selectNodeConnectionType);
-
-	//const client = WebSocketClient.getInstance();
 
 	function randomNumber(min: number, max: number) {
 		return Math.floor(Math.random() * (max - min) + min);
@@ -31,9 +29,6 @@ export const AdminPage = () => {
 					backgroundColor={BUTTON_RED}
 					label="Clear all data"
 					onClick={() => {
-						/*client.subscribe("txpool", (data) => {
-							console.log("Received data for txpool:", data);
-						});*/
 						setShowClearDataPopup(true);
 					}}
 					primary
@@ -54,7 +49,7 @@ export const AdminPage = () => {
 					label="Create Session"
 					onClick={() => setShowCreateSessionPopup(true)}
 					primary
-					//disabled={conectionType != NodeConnectionType.Remote}
+					disabled={conectionType != NodeConnectionType.Remote}
 				/>
 			)}
 			{showClearDataPopup && (
