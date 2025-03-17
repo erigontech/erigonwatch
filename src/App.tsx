@@ -59,6 +59,7 @@ import { SystemCPUUsage } from "./app/pages/SystemCPUUsage";
 import { ProfilePage } from "./app/pages/ProfilePage";
 import TxPoolDashboard from "./app/pages/TxPoolDashboard";
 import NewTxPoolDashboard from "./app/pages/NewTxPoolDashboard";
+import { WebSocketClient } from "./Network/WebsocketClient";
 
 function App() {
 	return (
@@ -189,6 +190,9 @@ function Layout() {
 	const [isSessionsModalOpen, setIsSessionsModalOpen] = useState(false);
 	const [isNodesModalOpen, setIsNodesModalOpen] = useState(false);
 
+	//init websocket connection
+	WebSocketClient.getInstance();
+
 	useEffect(() => {
 		if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
 			dispatch(resetAppStateToMockState());
@@ -296,21 +300,21 @@ function Layout() {
 
 	const queryData = () => {
 		getHardwareInfo();
-		getNodeCmdLineArgs();
-		getNodeFlags();
+		//getNodeCmdLineArgs();
+		//getNodeFlags();
 		getNodeVersion();
 		getLogs();
 		getSyncStages();
 		getDBsList();
 		getReorgs();
 		setInterval(() => {
-			//getPeers();
-		}, 5 * Time.second);
+			getPeers();
+		}, 20 * Time.second);
 		getBootnodes();
 		getSnapshotDownloadStatus();
 		setInterval(() => {
-			//getSnapshotDownloadStatus();
-		}, 5 * Time.second);
+			getSnapshotDownloadStatus();
+		}, 20 * Time.second);
 
 		/*setInterval(() => {
 			checkForNoPeersForSnapshotSegment();

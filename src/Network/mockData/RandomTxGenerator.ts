@@ -1,25 +1,27 @@
 export type DiagTxn = {
-	IDHash: string;
-	SenderID: number;
-	Nonce: number;
-	Value: BigInt;
-	Gas: number;
-	FeeCap: BigInt;
-	Tip: BigInt;
-	Size: number;
-	Type: number;
-	Creation: boolean;
-	DataLen: number;
-	AccessListAddrCount: number;
-	AccessListStorCount: number;
-	BlobHashes: string[];
-	Blobs: string[];
+	rlp: string;
+	hash: string;
+	senderID: number;
+	nonce: number;
+	value: BigInt;
+	gas: number;
+	feeCap: BigInt;
+	tip: BigInt;
+	size: number;
+	type: number;
+	creation: boolean;
+	dataLen: number;
+	accessListAddrCount: number;
+	accessListStorCount: number;
+	blobHashes: string[] | null;
+	blobs: string[] | null;
 };
 
 export type IncomingTxnUpdate = {
-	Txns: DiagTxn[];
-	Senders: string;
-	IsLocal: boolean[];
+	txns: DiagTxn[];
+	senders: string;
+	isLocal: boolean[];
+	knownTxns: string[][]; //hashes of incomming transactions from p2p network which are already in the pool
 };
 
 function randomBytesHex(length: number): string {
@@ -38,32 +40,53 @@ function randomInt(min: number, max: number): number {
 
 function generateRandomDiagTxn(): DiagTxn {
 	return {
-		IDHash: randomBytesHex(32),
-		SenderID: randomInt(1, 2 ** 32),
-		Nonce: randomInt(1, 2 ** 32),
-		Value: randomBigInt(32),
-		Gas: randomInt(1000, 100000),
-		FeeCap: randomBigInt(32),
-		Tip: randomBigInt(32),
-		Size: randomInt(100, 10000),
-		Type: randomInt(0, 255),
-		Creation: Math.random() < 0.5,
-		DataLen: randomInt(0, 1000),
-		AccessListAddrCount: randomInt(0, 100),
-		AccessListStorCount: randomInt(0, 100),
-		BlobHashes: Array.from({ length: randomInt(0, 5) }, () => randomBytesHex(32)),
-		Blobs: Array.from({ length: randomInt(0, 5) }, () => randomBytesHex(32))
+		rlp: randomBytesHex(32),
+		hash: randomBytesHex(32),
+		senderID: randomInt(1, 2 ** 32),
+		nonce: randomInt(1, 2 ** 32),
+		value: randomBigInt(32),
+		gas: randomInt(3000, 300000),
+		feeCap: randomFeeCap(),
+		tip: randomTip(),
+		size: randomInt(100, 10000),
+		type: randomInt(0, 255),
+		creation: Math.random() < 0.5,
+		dataLen: randomInt(0, 1000),
+		accessListAddrCount: randomInt(0, 100),
+		accessListStorCount: randomInt(0, 100),
+		blobHashes: Array.from({ length: randomInt(0, 5) }, () => randomBytesHex(32)),
+		blobs: Array.from({ length: randomInt(0, 5) }, () => randomBytesHex(32))
 	};
+}
+
+// random tip should be in range from 1000000000 to 1500000000
+function randomTip(): bigint {
+	return BigInt(Math.floor(1000000000 + Math.random() * 500000000));
+}
+
+//random fee cap range 100000000000 to 250000000000
+function randomFeeCap(): bigint {
+	return BigInt(Math.floor(2500000000 + Math.random() * 5000000000));
 }
 
 function generateRandomIncomingTxnUpdate(txnCount: number): IncomingTxnUpdate {
 	const txns = Array.from({ length: txnCount }, generateRandomDiagTxn);
-	const senders = randomBytesHex(txnCount * 32);
-	const isLocal = Array.from({ length: txnCount }, () => Math.random() < 0.5);
+	const txnsToAdd: DiagTxn[] = [];
+	const knownTxns: string[][] = [];
+	for (let i = 0; i < txns.length; i++) {
+		if (Math.random() < 0.5) {
+			knownTxns.push([txns[i].hash]);
+		} else {
+			txnsToAdd.push(txns[i]);
+		}
+	}
 
-	return { Txns: txns, Senders: senders, IsLocal: isLocal };
+	const senders = randomBytesHex(txnsToAdd.length * 32);
+	const isLocal = Array.from({ length: txnsToAdd.length }, () => Math.random() < 0.5);
+
+	return { txns: txnsToAdd, senders: senders, isLocal: isLocal, knownTxns: knownTxns };
 }
 
 export function randomIncommingTxnUpdate(): IncomingTxnUpdate {
-	return generateRandomIncomingTxnUpdate(randomInt(1, 10));
+	return generateRandomIncomingTxnUpdate(randomInt(1, 3));
 }

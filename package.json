@@ -36,6 +36,7 @@
     "react-router-dom": "^6.27.0",
     "react-window": "^1.8.11",
     "react-zoom-pan-pinch": "^3.6.1",
+    "recharts": "^2.15.1",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {

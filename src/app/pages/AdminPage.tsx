@@ -8,15 +8,12 @@ import { BUTTON_BULE, BUTTON_RED } from "../../helpers/colors";
 import { resetNetworkStateToMockState } from "../store/networkSlice";
 import { Popup } from "../components/Popup/Popup";
 import { resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
-import { WebSocketClient } from "../../Network/WebsocketClient";
 
 export const AdminPage = () => {
 	const dispatch = useDispatch();
 	const [showCreateSessionPopup, setShowCreateSessionPopup] = useState(false);
 	const [showClearDataPopup, setShowClearDataPopup] = useState(false);
 	const conectionType = useSelector(selectNodeConnectionType);
-
-	const client = WebSocketClient.getInstance();
 
 	function randomNumber(min: number, max: number) {
 		return Math.floor(Math.random() * (max - min) + min);
@@ -31,10 +28,7 @@ export const AdminPage = () => {
 					backgroundColor={BUTTON_RED}
 					label="Clear all data"
 					onClick={() => {
-						client.subscribe("txpool", (data) => {
-							console.log("Received data for txpool:", data);
-						});
-						//setShowClearDataPopup(true);
+						setShowClearDataPopup(true);
 					}}
 					primary
 				/>

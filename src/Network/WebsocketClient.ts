@@ -4,17 +4,23 @@ import { randomIncommingTxnUpdate } from "./mockData/RandomTxGenerator";
 let wsUrl = "ws";
 
 export const websocketUrl = () => {
+	//return `ws://localhost:6062/${wsUrl}`;
 	const baseUrl = currentNodeUrl(true);
 	return `${baseUrl}/${wsUrl}`;
 };
 
 export class WebSocketClient {
 	private static instance: WebSocketClient;
-	private socket: WebSocket;
+	private socket!: WebSocket;
 	private subscriptions: { [key: string]: (data: any) => void } = {};
 
 	private constructor() {
 		this.connect();
+	}
+
+	dispose(): void {
+		// Clean up resources
+		console.log("Resource released");
 	}
 
 	private connect() {
@@ -38,7 +44,7 @@ export class WebSocketClient {
 			const messageType = incommingMessage.messageType;
 			const data = incommingMessage.message;
 
-			console.log("Onmessage Received message:", data);
+			//console.log("Onmessage Received message:", data);
 
 			if (this.subscriptions[messageType]) {
 				this.subscriptions[messageType](data);
@@ -72,12 +78,12 @@ export class WebSocketClient {
 	}
 
 	subscribe(type: string, callback: (data: any) => void) {
-		setInterval(() => {
+		/*setInterval(() => {
 			const txns = randomIncommingTxnUpdate();
 			callback(txns);
-		}, 100);
+		}, 100);*/
 
-		/*if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
+		if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
 			this.connect();
 		}
 		this.subscriptions[type] = callback;
@@ -86,7 +92,7 @@ export class WebSocketClient {
 				service: "txpool",
 				action: "subscribe"
 			});
-		});*/
+		});
 	}
 
 	unsubscribe(type: string) {

@@ -21,14 +21,13 @@ export enum Tab {
 	Reorgs = "Reorgs"
 }
 interface DetailsSectionProps {
-	cmdLine?: string;
 	flags?: Flag[];
 	nodeDetails?: NodeInfo;
 	syncStages?: KeyValue[];
 	reorgs?: Reorg;
 }
 
-export const DetailsSection = ({ cmdLine, flags, nodeDetails, syncStages, reorgs }: DetailsSectionProps) => {
+export const DetailsSection = ({ flags, nodeDetails, syncStages, reorgs }: DetailsSectionProps) => {
 	const [selectedTab, setSelectedTab] = useState(Tab.Command);
 	const [isCopied, setIsCopied] = useState(false);
 	const [popupProps, setPopupProps] = useState<NodeInfoValuePopupProps | null>(null);
@@ -152,7 +151,7 @@ export const DetailsSection = ({ cmdLine, flags, nodeDetails, syncStages, reorgs
 					data-testid="test_details_section_content"
 					ref={divRef}
 				>
-					{selectedTab === Tab.Command && <CommandLineArgsSection cmdLine={cmdLine} />}
+					{selectedTab === Tab.Command && <CommandLineArgsSection />}
 					{selectedTab === Tab.Flags && <FlagsSection flags={flags} />}
 					{selectedTab === Tab.NodeInfo && (
 						<NodeInfoSection
