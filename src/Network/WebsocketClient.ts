@@ -1,7 +1,10 @@
 import { currentNodeUrl } from "./APIHandler";
 import { randomIncommingTxnUpdate } from "./mockData/RandomTxGenerator";
+//import { messageData } from "./mockData/people_mod";
+import { messageData } from "./mockData/people";
 
 let wsUrl = "ws";
+let current_idx = 0;
 
 export const websocketUrl = () => {
 	//return `ws://localhost:6062/${wsUrl}`;
@@ -44,8 +47,6 @@ export class WebSocketClient {
 			const messageType = incommingMessage.messageType;
 			const data = incommingMessage.message;
 
-			//console.log("Onmessage Received message:", data);
-
 			if (this.subscriptions[messageType]) {
 				this.subscriptions[messageType](data);
 			}
@@ -79,9 +80,14 @@ export class WebSocketClient {
 
 	subscribe(type: string, callback: (data: any) => void) {
 		/*setInterval(() => {
-			const txns = randomIncommingTxnUpdate();
-			callback(txns);
-		}, 100);*/
+			if (current_idx < messageData.length) {
+				const data = messageData[current_idx].message;
+				callback(data);
+				current_idx++;
+			}
+		}, 100);
+
+		return;*/
 
 		if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
 			this.connect();

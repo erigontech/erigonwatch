@@ -15,13 +15,14 @@ export type DiagTxn = {
 	accessListStorCount: number;
 	blobHashes: string[] | null;
 	blobs: string[] | null;
+	isLocal: boolean;
+	discardReason: string;
+	pool: string;
 };
 
 export type IncomingTxnUpdate = {
 	txns: DiagTxn[];
-	senders: string;
-	isLocal: boolean[];
-	knownTxns: string[][]; //hashes of incomming transactions from p2p network which are already in the pool
+	updates: { [key: string]: string[][] }; // Converted [32]byte array to string representation in JS
 };
 
 function randomBytesHex(length: number): string {
@@ -55,7 +56,15 @@ function generateRandomDiagTxn(): DiagTxn {
 		accessListAddrCount: randomInt(0, 100),
 		accessListStorCount: randomInt(0, 100),
 		blobHashes: Array.from({ length: randomInt(0, 5) }, () => randomBytesHex(32)),
-		blobs: Array.from({ length: randomInt(0, 5) }, () => randomBytesHex(32))
+		blobs: Array.from({ length: randomInt(0, 5) }, () => randomBytesHex(32)),
+		isLocal: Math.random() < 0.5,
+		discardReason: Math.random() < 0.5 ? "Unknown" : "",
+		pool: (() => {
+			const rand = Math.random();
+			if (rand < 0.33) return "Pending";
+			if (rand < 0.66) return "BaseFee";
+			return "Queued";
+		})()
 	};
 }
 
