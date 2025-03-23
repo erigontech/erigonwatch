@@ -25,7 +25,6 @@ import Diversity2Icon from "@mui/icons-material/Diversity2";
 
 export const SidebarComponent = () => {
 	const [isColapsed, setIsColapsed] = useState(false);
-	const issuesCount = useSelector(selectIssuesCountForBadge);
 
 	return (
 		<Sidebar

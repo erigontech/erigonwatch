@@ -48,7 +48,7 @@ export const AdminPage = () => {
 					label="Create Session"
 					onClick={() => setShowCreateSessionPopup(true)}
 					primary
-					//disabled={conectionType != NodeConnectionType.Remote}
+					disabled={conectionType != NodeConnectionType.Remote}
 				/>
 			)}
 			{showClearDataPopup && (
