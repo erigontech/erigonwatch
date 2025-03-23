@@ -1,18 +1,32 @@
 import { currentNodeUrl } from "./APIHandler";
+import { randomIncommingTxnUpdate } from "./mockData/RandomTxGenerator";
+//import { messageData } from "./mockData/people_mod";
+import { messageData } from "./mockData/people";
 
 let wsUrl = "ws";
+let current_idx = 0;
 
 export const websocketUrl = () => {
+	//return `ws://localhost:6062/${wsUrl}`;
 	const baseUrl = currentNodeUrl(true);
 	return `${baseUrl}/${wsUrl}`;
 };
 
 export class WebSocketClient {
 	private static instance: WebSocketClient;
-	private socket: WebSocket;
+	private socket!: WebSocket;
 	private subscriptions: { [key: string]: (data: any) => void } = {};
 
 	private constructor() {
+		this.connect();
+	}
+
+	dispose(): void {
+		// Clean up resources
+		console.log("Resource released");
+	}
+
+	private connect() {
 		this.socket = new WebSocket(websocketUrl());
 
 		this.socket.onopen = () => {
@@ -32,8 +46,6 @@ export class WebSocketClient {
 
 			const messageType = incommingMessage.messageType;
 			const data = incommingMessage.message;
-
-			console.log("Onmessage Received message:", data);
 
 			if (this.subscriptions[messageType]) {
 				this.subscriptions[messageType](data);
@@ -56,20 +68,62 @@ export class WebSocketClient {
 		return WebSocketClient.instance;
 	}
 
+	randomString(length: number) {
+		const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+		let randomstring = "";
+		for (let i = 0; i < length; i++) {
+			const rnum = Math.floor(Math.random() * chars.length);
+			randomstring += chars.substring(rnum, rnum + 1);
+		}
+		return randomstring;
+	}
+
 	subscribe(type: string, callback: (data: any) => void) {
+		/*setInterval(() => {
+			if (current_idx < messageData.length) {
+				const data = messageData[current_idx].message;
+				callback(data);
+				current_idx++;
+			}
+		}, 100);
+
+		return;*/
+
+		if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
+			this.connect();
+		}
 		this.subscriptions[type] = callback;
-		this.sendMessage({
-			service: "txpool",
-			action: "subscribe"
+		this.waitForConnection(() => {
+			this.sendMessage({
+				service: "txpool",
+				action: "subscribe"
+			});
 		});
 	}
 
 	unsubscribe(type: string) {
+		if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
+			this.connect();
+		}
 		delete this.subscriptions[type];
-		this.sendMessage({
-			service: "txpool",
-			action: "unsubscribe"
+		this.waitForConnection(() => {
+			this.sendMessage({
+				service: "txpool",
+				action: "unsubscribe"
+			});
 		});
+	}
+
+	private waitForConnection(callback: () => void) {
+		const interval = 100; // ms
+		const checkConnection = () => {
+			if (this.socket.readyState === WebSocket.OPEN) {
+				callback();
+			} else {
+				setTimeout(checkConnection, interval);
+			}
+		};
+		checkConnection();
 	}
 
 	sendMessage(data: any) {

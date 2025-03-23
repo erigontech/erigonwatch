@@ -207,6 +207,12 @@ export const SidebarComponent = () => {
 					</MenuItem>
 				</SubMenu>
 				<MenuItem
+					component={<Link to="/txpool" />}
+					icon={<Diversity2Icon />}
+				>
+					TxPool
+				</MenuItem>
+				<MenuItem
 					component={<Link to="/admin" />}
 					icon={<AdminPanelSettingsIcon />}
 				>

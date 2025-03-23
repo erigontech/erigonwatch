@@ -7,8 +7,7 @@ import { Button } from "../components/Button/Button";
 import { BUTTON_BULE, BUTTON_RED } from "../../helpers/colors";
 import { resetNetworkStateToMockState } from "../store/networkSlice";
 import { Popup } from "../components/Popup/Popup";
-import { NodeConnectionType, resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
-import { client, WebSocketClient } from "../../Network/WebsocketClient";
+import { resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
 
 export const AdminPage = () => {
 	const dispatch = useDispatch();

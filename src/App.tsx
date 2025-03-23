@@ -57,6 +57,9 @@ import { resetSystemInfoState } from "./app/store/systemInfoSlice";
 import { SystemProcessesPage } from "./app/pages/SystemProcessesPage";
 import { SystemCPUUsage } from "./app/pages/SystemCPUUsage";
 import { ProfilePage } from "./app/pages/ProfilePage";
+import TxPoolDashboard from "./app/pages/TxPoolDashboard";
+import NewTxPoolDashboard from "./app/pages/NewTxPoolDashboard";
+import { WebSocketClient } from "./Network/WebsocketClient";
 
 function App() {
 	return (
@@ -154,6 +157,10 @@ function App() {
 						element={<ProfilePage profile="mutex" />}
 					/>
 					<Route
+						path="txpool"
+						element={<NewTxPoolDashboard />}
+					/>
+					<Route
 						path="admin"
 						element={<AdminPage />}
 					/>
@@ -182,6 +189,9 @@ function Layout() {
 
 	const [isSessionsModalOpen, setIsSessionsModalOpen] = useState(false);
 	const [isNodesModalOpen, setIsNodesModalOpen] = useState(false);
+
+	//init websocket connection
+	WebSocketClient.getInstance();
 
 	useEffect(() => {
 		if (import.meta.env.VITE_SERVER_RESPONSE_TYPE === "MOCK") {
@@ -290,8 +300,8 @@ function Layout() {
 
 	const queryData = () => {
 		getHardwareInfo();
-		getNodeCmdLineArgs();
-		getNodeFlags();
+		//getNodeCmdLineArgs();
+		//getNodeFlags();
 		getNodeVersion();
 		getLogs();
 		getSyncStages();
@@ -299,12 +309,12 @@ function Layout() {
 		getReorgs();
 		setInterval(() => {
 			getPeers();
-		}, 5 * Time.second);
+		}, 20 * Time.second);
 		getBootnodes();
 		getSnapshotDownloadStatus();
 		setInterval(() => {
 			getSnapshotDownloadStatus();
-		}, 5 * Time.second);
+		}, 20 * Time.second);
 
 		/*setInterval(() => {
 			checkForNoPeersForSnapshotSegment();
@@ -319,7 +329,7 @@ function Layout() {
 	useEffect(() => {
 		if (shouldFetchFilesList) {
 			intervalID = setInterval(() => {
-				getSnapshotFilesList();
+				//getSnapshotFilesList();
 			}, 5 * Time.second);
 		} else {
 			clearInterval(intervalID);
