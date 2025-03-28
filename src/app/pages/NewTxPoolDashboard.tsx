@@ -20,7 +20,7 @@ const NormalRow: React.FC<{ index: number; style: React.CSSProperties; data: Dia
 		<div style={style}>
 			<Paper style={{ padding: "8px", marginBottom: "4px" }}>
 				<Typography variant="body2">
-					<strong>Tx:</strong> {"0x" + tx.hash} | <strong>Sender:</strong> {tx.senderID} | <strong>Nonce:</strong> {tx.nonce}
+					<strong>Tx:</strong> {"0x" + tx.hash} | <strong>Sender:</strong> {tx.senderAddress} | <strong>Nonce:</strong> {tx.nonce}
 				</Typography>
 				<Typography variant="body2">
 					<strong>Value:</strong> {(Number(tx.value) / 1e18).toFixed(4)} ETH | <strong>Gas:</strong> {tx.gas}
@@ -37,7 +37,7 @@ const DiscardedRow: React.FC<{ index: number; style: React.CSSProperties; data: 
 		<div style={style}>
 			<Paper style={{ padding: "8px", marginBottom: "4px" }}>
 				<Typography variant="body2">
-					<strong>Tx:</strong> {"0x" + tx.hash} | <strong>Sender:</strong> {tx.senderID} | <strong>Nonce:</strong> {tx.nonce}
+					<strong>Tx:</strong> {"0x" + tx.hash} | <strong>Sender:</strong> {tx.senderAddress} | <strong>Nonce:</strong> {tx.nonce}
 				</Typography>
 				<Typography variant="body2">
 					<strong>Value:</strong> {(Number(tx.value) / 1e18).toFixed(4)} ETH | <strong>Gas:</strong> {tx.gas}

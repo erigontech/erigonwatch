@@ -2,6 +2,7 @@ export type DiagTxn = {
 	rlp: string;
 	hash: string;
 	senderID: number;
+	senderAddress: string;
 	nonce: number;
 	value: BigInt;
 	gas: number;
