@@ -1,12 +1,24 @@
 import React from "react";
-import { Grid, Paper, Typography, Divider } from "@mui/material";
+import { Grid, Paper, Typography, Divider, Chip } from "@mui/material";
 import { DiagTxn } from "../../../Network/mockData/RandomTxGenerator";
+import { SubPoolMarker } from "../../pages/NewTxPoolDashboard";
 
 interface TransactionTableRowProps {
 	index: number;
 	style: React.CSSProperties;
 	data: DiagTxn[];
 	isDiscarded?: boolean;
+}
+
+const getSubPoolMarkers = (marker: SubPoolMarker | undefined): string[] => {
+	if (marker === undefined) return ["Mask: 0b00000"];
+	const binaryMask = toMaskString(marker);
+	return [`Mask: ${binaryMask}`];
+};
+
+function toMaskString(value: number): string {
+	const mask = value.toString(2).padStart(6, "0");
+	return `0b${mask}`;
 }
 
 const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => {
@@ -27,6 +39,23 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 							<strong>Hash:</strong> {"0x" + tx.tx.hash}
 						</Typography>
 						<Divider sx={{ my: 1 }} />
+					</Grid>
+					<Grid
+						item
+						xs={12}
+					>
+						<div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "4px" }}>
+							{getSubPoolMarkers(tx.order).map((marker, idx) => (
+								<Chip
+									key={idx}
+									label={marker}
+									size="small"
+									color="primary"
+									variant="outlined"
+									sx={{ fontFamily: "monospace" }}
+								/>
+							))}
+						</div>
 					</Grid>
 					<Grid
 						item
@@ -109,7 +138,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 							<strong>Max Priority Fee:</strong> {tx.tx.maxPriorityFeePerGas?.toString() || "N/A"}
 						</Typography>
 					</Grid>
-					{tx.tx.data !== "0x" && (
+					{/*tx.tx.data !== "0x" && (
 						<Grid
 							item
 							xs={12}
@@ -132,7 +161,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 								{tx.tx.data}
 							</Typography>
 						</Grid>
-					)}
+					)*/}
 				</Grid>
 			</Paper>
 		</div>
@@ -263,7 +292,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 							<strong>Max Priority Fee:</strong> {tx.tx.maxPriorityFeePerGas?.toString() || "N/A"}
 						</Typography>
 					</Grid>
-					{tx.tx.data !== "0x" && (
+					{/*tx.tx.data !== "0x" && (
 						<Grid
 							item
 							xs={12}
@@ -286,7 +315,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 								{tx.tx.data}
 							</Typography>
 						</Grid>
-					)}
+					)*/}
 					<DiscardReason reason={tx.discardReason} />
 				</Grid>
 			</Paper>

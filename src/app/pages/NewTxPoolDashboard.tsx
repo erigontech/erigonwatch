@@ -6,10 +6,21 @@ import { IncomingTxnUpdate, DiagTxn } from "../../Network/mockData/RandomTxGener
 import { Transaction } from "ethers";
 import TransactionTable from "../components/TxPool/TransactionTable";
 
+export enum SubPoolMarker {
+	NoNonceGaps = 0b010000,
+	EnoughBalance = 0b001000,
+	NotTooMuchGas = 0b000100,
+	EnoughFeeCapBlock = 0b000010,
+	IsLocal = 0b000001,
+	BaseFeePoolBits = NoNonceGaps | EnoughBalance | NotTooMuchGas
+}
+
 interface TxnUpdate {
+	//test this
 	txnHash: string;
 	pool: string;
 	event: string;
+	order: SubPoolMarker;
 }
 
 const txLimit = 100000; // Limit the number of transactions to prevent memory bloat
@@ -58,6 +69,7 @@ const NewTxPoolDashboard: React.FC = () => {
 		client.subscribe("txpool", (data) => {
 			//console.log("Received transaction update:", data);
 			if (data.event) {
+				console.log("Received transaction update:", data);
 				updatesRef.current.push(data);
 			} else {
 				messagesRef.current.push(data);
@@ -88,26 +100,26 @@ const NewTxPoolDashboard: React.FC = () => {
 					const newTxns = copyMessagesRef.flatMap((msg) => msg.txns);
 					// Decode and set tx field for new transactions
 					newTxns.forEach((txn) => {
-						const tx = decodeTransacrionRLP(txn);
-						txn.tx = tx;
+						if (txn?.rlp) {
+							const tx = decodeTransacrionRLP(txn);
+							txn.tx = tx;
+						}
 					});
 					const allTxns = [...newTxns, ...prev].slice(0, txLimit); // Keep only latest txLimit txns
 
 					copyUpdatesRef.forEach((update) => {
-						if (update.event === "add") {
-							const tx = allTxns.find((tx) => tx.tx.hash === update.txnHash);
-							if (tx) {
+						const tx = allTxns.find((tx) => tx.hash === update.txnHash);
+						if (tx) {
+							if (update.event === "add") {
 								tx.pool = update.pool;
-							}
-						} else if (update.event === "remove") {
-							const tx = allTxns.find((tx) => tx.tx.hash === update.txnHash);
-							if (tx) {
+							} else if (update.event === "remove") {
 								tx.pool = "";
 							}
+							tx.order = update.order;
 						}
 					});
 
-					console.log("allTxns", allTxns);
+					//console.log("allTxns", allTxns);
 					return allTxns;
 				});
 
