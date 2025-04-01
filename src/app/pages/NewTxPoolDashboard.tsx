@@ -117,26 +117,6 @@ const NewTxPoolDashboard: React.FC = () => {
 							}
 							tx.order = update.order;
 						}
-
-						/*if (update.event === "add") {
-							const tx = allTxns.find((tx) => tx.hash === update.txnHash);
-							if (tx) {
-								if (tx.hash != tx.tx.hash) {
-									console.log("tx.hash != tx.tx.hash", tx.hash, tx.tx.hash);
-								}
-								tx.pool = update.pool;
-							}
-						} else if (update.event === "remove") {
-							const tx = allTxns.find((tx) => tx.hash === update.txnHash);
-							if (tx) {
-								tx.pool = "";
-							}
-						}
-
-						const tx = allTxns.find((tx) => tx.hash === update.txnHash);
-						if (tx) {
-							tx.order = update.order;
-						}*/
 					});
 
 					//console.log("allTxns", allTxns);
