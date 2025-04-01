@@ -1,6 +1,8 @@
 import { Transaction } from "ethers";
+import { SubPoolMarker } from "../../app/pages/NewTxPoolDashboard";
 
 export type DiagTxn = {
+	hash: string;
 	rlp: string;
 	senderID: number;
 	size: number;
@@ -13,6 +15,7 @@ export type DiagTxn = {
 	discardReason: string;
 	pool: string;
 	tx: Transaction;
+	order: SubPoolMarker;
 };
 
 export type IncomingTxnUpdate = {
@@ -49,6 +52,11 @@ function generateRandomDiagTxn(): DiagTxn {
 
 	let rlp = rndtx.serialized;
 
+	// Generate random pool markers
+	let order = SubPoolMarker.BaseFeePoolBits;
+	if (Math.random() < 0.5) order |= SubPoolMarker.EnoughFeeCapBlock;
+	if (Math.random() < 0.5) order |= SubPoolMarker.IsLocal;
+
 	return {
 		rlp: randomBytesHex(32),
 		senderID: randomInt(1, 2 ** 32),
@@ -66,7 +74,8 @@ function generateRandomDiagTxn(): DiagTxn {
 			if (rand < 0.66) return "BaseFee";
 			return "Queued";
 		})(),
-		tx: rndtx
+		tx: rndtx,
+		order: order
 	};
 }
 
