@@ -1,3 +1,5 @@
+import { Transaction } from "ethers";
+
 export type DiagTxn = {
 	rlp: string;
 	hash: string;
@@ -19,6 +21,7 @@ export type DiagTxn = {
 	isLocal: boolean;
 	discardReason: string;
 	pool: string;
+	tx: Transaction;
 };
 
 export type IncomingTxnUpdate = {

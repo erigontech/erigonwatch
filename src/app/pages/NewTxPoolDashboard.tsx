@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card, CardContent, Typography, Grid, Paper, Tabs, Tab } from "@mui/material";
-import { FixedSizeList as List } from "react-window"; // Virtualized Table
+import { Card, CardContent, Typography, Grid } from "@mui/material";
 import "chart.js/auto";
 import { WebSocketClient } from "../../Network/WebsocketClient";
 import { IncomingTxnUpdate, DiagTxn } from "../../Network/mockData/RandomTxGenerator";
+import { Transaction } from "ethers";
+import TransactionTable from "../components/TxPool/TransactionTable";
 
 interface TxnUpdate {
 	txnHash: string;
@@ -13,71 +14,33 @@ interface TxnUpdate {
 
 const txLimit = 100000; // Limit the number of transactions to prevent memory bloat
 
-const NormalRow: React.FC<{ index: number; style: React.CSSProperties; data: DiagTxn[] }> = ({ index, style, data }) => {
-	const tx = data[index];
+function decodeTransacrionRLP(diagTxn: DiagTxn): Transaction {
+	try {
+		let rlp = diagTxn.rlp;
 
-	return (
-		<div style={style}>
-			<Paper style={{ padding: "8px", marginBottom: "4px" }}>
-				<Typography variant="body2">
-					<strong>Tx:</strong> {"0x" + tx.hash} | <strong>Sender:</strong> {tx.senderAddress} | <strong>Nonce:</strong> {tx.nonce}
-				</Typography>
-				<Typography variant="body2">
-					<strong>Value:</strong> {(Number(tx.value) / 1e18).toFixed(4)} ETH | <strong>Gas:</strong> {tx.gas}
-				</Typography>
-			</Paper>
-		</div>
-	);
-};
+		// Convert base64 to hex
+		const base64ToHex = (base64: string) => {
+			const binaryString = atob(base64);
+			let hex = "";
+			for (let i = 0; i < binaryString.length; i++) {
+				const byte = binaryString.charCodeAt(i).toString(16).padStart(2, "0");
+				hex += byte;
+			}
+			return hex;
+		};
 
-const DiscardedRow: React.FC<{ index: number; style: React.CSSProperties; data: DiagTxn[] }> = ({ index, style, data }) => {
-	const tx = data[index];
+		// Convert base64 RLP to hex
+		const hexRlp = base64ToHex(rlp);
 
-	return (
-		<div style={style}>
-			<Paper style={{ padding: "8px", marginBottom: "4px" }}>
-				<Typography variant="body2">
-					<strong>Tx:</strong> {"0x" + tx.hash} | <strong>Sender:</strong> {tx.senderAddress} | <strong>Nonce:</strong> {tx.nonce}
-				</Typography>
-				<Typography variant="body2">
-					<strong>Value:</strong> {(Number(tx.value) / 1e18).toFixed(4)} ETH | <strong>Gas:</strong> {tx.gas}
-				</Typography>
-				<Typography
-					variant="body2"
-					color="error"
-					sx={{
-						mt: 1,
-						backgroundColor: "rgba(211, 47, 47, 0.1)",
-						p: 0.5,
-						borderRadius: 1,
-						wordBreak: "break-word",
-						whiteSpace: "normal"
-					}}
-				>
-					<strong>Discard Reason:</strong> {tx.discardReason}
-				</Typography>
-			</Paper>
-		</div>
-	);
-};
+		// Decode the transaction
+		const tx = Transaction.from("0x" + hexRlp);
 
-interface TabPanelProps {
-	children?: React.ReactNode;
-	index: number;
-	value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-	const { children, value, index, ...other } = props;
-	return (
-		<div
-			role="tabpanel"
-			hidden={value !== index}
-			{...other}
-		>
-			{value === index && children}
-		</div>
-	);
+		//compare tx with diagTxn is data the same
+		return tx;
+	} catch (error) {
+		console.error("Error decoding transaction:", error);
+		throw error;
+	}
 }
 
 const NewTxPoolDashboard: React.FC = () => {
@@ -91,29 +54,9 @@ const NewTxPoolDashboard: React.FC = () => {
 		setSelectedTab(newValue);
 	};
 
-	// Filter transactions based on selected tab
-	const getFilteredTransactions = () => {
-		switch (selectedTab) {
-			case 0: // All
-				return txPoolData;
-			case 1: // Pending
-				return txPoolData.filter((tx) => tx.pool === "Pending");
-			case 2: // Base Fee
-				return txPoolData.filter((tx) => tx.pool === "BaseFee");
-			case 3: // Queued
-				return txPoolData.filter((tx) => tx.pool === "Queued");
-			case 4: // Blob Transactions
-				return txPoolData.filter((tx) => tx.blobHashes && tx.blobHashes.length > 0);
-			case 5: // Discarded Transactions
-				return txPoolData.filter((tx) => tx.discardReason !== "" && tx.discardReason !== "success");
-			default:
-				return txPoolData;
-		}
-	};
-
 	useEffect(() => {
 		client.subscribe("txpool", (data) => {
-			console.log("Received transaction update:", data);
+			//console.log("Received transaction update:", data);
 			if (data.event) {
 				updatesRef.current.push(data);
 			} else {
@@ -143,6 +86,11 @@ const NewTxPoolDashboard: React.FC = () => {
 				const copyUpdatesRef = [...updatesRef.current];
 				setTxPoolData((prev) => {
 					const newTxns = copyMessagesRef.flatMap((msg) => msg.txns);
+					// Decode and set tx field for new transactions
+					newTxns.forEach((txn) => {
+						const tx = decodeTransacrionRLP(txn);
+						txn.tx = tx;
+					});
 					const allTxns = [...newTxns, ...prev].slice(0, txLimit); // Keep only latest txLimit txns
 
 					copyUpdatesRef.forEach((update) => {
@@ -293,51 +241,11 @@ const NewTxPoolDashboard: React.FC = () => {
 				item
 				xs={12}
 			>
-				<Card>
-					<CardContent>
-						<Typography
-							variant="h6"
-							sx={{ mb: 2 }}
-						>
-							Transaction Pool
-						</Typography>
-						<Tabs
-							value={selectedTab}
-							onChange={handleTabChange}
-							sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}
-						>
-							<Tab label="All Transactions" />
-							<Tab label="Pending Pool" />
-							<Tab label="Base Fee Pool" />
-							<Tab label="Queued Pool" />
-							<Tab label="Blob Transactions" />
-							<Tab label="Discarded Transactions" />
-						</Tabs>
-						<List
-							height={500}
-							itemCount={getFilteredTransactions().length}
-							itemSize={selectedTab === 5 ? 90 : 60}
-							width="100%"
-							itemData={getFilteredTransactions()}
-						>
-							{({ index, style, data }: { index: number; style: React.CSSProperties; data: DiagTxn[] }) =>
-								selectedTab === 5 ? (
-									<DiscardedRow
-										index={index}
-										style={style}
-										data={data}
-									/>
-								) : (
-									<NormalRow
-										index={index}
-										style={style}
-										data={data}
-									/>
-								)
-							}
-						</List>
-					</CardContent>
-				</Card>
+				<TransactionTable
+					transactions={txPoolData}
+					selectedTab={selectedTab}
+					onTabChange={handleTabChange}
+				/>
 			</Grid>
 		</Grid>
 	);
