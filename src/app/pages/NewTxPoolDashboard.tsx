@@ -95,12 +95,12 @@ const NewTxPoolDashboard: React.FC = () => {
 
 					copyUpdatesRef.forEach((update) => {
 						if (update.event === "add") {
-							const tx = allTxns.find((tx) => tx.hash === update.txnHash);
+							const tx = allTxns.find((tx) => tx.tx.hash === update.txnHash);
 							if (tx) {
 								tx.pool = update.pool;
 							}
 						} else if (update.event === "remove") {
-							const tx = allTxns.find((tx) => tx.hash === update.txnHash);
+							const tx = allTxns.find((tx) => tx.tx.hash === update.txnHash);
 							if (tx) {
 								tx.pool = "";
 							}
@@ -120,7 +120,9 @@ const NewTxPoolDashboard: React.FC = () => {
 	}, []); // Empty dependency array ensures this effect runs only once
 
 	const totalIncomeTnxs = txPoolData.length;
-	const avgGasPrice = txPoolData.length ? txPoolData.reduce((sum, tx) => sum + Number(tx.feeCap), 0) / txPoolData.length / 1e9 : 0;
+	const avgGasPrice = txPoolData.length
+		? txPoolData.reduce((sum, tx) => sum + Number(tx.tx.gasPrice || tx.tx.maxFeePerGas), 0) / txPoolData.length / 1e9
+		: 0;
 	const blobTransactions = txPoolData.filter((tx) => tx.blobHashes && tx.blobHashes.length > 0).length;
 	const discardedTransactions = txPoolData.filter((tx) => tx.discardReason !== "" && tx.discardReason !== "success").length;
 
