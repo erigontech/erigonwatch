@@ -314,7 +314,7 @@ function Layout() {
 		getSnapshotDownloadStatus();
 		setInterval(() => {
 			getSnapshotDownloadStatus();
-		}, 20 * Time.second);
+		}, 1 * Time.second);
 
 		/*setInterval(() => {
 			checkForNoPeersForSnapshotSegment();

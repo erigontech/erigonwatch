@@ -99,12 +99,13 @@ const NewTxPoolDashboard: React.FC = () => {
 				setTxPoolData((prev) => {
 					const newTxns = copyMessagesRef.flatMap((msg) => msg.txns);
 					// Decode and set tx field for new transactions
-					newTxns.forEach((txn) => {
+					/*newTxns.forEach((txn) => {
 						if (txn?.rlp) {
 							const tx = decodeTransacrionRLP(txn);
 							txn.tx = tx;
 						}
-					});
+					});*/
+					initTransaction(newTxns);
 					const allTxns = [...newTxns, ...prev].slice(0, txLimit); // Keep only latest txLimit txns
 
 					copyUpdatesRef.forEach((update) => {
@@ -130,6 +131,15 @@ const NewTxPoolDashboard: React.FC = () => {
 
 		return () => clearInterval(interval);
 	}, []); // Empty dependency array ensures this effect runs only once
+
+	function initTransaction(txns: DiagTxn[]) {
+		txns.forEach((txn) => {
+			if (txn.rlp) {
+				const tx = decodeTransacrionRLP(txn);
+				txn.tx = tx;
+			}
+		});
+	}
 
 	const totalIncomeTnxs = txPoolData.length;
 	const avgGasPrice = txPoolData.length

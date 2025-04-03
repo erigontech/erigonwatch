@@ -330,12 +330,13 @@ export const selectSegmentPeersDiagDataForNode = createSelector(
 	[selectSegmentPeersDiagData, selectActiveNodeId],
 	(segmentPeerDiagData, activeNodeId): SegmentPeerDiagData[] => {
 		let result: SegmentPeerDiagData[] = [];
-		segmentPeerDiagData.forEach((data) => {
-			if (data.nodeId === activeNodeId) {
-				result = data.data;
-			}
-		});
-
+		if (segmentPeerDiagData) {
+			segmentPeerDiagData.forEach((data) => {
+				if (data.nodeId === activeNodeId) {
+					result = data.data;
+				}
+			});
+		}
 		return result;
 	}
 );
