@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
 	Peer,
 	PeersStatistics,
@@ -13,7 +13,7 @@ import {
 	selectSentryPeersStatistics,
 	selectSentryStaticPeersForNode
 } from "../store/networkSlice";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Modal } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Modal, Typography } from "@mui/material";
 import { PeersStatisticsTable, TableColumn } from "../components/PeersStatistics/PeersStatisticsTable";
 import { PeersDetailsTable } from "../components/PeersStatistics/PeerDetailsTable";
 import { LineChart } from "@mui/x-charts";
@@ -70,6 +70,81 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 
 	const [selectedPeer, setSelectedPeer] = useState<string | null>(null);
 
+	// Sample data to reduce number of points
+	const sampleData = useCallback((data: number[], timeData: number[], maxPoints: number = 100) => {
+		if (data.length <= maxPoints) return { data, timeData };
+
+		const step = Math.ceil(data.length / maxPoints);
+		const sampledData: number[] = [];
+		const sampledTime: number[] = [];
+
+		for (let i = 0; i < data.length; i += step) {
+			// Calculate average for this window
+			let sum = 0;
+			let count = 0;
+			for (let j = i; j < Math.min(i + step, data.length); j++) {
+				sum += data[j];
+				count++;
+			}
+			sampledData.push(sum / count);
+			sampledTime.push(timeData[i]);
+		}
+
+		return { data: sampledData, timeData: sampledTime };
+	}, []);
+
+	// Memoize chart configurations
+	const chartConfig = useMemo(
+		() => ({
+			slotProps: {
+				legend: {
+					direction: "row" as const,
+					position: { vertical: "top" as const, horizontal: "right" as const },
+					padding: 0
+				}
+			}
+		}),
+		[]
+	);
+
+	const axisConfig = useMemo(
+		() => ({
+			xAxis: [
+				{
+					label: "Time (seconds)",
+					labelStyle: { fontSize: 14 }
+				}
+			],
+			rateYAxis: [
+				{
+					label: "Rate (bytes/s)",
+					labelStyle: { fontSize: 14 },
+					valueFormatter: (value: number | null) => {
+						if (!value) return "0 B/s";
+						if (value > 1024 * 1024) {
+							return `${(value / (1024 * 1024)).toFixed(2)} MB/s`;
+						}
+						return `${value.toFixed(2)} B/s`;
+					}
+				}
+			],
+			networkYAxis: [
+				{
+					label: "Network Traffic (bytes)",
+					labelStyle: { fontSize: 14 },
+					valueFormatter: (value: number | null) => {
+						if (!value) return "0 B";
+						if (value > 1024 * 1024) {
+							return `${(value / (1024 * 1024)).toFixed(2)} MB`;
+						}
+						return `${value.toFixed(2)} B`;
+					}
+				}
+			]
+		}),
+		[]
+	);
+
 	const renderPeersErrorsTable = () => {
 		return (
 			<table className="table-fixed rounded-lg shadow-lg bg-white text-left mb-4 w-full h-fit">
@@ -92,11 +167,16 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 			return (
 				<Box
 					sx={{
-						display: "flex", // Enables Flexbox
-						flexDirection: "column" // Stacks items vertically
+						display: "flex",
+						flexDirection: "column"
 					}}
 				>
-					<p>{showDetails}</p>
+					<Typography
+						variant="h6"
+						gutterBottom
+					>
+						{showDetails}
+					</Typography>
 					<PeersDetailsTable
 						peers={
 							showDetails === TableColumn[TableColumn.Active] ? activePeers : showDetails === TableColumn[TableColumn.Static] ? staticPeers : peers
@@ -108,41 +188,59 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 				</Box>
 			);
 		} else if (showDetails === TableColumn[TableColumn.InRate]) {
+			const sampledData = sampleData(
+				diagramData.map((d) => d.inRate),
+				diagramData.map((d) => d.time)
+			);
 			let data = {
-				xAxis: [{ data: diagramData.map((d) => d.time) }],
-				series: [{ data: diagramData.map((d) => d.inRate) }]
+				xAxis: [{ data: sampledData.timeData }],
+				series: [{ data: sampledData.data }]
 			};
-
 			return renderChart(data, showDetails);
 		} else if (showDetails === TableColumn[TableColumn.NetworkIn]) {
+			const sampledData = sampleData(
+				diagramData.map((d) => d.networkIn),
+				diagramData.map((d) => d.time)
+			);
 			let data = {
-				xAxis: [{ data: diagramData.map((d) => d.time) }],
-				series: [{ data: diagramData.map((d) => d.networkIn) }]
+				xAxis: [{ data: sampledData.timeData }],
+				series: [{ data: sampledData.data }]
 			};
-
 			return renderChart(data, showDetails);
 		} else if (showDetails === TableColumn[TableColumn.OutRate]) {
+			const sampledData = sampleData(
+				diagramData.map((d) => d.outRate),
+				diagramData.map((d) => d.time)
+			);
 			let data = {
-				xAxis: [{ data: diagramData.map((d) => d.time) }],
-				series: [{ data: diagramData.map((d) => d.outRate) }]
+				xAxis: [{ data: sampledData.timeData }],
+				series: [{ data: sampledData.data }]
 			};
-
 			return renderChart(data, showDetails);
 		} else if (showDetails === TableColumn[TableColumn.NetworkOut]) {
+			const sampledData = sampleData(
+				diagramData.map((d) => d.networkOut),
+				diagramData.map((d) => d.time)
+			);
 			let data = {
-				xAxis: [{ data: diagramData.map((d) => d.time) }],
-				series: [{ data: diagramData.map((d) => d.networkOut) }]
+				xAxis: [{ data: sampledData.timeData }],
+				series: [{ data: sampledData.data }]
 			};
-
 			return renderChart(data, showDetails);
 		} else if (showDetails === TableColumn[TableColumn.TotalNetwork]) {
-			let data: ChartData[] = diagramData.map((d) => ({ x: d.time, y: d.totalNetwork }));
-
-			return urenderChart(data, showDetails);
+			const sampledData = sampleData(
+				diagramData.map((d) => d.totalNetwork),
+				diagramData.map((d) => d.time)
+			);
+			let data = {
+				xAxis: [{ data: sampledData.timeData }],
+				series: [{ data: sampledData.data }]
+			};
+			return renderChart(data, showDetails);
 		}
 	};
 
-	const formatNetwork = (bytes: number) => {
+	const formatNetwork = useCallback((bytes: number) => {
 		if (bytes >= 1e6) {
 			return (bytes / 1e6).toFixed(2) + " MB";
 		} else if (bytes >= 1e3) {
@@ -150,49 +248,65 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 		} else {
 			return bytes + " B";
 		}
-	};
-
-	const urenderChart = (data: ChartData[], title: string) => {
-		return (
-			<Box
-				sx={{
-					maxHeight: "80vh",
-					overflow: "auto" // Enables vertical scrolling
-				}}
-			>
-				<p>{title}</p>
-				<LineChart
-					series={[
-						{
-							data: data.map((d) => d.y),
-							label: "Total Network",
-							valueFormatter: (v) => formatNetwork(v || 0)
-						}
-					]}
-					yAxis={[{ data: data.map((d) => d.y), valueFormatter: (v) => formatNetwork(v || 0) }]}
-					height={250}
-					margin={{ top: 50, right: 50, bottom: 50, left: 70 }}
-					sx={{ width: "100%" }}
-				/>
-			</Box>
-		);
-	};
+	}, []);
 
 	const renderChart = (data: LineChartData, title: string) => {
 		return (
 			<Box
 				sx={{
 					maxHeight: "80vh",
-					overflow: "auto" // Enables vertical scrolling
+					overflow: "auto"
 				}}
 			>
-				<p>{title}</p>
+				<Typography
+					variant="h6"
+					gutterBottom
+				>
+					{title}
+				</Typography>
 				<LineChart
 					sx={{ width: "100%" }}
-					xAxis={data.xAxis}
-					series={data.series}
 					height={250}
 					margin={{ top: 50, right: 50, bottom: 50, left: 70 }}
+					xAxis={axisConfig.xAxis.map((axis) => ({
+						...axis,
+						data: data.xAxis[0].data,
+						valueFormatter: (value) => {
+							const formatTime = (value: number): string => {
+								if (value === 0) return "Time: 0s";
+
+								const hours = Math.floor(value / 3600);
+								const minutes = Math.floor((value % 3600) / 60);
+								const seconds = value % 60;
+
+								if (hours > 0) {
+									return `${hours}h ${minutes}m ${seconds}s`;
+								} else if (minutes > 0) {
+									return `${minutes}m ${seconds}s`;
+								} else {
+									return `${seconds}s`;
+								}
+							};
+
+							return formatTime(value);
+						}
+					}))}
+					yAxis={title.includes("Network") ? axisConfig.networkYAxis : axisConfig.rateYAxis}
+					series={[
+						{
+							...data.series[0],
+							valueFormatter: (value) => {
+								if (!value) return "0 bytes/s";
+								const unit = title.includes("Rate") ? "bytes/s" : "bytes";
+								if (value > 1024 * 1024) {
+									return `${(value / (1024 * 1024)).toFixed(2)} MB${unit === "bytes/s" ? "/s" : ""}`;
+								}
+								return `${value.toFixed(2)} ${unit}`;
+							},
+							label: title
+						}
+					]}
+					{...chartConfig}
 				/>
 			</Box>
 		);
