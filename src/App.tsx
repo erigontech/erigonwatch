@@ -57,7 +57,6 @@ import { resetSystemInfoState } from "./app/store/systemInfoSlice";
 import { SystemProcessesPage } from "./app/pages/SystemProcessesPage";
 import { SystemCPUUsage } from "./app/pages/SystemCPUUsage";
 import { ProfilePage } from "./app/pages/ProfilePage";
-import TxPoolDashboard from "./app/pages/TxPoolDashboard";
 import NewTxPoolDashboard from "./app/pages/NewTxPoolDashboard";
 import { WebSocketClient } from "./Network/WebsocketClient";
 
@@ -299,18 +298,16 @@ function Layout() {
 	const perrsdiagData = useSelector(selectSegmentPeersDiagDataForNode);
 
 	const queryData = () => {
-		//getHardwareInfo();
-		//getNodeCmdLineArgs();
-		getNodeFlags();
-		//getNodeVersion();
-		//getLogs();
-		//getSyncStages();
-		//getDBsList();
-		//getReorgs();
+		getHardwareInfo();
+		getNodeVersion();
+		getLogs();
+		getSyncStages();
+		getDBsList();
+		getReorgs();
 		setInterval(() => {
-			//getPeers();
+			getPeers();
 		}, 20 * Time.second);
-		//getBootnodes();
+		getBootnodes();
 		//getSnapshotDownloadStatus();
 		setInterval(() => {
 			//getSnapshotDownloadStatus();

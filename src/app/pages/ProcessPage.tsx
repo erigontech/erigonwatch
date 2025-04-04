@@ -4,7 +4,6 @@ import { DetailsSection } from "../components/DetailsSection/detailsSection";
 
 export const ProcessPage = () => {
 	const activeNodeId = useSelector(selectActiveNodeId);
-	const flags = useSelector(selectFlagsForNode);
 	const nodeDetails = useSelector(selectNodeDetails);
 	const syncStages = useSelector(selectSyncStagesForNode);
 	const reorgs = useSelector(selectReorgForNode);
@@ -13,7 +12,6 @@ export const ProcessPage = () => {
 		<div className="mt-4">
 			{activeNodeId !== "" && (
 				<DetailsSection
-					flags={flags}
 					nodeDetails={nodeDetails}
 					syncStages={syncStages}
 					reorgs={reorgs}

@@ -5,19 +5,7 @@ import { selectFlagsForNode } from "../../../store/appSlice";
 import { useSelector } from "react-redux";
 import { getNodeFlags } from "../../../../Network/APIGateway";
 
-export interface FlagsSectionProps {
-	flags?: Flag[];
-}
-
-export const FlagsSection = ({ flags }: FlagsSectionProps) => {
-	/*const [data, setData] = useState<Flag[]>([]);
-
-	useEffect(() => {
-		if (flags !== undefined) {
-			setData(flags);
-		}
-	}, [flags]);*/
-
+export const FlagsSection = () => {
 	const [flagsToDisplay, setFlagsToDisplay] = useState<Flag[]>([]);
 	const flagsArgs = useSelector(selectFlagsForNode);
 

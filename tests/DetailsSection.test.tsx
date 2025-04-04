@@ -8,8 +8,7 @@ import { flagsFromJson } from "../src/helpers/flagsFromJson";
 
 describe("Details section", () => {
 	beforeEach(() => {
-		let flags = flagsFromJson(getFlagsResponseJsonMock);
-		render(<DetailsSection flags={flags} />);
+		render(<DetailsSection />);
 	});
 
 	it("check is renders content section", () => {
