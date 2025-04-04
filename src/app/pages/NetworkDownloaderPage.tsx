@@ -15,9 +15,7 @@ import Typography from "@mui/material/Typography";
 import { DownloaderOverviewTable, OverviewTableColumn } from "../components/Downloader/DownloaderOverviewTable";
 import { TorrentPeersTable } from "../components/SyncStages/TorrentPeersTable";
 import { SegmentsTable } from "../components/SyncStages/SegmentsTable";
-import { LineChart } from "@mui/x-charts";
-import { LineChartData } from "../components/SyncStages/TorrentPeerHistory";
-import { TimeChart, TimeChartData } from "../components/Charts/TimeChart";
+import { TimeChart } from "../components/Charts/TimeChart";
 
 export const NetworkDownloaderPage = () => {
 	const syncStatus = useSelector(selectSnapshotDownloadStatusesForNode);
@@ -45,36 +43,6 @@ export const NetworkDownloaderPage = () => {
 			/>
 		);
 	};
-
-	// Sample data to reduce number of points
-	const createSeries = useCallback((data: number[], timeData: number[], maxPoints: number = 200): TimeChartData => {
-		if (data.length <= maxPoints)
-			return {
-				xAxis: { data: timeData },
-				series: { data }
-			};
-
-		const step = Math.ceil(data.length / maxPoints);
-		const sampledData: number[] = [];
-		const sampledTime: number[] = [];
-
-		for (let i = 0; i < data.length; i += step) {
-			// Calculate average for this window
-			let sum = 0;
-			let count = 0;
-			for (let j = i; j < Math.min(i + step, data.length); j++) {
-				sum += data[j];
-				count++;
-			}
-			sampledData.push(sum / count);
-			sampledTime.push(timeData[i]);
-		}
-
-		return {
-			xAxis: { data: sampledTime },
-			series: { data: sampledData }
-		};
-	}, []);
 
 	const renderContent = () => {
 		if (showDetails === OverviewTableColumn[OverviewTableColumn.Peers]) {
@@ -122,70 +90,56 @@ export const NetworkDownloaderPage = () => {
 		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Connections]) {
 			return (
 				<TimeChart
-					data={createSeries(
-						syncStatus.diagramData.map((d) => d.connections),
-						syncStatus.diagramData.map((d) => d.time)
-					)}
+					valueData={syncStatus.diagramData.map((d) => d.connections)}
+					timeData={syncStatus.diagramData.map((d) => d.time)}
 					title={showDetails}
 				/>
 			);
 		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.DownloadRate]) {
 			return (
 				<TimeChart
-					data={createSeries(
-						syncStatus.diagramData.map((d) => d.downloadRate),
-						syncStatus.diagramData.map((d) => d.time)
-					)}
+					valueData={syncStatus.diagramData.map((d) => d.downloadRate)}
+					timeData={syncStatus.diagramData.map((d) => d.time)}
 					title={showDetails}
 				/>
 			);
 		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.UploadRate]) {
 			return (
 				<TimeChart
-					data={createSeries(
-						syncStatus.diagramData.map((d) => d.uploadRate),
-						syncStatus.diagramData.map((d) => d.time)
-					)}
+					valueData={syncStatus.diagramData.map((d) => d.uploadRate)}
+					timeData={syncStatus.diagramData.map((d) => d.time)}
 					title={showDetails}
 				/>
 			);
 		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Downloaded]) {
 			return (
 				<TimeChart
-					data={createSeries(
-						syncStatus.diagramData.map((d) => d.downloaded),
-						syncStatus.diagramData.map((d) => d.time)
-					)}
+					valueData={syncStatus.diagramData.map((d) => d.downloaded)}
+					timeData={syncStatus.diagramData.map((d) => d.time)}
 					title={showDetails}
 				/>
 			);
 		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Total]) {
 			return (
 				<TimeChart
-					data={createSeries(
-						syncStatus.diagramData.map((d) => d.total),
-						syncStatus.diagramData.map((d) => d.time)
-					)}
+					valueData={syncStatus.diagramData.map((d) => d.total)}
+					timeData={syncStatus.diagramData.map((d) => d.time)}
 					title={showDetails}
 				/>
 			);
 		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Alloc]) {
 			return (
 				<TimeChart
-					data={createSeries(
-						syncStatus.diagramData.map((d) => d.alloc),
-						syncStatus.diagramData.map((d) => d.time)
-					)}
+					valueData={syncStatus.diagramData.map((d) => d.alloc)}
+					timeData={syncStatus.diagramData.map((d) => d.time)}
 					title={showDetails}
 				/>
 			);
 		} else if (showDetails === OverviewTableColumn[OverviewTableColumn.Sys]) {
 			return (
 				<TimeChart
-					data={createSeries(
-						syncStatus.diagramData.map((d) => d.sys),
-						syncStatus.diagramData.map((d) => d.time)
-					)}
+					valueData={syncStatus.diagramData.map((d) => d.sys)}
+					timeData={syncStatus.diagramData.map((d) => d.time)}
 					title={showDetails}
 				/>
 			);
