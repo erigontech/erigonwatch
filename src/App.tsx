@@ -308,10 +308,10 @@ function Layout() {
 			getPeers();
 		}, 20 * Time.second);
 		getBootnodes();
-		//getSnapshotDownloadStatus();
+		getSnapshotDownloadStatus();
 		setInterval(() => {
-			//getSnapshotDownloadStatus();
-		}, 1 * Time.second);
+			getSnapshotDownloadStatus();
+		}, 20 * Time.second);
 
 		/*setInterval(() => {
 			checkForNoPeersForSnapshotSegment();
@@ -319,7 +319,7 @@ function Layout() {
 			checkForNetworkSpeedIssue();
 		}, 2 * Time.second);*/
 
-		//getHeaders();
+		getHeaders();
 	};
 
 	let intervalID: any = null;
