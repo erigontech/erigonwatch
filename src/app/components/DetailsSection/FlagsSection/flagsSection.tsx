@@ -17,10 +17,6 @@ export const FlagsSection = () => {
 		}
 	}, [flagsArgs]);
 
-	useEffect(() => {
-		console.log(flagsToDisplay.length);
-	}, [flagsToDisplay]);
-
 	return (
 		<div className="flex flex-col">
 			<input
