@@ -107,6 +107,34 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 		[]
 	);
 
+	const formatNetwork = useCallback((bytes: number) => {
+		if (bytes >= 1 << 40) {
+			return (bytes / (1 << 40)).toFixed(2) + " TB";
+		} else if (bytes >= 1 << 30) {
+			return (bytes / (1 << 30)).toFixed(2) + " GB";
+		} else if (bytes >= 1 << 20) {
+			return (bytes / (1 << 20)).toFixed(2) + " MB";
+		} else if (bytes >= 1 << 10) {
+			return (bytes / (1 << 10)).toFixed(2) + " KB";
+		} else {
+			return bytes.toFixed(2) + " B";
+		}
+	}, []);
+
+	const formatRate = useCallback((bytesPerSec: number) => {
+		if (bytesPerSec >= 1 << 40) {
+			return (bytesPerSec / (1 << 40)).toFixed(2) + " TB/s";
+		} else if (bytesPerSec >= 1 << 30) {
+			return (bytesPerSec / (1 << 30)).toFixed(2) + " GB/s";
+		} else if (bytesPerSec >= 1 << 20) {
+			return (bytesPerSec / (1 << 20)).toFixed(2) + " MB/s";
+		} else if (bytesPerSec >= 1 << 10) {
+			return (bytesPerSec / (1 << 10)).toFixed(2) + " KB/s";
+		} else {
+			return bytesPerSec.toFixed(2) + " B/s";
+		}
+	}, []);
+
 	const axisConfig = useMemo(
 		() => ({
 			xAxis: [
@@ -120,11 +148,8 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 					label: "Rate (bytes/s)",
 					labelStyle: { fontSize: 14 },
 					valueFormatter: (value: number | null) => {
-						if (!value) return "0 B/s";
-						if (value > 1024 * 1024) {
-							return `${(value / (1024 * 1024)).toFixed(2)} MB/s`;
-						}
-						return `${value.toFixed(2)} B/s`;
+						if (value === null || value === undefined) return "0 B/s";
+						return formatRate(value);
 					}
 				}
 			],
@@ -133,16 +158,13 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 					label: "Network Traffic (bytes)",
 					labelStyle: { fontSize: 14 },
 					valueFormatter: (value: number | null) => {
-						if (!value) return "0 B";
-						if (value > 1024 * 1024) {
-							return `${(value / (1024 * 1024)).toFixed(2)} MB`;
-						}
-						return `${value.toFixed(2)} B`;
+						if (value === null || value === undefined) return "0 B";
+						return formatNetwork(value);
 					}
 				}
 			]
 		}),
-		[]
+		[formatNetwork, formatRate]
 	);
 
 	const renderPeersErrorsTable = () => {
@@ -240,16 +262,6 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 		}
 	};
 
-	const formatNetwork = useCallback((bytes: number) => {
-		if (bytes >= 1e6) {
-			return (bytes / 1e6).toFixed(2) + " MB";
-		} else if (bytes >= 1e3) {
-			return (bytes / 1e3).toFixed(2) + " KB";
-		} else {
-			return bytes + " B";
-		}
-	}, []);
-
 	const renderChart = (data: LineChartData, title: string) => {
 		return (
 			<Box
@@ -298,10 +310,11 @@ export const PeerNetworkPage = ({ type }: PeerNetworkPageProps) => {
 							valueFormatter: (value) => {
 								if (!value) return "0 bytes/s";
 								const unit = title.includes("Rate") ? "bytes/s" : "bytes";
-								if (value > 1024 * 1024) {
-									return `${(value / (1024 * 1024)).toFixed(2)} MB${unit === "bytes/s" ? "/s" : ""}`;
+								if (title.includes("Rate")) {
+									return formatRate(value);
+								} else {
+									return formatNetwork(value);
 								}
-								return `${value.toFixed(2)} ${unit}`;
 							},
 							label: title
 						}
