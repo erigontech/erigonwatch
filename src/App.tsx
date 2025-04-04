@@ -299,21 +299,21 @@ function Layout() {
 	const perrsdiagData = useSelector(selectSegmentPeersDiagDataForNode);
 
 	const queryData = () => {
-		getHardwareInfo();
+		//getHardwareInfo();
 		//getNodeCmdLineArgs();
-		//getNodeFlags();
-		getNodeVersion();
-		getLogs();
-		getSyncStages();
-		getDBsList();
-		getReorgs();
+		getNodeFlags();
+		//getNodeVersion();
+		//getLogs();
+		//getSyncStages();
+		//getDBsList();
+		//getReorgs();
 		setInterval(() => {
-			getPeers();
+			//getPeers();
 		}, 20 * Time.second);
-		getBootnodes();
-		getSnapshotDownloadStatus();
+		//getBootnodes();
+		//getSnapshotDownloadStatus();
 		setInterval(() => {
-			getSnapshotDownloadStatus();
+			//getSnapshotDownloadStatus();
 		}, 1 * Time.second);
 
 		/*setInterval(() => {
@@ -322,7 +322,7 @@ function Layout() {
 			checkForNetworkSpeedIssue();
 		}, 2 * Time.second);*/
 
-		getHeaders();
+		//getHeaders();
 	};
 
 	let intervalID: any = null;
