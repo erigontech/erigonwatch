@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, CircularProgress } from "@mui/material";
 import {
@@ -12,6 +12,7 @@ import {
 import { Graphviz } from "graphviz-react";
 import { addProfile, selectAllProfileDataForNode } from "../store/profileSlice";
 import { selectActiveNodeId } from "../store/appSlice";
+import CheckIcon from "@mui/icons-material/Check";
 
 export interface ProfilePageProps {
 	profile: string;
@@ -24,6 +25,7 @@ export const ProfilePage = ({ profile }: ProfilePageProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const activeNodeId = useSelector(selectActiveNodeId);
 	const profileData = useSelector(selectAllProfileDataForNode);
+	const [selectedProfileIndex, setSelectedProfileIndex] = useState<number>(-1);
 	const [selectedProfile, setSelectedProfile] = useState<string>("");
 
 	const getFunction = async () => {
@@ -44,7 +46,12 @@ export const ProfilePage = ({ profile }: ProfilePageProps) => {
 			console.error(error);
 		}
 	};
-	``;
+
+	useEffect(() => {
+		setSelectedProfileIndex(-1);
+		setSelectedProfile("");
+	}, [profile]);
+
 	const getFetchUrl = () => {
 		switch (profile) {
 			case "heap":
@@ -83,32 +90,50 @@ export const ProfilePage = ({ profile }: ProfilePageProps) => {
 	const renderHistory = () => {
 		return (
 			<div>
-				<table className="table-auto bg-white text-left">
-					<tr className="border-b border-gray-200">
-						<th>Profile snapshot</th>
-					</tr>
-					{profileDataForProfile?.profile.map((data) => {
-						return (
-							<tr
-								className="border-b border-gray-200 cursor-pointer"
-								onClick={() => {
-									selectProfile(profileDataForProfile.profile.indexOf(data));
-								}}
-							>
-								<td>{data.date}</td>
-							</tr>
-						);
-					})}
+				<table className="table-auto bg-white text-left w-full">
+					<thead>
+						<tr className="border-b border-gray-200">
+							<th className="py-2 px-4">Profile snapshot</th>
+							<th className="py-2 px-2 w-8"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{profileDataForProfile?.profile.map((data, index) => {
+							const isSelected = selectedProfileIndex === index;
+							return (
+								<tr
+									key={index}
+									className={`border-b border-gray-200 cursor-pointer ${isSelected ? "bg-blue-50" : ""}`}
+									onClick={() => {
+										selectProfile(index);
+									}}
+								>
+									<td className="py-2 px-4">{data.date}</td>
+									<td className="py-2 px-2 text-center">
+										{isSelected && (
+											<CheckIcon
+												color="primary"
+												fontSize="small"
+											/>
+										)}
+									</td>
+								</tr>
+							);
+						})}
+					</tbody>
 				</table>
 			</div>
 		);
 	};
 
 	const selectProfile = (idx: number) => {
-		if (profileDataForProfile?.profile.length === 0) {
-			return setSelectedProfile("");
+		if (!profileDataForProfile || profileDataForProfile.profile.length === 0) {
+			setSelectedProfileIndex(-1);
+			setSelectedProfile("");
+			return;
 		}
-		return setSelectedProfile(profileDataForProfile?.profile[idx]?.data || "");
+		setSelectedProfileIndex(idx);
+		setSelectedProfile(profileDataForProfile.profile[idx]?.data || "");
 	};
 
 	return (

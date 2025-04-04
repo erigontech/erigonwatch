@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { Flag } from "../../../../entities";
 import { FlagsTable } from "./flagsTable";
+import { selectFlagsForNode } from "../../../store/appSlice";
+import { useSelector } from "react-redux";
+import { getNodeFlags } from "../../../../Network/APIGateway";
 
-export interface FlagsSectionProps {
-	flags?: Flag[];
-}
-
-export const FlagsSection = ({ flags }: FlagsSectionProps) => {
-	const [data, setData] = useState<Flag[]>([]);
+export const FlagsSection = () => {
+	const [flagsToDisplay, setFlagsToDisplay] = useState<Flag[]>([]);
+	const flagsArgs = useSelector(selectFlagsForNode);
 
 	useEffect(() => {
-		if (flags !== undefined) {
-			setData(flags);
+		if (!flagsArgs) {
+			getNodeFlags();
+		} else {
+			setFlagsToDisplay(flagsArgs);
 		}
-	}, [flags]);
+	}, [flagsArgs]);
 
 	return (
 		<div className="flex flex-col">
@@ -22,18 +24,22 @@ export const FlagsSection = ({ flags }: FlagsSectionProps) => {
 				className="border-2 border-gray-300 rounded-lg p-2 mb-2"
 				placeholder="Search"
 				onChange={(e) => {
-					const filteredFlag = flags?.filter((flag) => {
-						return flag.flag.toLowerCase().includes(e.target.value.toLowerCase());
-					});
+					if (!flagsArgs) return;
 
-					const filteredUsage = flags?.filter((flag) => {
-						return flag.usage.toLowerCase().includes(e.target.value.toLowerCase());
-					});
+					const searchValue = e.target.value.toLowerCase();
+					if (searchValue === "") {
+						setFlagsToDisplay(flagsArgs);
+						return;
+					}
 
-					setData([...filteredFlag!, ...filteredUsage!]);
+					const filtered = flagsArgs.filter(
+						(flag) => flag.flag.toLowerCase().includes(searchValue) || flag.usage.toLowerCase().includes(searchValue)
+					);
+
+					setFlagsToDisplay(filtered);
 				}}
 			/>
-			<FlagsTable flags={data} />
+			<FlagsTable flags={flagsToDisplay} />
 		</div>
 	);
 };
