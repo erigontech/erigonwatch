@@ -10,7 +10,7 @@ export const FlagsSection = () => {
 	const flagsArgs = useSelector(selectFlagsForNode);
 
 	useEffect(() => {
-		if (!flagsArgs) {
+		if (!flagsArgs || flagsArgs.length === 0) {
 			getNodeFlags();
 		} else {
 			setFlagsToDisplay(flagsArgs);

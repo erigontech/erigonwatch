@@ -108,9 +108,11 @@ export const TimeChart = ({ valueData, timeData, title }: { valueData: number[];
 							const formatTime = (value: number): string => {
 								if (value === 0) return "0s";
 
+								value = value * 20; //one point is 20 seconds
+
 								const hours = Math.floor(value / 3600);
 								const minutes = Math.floor((value % 3600) / 60);
-								const seconds = value % 60;
+								const seconds = Math.floor(value % 60);
 
 								if (hours > 0) {
 									return `${hours}h ${minutes}m ${seconds}s`;

@@ -67,7 +67,6 @@ const NewTxPoolDashboard: React.FC = () => {
 
 	useEffect(() => {
 		client.subscribe("txpool", (data) => {
-			//console.log("Received transaction update:", data);
 			if (data.event) {
 				console.log("Received transaction update:", data);
 				updatesRef.current.push(data);

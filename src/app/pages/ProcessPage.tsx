@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectActiveNodeId, selectFlagsForNode, selectNodeDetails, selectReorgForNode, selectSyncStagesForNode } from "../store/appSlice";
+import { selectActiveNodeId, selectNodeDetails, selectReorgForNode, selectSyncStagesForNode } from "../store/appSlice";
 import { DetailsSection } from "../components/DetailsSection/detailsSection";
 
 export const ProcessPage = () => {
