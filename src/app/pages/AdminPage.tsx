@@ -8,6 +8,10 @@ import { BUTTON_BULE, BUTTON_RED } from "../../helpers/colors";
 import { resetNetworkStateToMockState } from "../store/networkSlice";
 import { Popup } from "../components/Popup/Popup";
 import { NodeConnectionType, resetConectionState, selectNodeConnectionType } from "../store/connectionSlice";
+import { resetHeadersState } from "../store/headersSlice";
+import { resetSyncStagesState } from "../store/syncStagesSlice";
+import { resetSystemInfoState } from "../store/systemInfoSlice";
+import { resetIssueState } from "../store/issuesSlice";
 
 export const AdminPage = () => {
 	const dispatch = useDispatch();
@@ -61,6 +65,11 @@ export const AdminPage = () => {
 						dispatch(resetAppStateToMockState());
 						dispatch(resetNetworkStateToMockState());
 						dispatch(resetConectionState());
+						dispatch(resetHeadersState());
+						dispatch(resetSyncStagesState());
+						dispatch(resetSystemInfoState());
+						dispatch(resetIssueState());
+
 						setShowClearDataPopup(false);
 					}}
 					onNegativeClick={() => setShowClearDataPopup(false)}

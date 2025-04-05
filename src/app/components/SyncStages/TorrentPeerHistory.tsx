@@ -196,7 +196,9 @@ export const TorrentPeersHistory = ({ peer }: TorrentPeersHistoryProps) => {
 					data: data.xAxis[0].data,
 					valueFormatter: (value) => {
 						const formatTime = (value: number): string => {
-							if (value === 0) return "Time: 0s";
+							if (value === 0) return "0s";
+
+							value = value * 20; //one point is 20 seconds
 
 							const hours = Math.floor(value / 3600);
 							const minutes = Math.floor((value % 3600) / 60);
@@ -247,7 +249,9 @@ export const TorrentPeersHistory = ({ peer }: TorrentPeersHistoryProps) => {
 					data: data.xAxis[0].data,
 					valueFormatter: (value) => {
 						const formatTime = (value: number): string => {
-							if (value === 0) return "Time: 0s";
+							if (value === 0) return "0s";
+
+							value = value * 20; //one point is 20 seconds
 
 							const hours = Math.floor(value / 3600);
 							const minutes = Math.floor((value % 3600) / 60);
@@ -298,7 +302,9 @@ export const TorrentPeersHistory = ({ peer }: TorrentPeersHistoryProps) => {
 					data: data.xAxis[0].data,
 					valueFormatter: (value) => {
 						const formatTime = (value: number): string => {
-							if (value === 0) return "Time: 0s";
+							if (value === 0) return "0s";
+
+							value = value * 20; //one point is 20 seconds
 
 							const hours = Math.floor(value / 3600);
 							const minutes = Math.floor((value % 3600) / 60);

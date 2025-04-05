@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { selectSnapshotDownloadStatusesForNode, selectTorrrentPeersForNode } from "../store/syncStagesSlice";
 import { selectFlagsForNode } from "../store/appSlice";
 import { FlagsDetailsTable } from "../components/Flags/FlagsDetailsTable";
@@ -16,6 +16,7 @@ import { DownloaderOverviewTable, OverviewTableColumn } from "../components/Down
 import { TorrentPeersTable } from "../components/SyncStages/TorrentPeersTable";
 import { SegmentsTable } from "../components/SyncStages/SegmentsTable";
 import { TimeChart } from "../components/Charts/TimeChart";
+import { getNodeFlags } from "../../Network/APIGateway";
 
 export const NetworkDownloaderPage = () => {
 	const syncStatus = useSelector(selectSnapshotDownloadStatusesForNode);
@@ -25,6 +26,12 @@ export const NetworkDownloaderPage = () => {
 	const navigate = useNavigate();
 	const handleIssuesClick = () => navigate("/issues");
 	const peers = useSelector(selectTorrrentPeersForNode);
+
+	useEffect(() => {
+		if (!allFlags || allFlags.length === 0) {
+			getNodeFlags();
+		}
+	}, [allFlags]);
 
 	const flags = allFlags.filter((flag) => {
 		return downloaderFlags.includes(flag.flag);
