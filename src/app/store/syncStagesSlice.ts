@@ -276,7 +276,6 @@ export const syncStagesSlice = createSlice({
 				state.snapshotDownloadStatus.push(action.payload);
 			}
 
-			console.log("increasing diagram time 1 ", state.diagramTime);
 			state.diagramTime += 1;
 		},
 		setSnapshotIndexStatus: (state, action: PayloadAction<NodeSnapshotIndexStatus>) => {
