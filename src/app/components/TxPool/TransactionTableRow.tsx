@@ -36,7 +36,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						xs={12}
 					>
 						<Typography variant="body2">
-							<strong>Hash:</strong> {"0x" + tx.tx.hash}
+							<strong>Hash:</strong> {"0x" + tx?.tx?.hash || "N/A"}
 						</Typography>
 						<Divider sx={{ my: 1 }} />
 					</Grid>
@@ -63,7 +63,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						sm={6}
 					>
 						<Typography variant="body2">
-							<strong>From:</strong> {tx.tx.from}
+							<strong>From:</strong> {tx?.tx?.from || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -72,7 +72,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						sm={6}
 					>
 						<Typography variant="body2">
-							<strong>To:</strong> {tx.tx.to || "Contract Creation"}
+							<strong>To:</strong> {tx?.tx?.to || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -99,7 +99,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Type:</strong> {tx.tx.type || "Legacy"}
+							<strong>Type:</strong> {tx?.tx?.type || "Legacy"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -117,7 +117,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Gas Price:</strong> {tx.tx.gasPrice?.toString() || "N/A"}
+							<strong>Gas Price:</strong> {tx?.tx?.gasPrice?.toString() || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -126,7 +126,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Max Fee:</strong> {tx.tx.maxFeePerGas?.toString() || "N/A"}
+							<strong>Max Fee:</strong> {tx?.tx?.maxFeePerGas?.toString() || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -135,7 +135,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Max Priority Fee:</strong> {tx.tx.maxPriorityFeePerGas?.toString() || "N/A"}
+							<strong>Max Priority Fee:</strong> {tx?.tx?.maxPriorityFeePerGas?.toString() || "N/A"}
 						</Typography>
 					</Grid>
 					{/*tx.tx.data !== "0x" && (
@@ -207,7 +207,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						xs={12}
 					>
 						<Typography variant="body2">
-							<strong>Hash:</strong> {"0x" + tx.tx.hash}
+							<strong>Hash:</strong> {"0x" + tx?.tx?.hash || "N/A"}
 						</Typography>
 						<Divider sx={{ my: 1 }} />
 					</Grid>
@@ -217,7 +217,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={6}
 					>
 						<Typography variant="body2">
-							<strong>From:</strong> {tx.tx.from}
+							<strong>From:</strong> {tx?.tx?.from || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -226,7 +226,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={6}
 					>
 						<Typography variant="body2">
-							<strong>To:</strong> {tx.tx.to || "Contract Creation"}
+							<strong>To:</strong> {tx?.tx?.to || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -253,7 +253,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Type:</strong> {tx.tx.type || "Legacy"}
+							<strong>Type:</strong> {tx?.tx?.type || "Legacy"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -262,7 +262,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Gas Limit:</strong> {tx.tx.gasLimit.toString()}
+							<strong>Gas Limit:</strong> {tx?.tx?.gasLimit?.toString() || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -271,7 +271,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Gas Price:</strong> {tx.tx.gasPrice?.toString() || "N/A"}
+							<strong>Gas Price:</strong> {tx?.tx?.gasPrice?.toString() || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -280,7 +280,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Max Fee:</strong> {tx.tx.maxFeePerGas?.toString() || "N/A"}
+							<strong>Max Fee:</strong> {tx?.tx?.maxFeePerGas?.toString() || "N/A"}
 						</Typography>
 					</Grid>
 					<Grid
@@ -289,7 +289,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Max Priority Fee:</strong> {tx.tx.maxPriorityFeePerGas?.toString() || "N/A"}
+							<strong>Max Priority Fee:</strong> {tx?.tx?.maxPriorityFeePerGas?.toString() || "N/A"}
 						</Typography>
 					</Grid>
 					{/*tx.tx.data !== "0x" && (

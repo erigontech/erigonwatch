@@ -142,7 +142,7 @@ const NewTxPoolDashboard: React.FC = () => {
 
 	const totalIncomeTnxs = txPoolData.length;
 	const avgGasPrice = txPoolData.length
-		? txPoolData.reduce((sum, tx) => sum + Number(tx.tx.gasPrice || tx.tx.maxFeePerGas), 0) / txPoolData.length / 1e9
+		? txPoolData.reduce((sum, tx) => sum + Number(tx?.tx?.gasPrice || tx?.tx?.maxFeePerGas), 0) / txPoolData.length / 1e9
 		: 0;
 	const blobTransactions = txPoolData.filter((tx) => tx.blobHashes && tx.blobHashes.length > 0).length;
 	const discardedTransactions = txPoolData.filter((tx) => tx.discardReason !== "" && tx.discardReason !== "success").length;
