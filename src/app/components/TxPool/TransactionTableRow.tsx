@@ -21,6 +21,21 @@ function toMaskString(value: number): string {
 	return `0b${mask}`;
 }
 
+const getTransactionType = (type: number | null | undefined): string => {
+	if (type === null || type === undefined) return "Error: type is null";
+
+	const typeMap: { [key: number]: string } = {
+		0: "Legacy",
+		1: "Access List",
+		2: "Dynamic Fee",
+		3: "Blob",
+		4: "Set Code",
+		5: "Account Abstraction"
+	};
+
+	return typeMap[type] || `Unknown (${type})`;
+};
+
 const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => {
 	const tx = data[index];
 
@@ -99,7 +114,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Type:</strong> {tx?.tx?.type || "Legacy"}
+							<strong>Type:</strong> {getTransactionType(tx?.tx?.type)}
 						</Typography>
 					</Grid>
 					<Grid
@@ -253,7 +268,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						sm={4}
 					>
 						<Typography variant="body2">
-							<strong>Type:</strong> {tx?.tx?.type || "Legacy"}
+							<strong>Type:</strong> {getTransactionType(tx?.tx?.type)}
 						</Typography>
 					</Grid>
 					<Grid
