@@ -1,10 +1,54 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Card, CardContent, Typography, Grid } from "@mui/material";
-import "chart.js/auto";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import {
+	Card,
+	CardContent,
+	Typography,
+	Grid,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	Tabs,
+	Tab,
+	Box
+} from "@mui/material";
 import { WebSocketClient } from "../../Network/WebsocketClient";
-import { IncomingTxnUpdate, DiagTxn } from "../../Network/mockData/RandomTxGenerator";
 import { Transaction } from "ethers";
 import TransactionTable from "../components/TxPool/TransactionTable";
+import SendersTable from "../components/TxPool/SendersTable";
+
+export type DiagTxn = {
+	hash: string;
+	rlp: string;
+	senderID: number;
+	size: number;
+	creation: boolean;
+	dataLen: number;
+	accessListAddrCount: number;
+	accessListStorCount: number;
+	blobHashes: string[] | null;
+	isLocal: boolean;
+	discardReason: string;
+	pool: string;
+	tx: Transaction;
+	order: SubPoolMarker;
+};
+
+export type IncomingTxnUpdate = {
+	txns: DiagTxn[];
+	updates: { [key: string]: string[][] }; // Converted [32]byte array to string representation in JS
+};
+
+export type BlockUpdate = {
+	minedTxns: DiagTxn[];
+	unwoundTxns: DiagTxn[];
+	unwoundBlobTxns: DiagTxn[];
+	blkNum: number;
+	blkTime: number;
+};
 
 export enum SubPoolMarker {
 	NoNonceGaps = 0b010000,
@@ -16,20 +60,20 @@ export enum SubPoolMarker {
 }
 
 interface TxnUpdate {
-	//test this
 	txnHash: string;
 	pool: string;
 	event: string;
 	order: SubPoolMarker;
 }
 
-const txLimit = 100000; // Limit the number of transactions to prevent memory bloat
+// Limit the number of transactions to prevent memory bloat
+const TX_LIMIT = 1000; // Reduced from 100000 to 1000
+const BLOCK_HISTORY_LIMIT = 100;
 
 function decodeTransacrionRLP(diagTxn: DiagTxn): Transaction {
 	try {
 		let rlp = diagTxn.rlp;
 
-		// Convert base64 to hex
 		const base64ToHex = (base64: string) => {
 			const binaryString = atob(base64);
 			let hex = "";
@@ -40,13 +84,8 @@ function decodeTransacrionRLP(diagTxn: DiagTxn): Transaction {
 			return hex;
 		};
 
-		// Convert base64 RLP to hex
 		const hexRlp = base64ToHex(rlp);
-
-		// Decode the transaction
 		const tx = Transaction.from("0x" + hexRlp);
-
-		//compare tx with diagTxn is data the same
 		return tx;
 	} catch (error) {
 		console.error("Error decoding transaction:", error);
@@ -54,82 +93,106 @@ function decodeTransacrionRLP(diagTxn: DiagTxn): Transaction {
 	}
 }
 
+interface TabPanelProps {
+	children?: React.ReactNode;
+	index: number;
+	value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+	const { children, value, index, ...other } = props;
+
+	return (
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
+		>
+			{value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
+		</div>
+	);
+}
+
 const NewTxPoolDashboard: React.FC = () => {
 	const [txPoolData, setTxPoolData] = useState<DiagTxn[]>([]);
+	const [blockData, setBlockData] = useState<BlockUpdate[]>([]);
 	const [selectedTab, setSelectedTab] = useState(0);
-	const messagesRef = useRef<IncomingTxnUpdate[]>([]);
-	const updatesRef = useRef<TxnUpdate[]>([]);
+	const [mainTab, setMainTab] = useState(0);
 	const client = WebSocketClient.getInstance();
 
-	const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-		setSelectedTab(newValue);
-	};
+	// Memoize transaction statistics
+	const stats = useMemo(() => {
+		const result = {
+			all: txPoolData.length,
+			pending: 0,
+			baseFee: 0,
+			queued: 0,
+			blob: 0,
+			discarded: 0
+		};
+
+		// Single pass through the data
+		for (const tx of txPoolData) {
+			if (tx.pool === "Pending") result.pending++;
+			else if (tx.pool === "BaseFee") result.baseFee++;
+			else if (tx.pool === "Queued") result.queued++;
+			if (tx.blobHashes && tx.blobHashes.length > 0) result.blob++;
+			if (tx.discardReason !== "" && tx.discardReason !== "success") result.discarded++;
+		}
+
+		return result;
+	}, [txPoolData]);
+
+	const senderStats = Object.entries(
+		txPoolData.reduce((acc: Record<string, number>, tx) => {
+			if (tx.tx?.from) {
+				acc[tx.tx.from] = (acc[tx.tx.from] || 0) + 1;
+			}
+			return acc;
+		}, {})
+	).sort(([, a], [, b]) => b - a);
 
 	useEffect(() => {
 		client.subscribe("txpool", (data) => {
-			if (data.event) {
-				console.log("Received transaction update:", data);
-				updatesRef.current.push(data);
+			if (data.type === "poolChangeEvent") {
+				const update = data.message;
+				setTxPoolData((prev) => {
+					const newData = [...prev];
+					const txIndex = newData.findIndex((tx) => tx.hash === update.txnHash);
+
+					if (txIndex !== -1) {
+						if (update.event === "add") {
+							newData[txIndex].pool = update.pool;
+							newData[txIndex].order = update.order;
+						} else {
+							// Remove transaction if it's deleted
+							newData.splice(txIndex, 1);
+						}
+					}
+
+					// Keep only the most recent transactions
+					return newData.slice(0, TX_LIMIT);
+				});
+			} else if (data.type === "blockUpdate") {
+				setBlockData((prev) => [data.message, ...prev].slice(0, BLOCK_HISTORY_LIMIT));
 			} else {
-				messagesRef.current.push(data);
+				const newTxns = data.message.txns;
+				initTransaction(newTxns);
+				setTxPoolData((prev) => {
+					// Remove older transactions if we're exceeding the limit
+					const combinedTxns = [...newTxns, ...prev];
+					const uniqueTxns = Array.from(new Map(combinedTxns.map((tx) => [tx.hash, tx])).values());
+					return uniqueTxns.slice(0, TX_LIMIT);
+				});
 			}
 		});
 
-		// Define the beforeunload handler to unsubscribe early
-		const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-			client.unsubscribe("txpool");
-			event.preventDefault();
-		};
-
-		window.addEventListener("beforeunload", handleBeforeUnload);
-
 		return () => {
-			window.removeEventListener("beforeunload", handleBeforeUnload);
 			client.unsubscribe("txpool");
 		};
 	}, []);
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			if (messagesRef.current.length > 0 || updatesRef.current.length > 0) {
-				// Copy messagesRef to prevent mutations affecting updates
-				const copyMessagesRef = [...messagesRef.current];
-				const copyUpdatesRef = [...updatesRef.current];
-				setTxPoolData((prev) => {
-					const newTxns = copyMessagesRef.flatMap((msg) => msg.txns);
-					// Decode and set tx field for new transactions
-					/*newTxns.forEach((txn) => {
-						if (txn?.rlp) {
-							const tx = decodeTransacrionRLP(txn);
-							txn.tx = tx;
-						}
-					});*/
-					initTransaction(newTxns);
-					const allTxns = [...newTxns, ...prev].slice(0, txLimit); // Keep only latest txLimit txns
-
-					copyUpdatesRef.forEach((update) => {
-						const tx = allTxns.find((tx) => tx.hash === update.txnHash);
-						if (tx) {
-							if (update.event === "add") {
-								tx.pool = update.pool;
-							} else if (update.event === "remove") {
-								tx.pool = "";
-							}
-							tx.order = update.order;
-						}
-					});
-
-					//console.log("allTxns", allTxns);
-					return allTxns;
-				});
-
-				messagesRef.current = [];
-				updatesRef.current = [];
-			}
-		}, 500);
-
-		return () => clearInterval(interval);
-	}, []); // Empty dependency array ensures this effect runs only once
 
 	function initTransaction(txns: DiagTxn[]) {
 		txns.forEach((txn) => {
@@ -140,137 +203,90 @@ const NewTxPoolDashboard: React.FC = () => {
 		});
 	}
 
-	const totalIncomeTnxs = txPoolData.length;
-	const avgGasPrice = txPoolData.length
-		? txPoolData.reduce((sum, tx) => sum + Number(tx?.tx?.gasPrice || tx?.tx?.maxFeePerGas), 0) / txPoolData.length / 1e9
-		: 0;
-	const blobTransactions = txPoolData.filter((tx) => tx.blobHashes && tx.blobHashes.length > 0).length;
-	const discardedTransactions = txPoolData.filter((tx) => tx.discardReason !== "" && tx.discardReason !== "success").length;
+	const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+		setSelectedTab(newValue);
+	};
+
+	const handleMainTabChange = (event: React.SyntheticEvent, newValue: number) => {
+		setMainTab(newValue);
+	};
 
 	return (
-		<Grid
-			container
-			spacing={3}
-			sx={{ padding: 3 }}
-		>
-			<Grid
-				item
-				xs={12}
-				md={4}
+		<Box sx={{ padding: 2 }}>
+			<Tabs
+				value={mainTab}
+				onChange={handleMainTabChange}
+				sx={{ mb: 1 }}
 			>
-				<Card
-					onClick={() => setSelectedTab(1)}
-					sx={{ cursor: "pointer" }}
-				>
-					<CardContent>
-						<Typography variant="h6">Pending Pool</Typography>
-						<Typography variant="h4">{txPoolData.filter((tx) => tx.pool === "Pending").length} txns</Typography>
-					</CardContent>
-				</Card>
-			</Grid>
-			<Grid
-				item
-				xs={12}
-				md={4}
-			>
-				<Card
-					onClick={() => setSelectedTab(2)}
-					sx={{ cursor: "pointer" }}
-				>
-					<CardContent>
-						<Typography variant="h6">BaseFee Pool</Typography>
-						<Typography variant="h4">{txPoolData.filter((tx) => tx.pool === "BaseFee").length} txns</Typography>
-					</CardContent>
-				</Card>
-			</Grid>
-			<Grid
-				item
-				xs={12}
-				md={4}
-			>
-				<Card
-					onClick={() => setSelectedTab(3)}
-					sx={{ cursor: "pointer" }}
-				>
-					<CardContent>
-						<Typography variant="h6">Queued Pool</Typography>
-						<Typography variant="h4">{txPoolData.filter((tx) => tx.pool === "Queued").length} txns</Typography>
-					</CardContent>
-				</Card>
-			</Grid>
+				<Tab label="Pool Content" />
+				<Tab label="Recent Blocks" />
+				<Tab label="Top Senders" />
+			</Tabs>
 
-			<Grid
-				item
-				xs={12}
-				md={3}
+			<TabPanel
+				value={mainTab}
+				index={0}
 			>
-				<Card
-					onClick={() => setSelectedTab(0)}
-					sx={{ cursor: "pointer" }}
-				>
-					<CardContent>
-						<Typography variant="h6">Total Incoming txns</Typography>
-						<Typography variant="h4">{totalIncomeTnxs} txns</Typography>
-					</CardContent>
-				</Card>
-			</Grid>
+				<Box sx={{ height: "calc(100vh - 100px)", overflow: "auto" }}>
+					<TransactionTable
+						transactions={txPoolData}
+						selectedTab={selectedTab}
+						onTabChange={handleTabChange}
+						stats={stats}
+					/>
+				</Box>
+			</TabPanel>
 
-			<Grid
-				item
-				xs={12}
-				md={3}
+			<TabPanel
+				value={mainTab}
+				index={1}
 			>
 				<Card>
-					<CardContent>
-						<Typography variant="h6">Avg Gas Price</Typography>
-						<Typography variant="h4">{avgGasPrice.toFixed(2)} Gwei</Typography>
+					<CardContent sx={{ p: 1 }}>
+						<TableContainer
+							component={Paper}
+							sx={{ maxHeight: "calc(100vh - 120px)" }}
+						>
+							<Table
+								size="small"
+								stickyHeader
+							>
+								<TableHead>
+									<TableRow>
+										<TableCell>Block Number</TableCell>
+										<TableCell>Mined Transactions</TableCell>
+										<TableCell>Unwound Transactions</TableCell>
+										<TableCell>Unwound Blob Transactions</TableCell>
+										<TableCell>Block Time</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{blockData.map((block, index) => (
+										<TableRow key={index}>
+											<TableCell>{block.blkNum}</TableCell>
+											<TableCell>{block?.minedTxns?.length}</TableCell>
+											<TableCell>{block?.unwoundTxns?.length}</TableCell>
+											<TableCell>{block?.unwoundBlobTxns?.length}</TableCell>
+											<TableCell>{new Date(block.blkTime * 1000).toLocaleString()}</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
 					</CardContent>
 				</Card>
-			</Grid>
+			</TabPanel>
 
-			<Grid
-				item
-				xs={12}
-				md={3}
+			<TabPanel
+				value={mainTab}
+				index={2}
 			>
-				<Card
-					onClick={() => setSelectedTab(4)}
-					sx={{ cursor: "pointer" }}
-				>
-					<CardContent>
-						<Typography variant="h6">Blob Transactions</Typography>
-						<Typography variant="h4">{blobTransactions}</Typography>
-					</CardContent>
-				</Card>
-			</Grid>
-
-			<Grid
-				item
-				xs={12}
-				md={3}
-			>
-				<Card
-					onClick={() => setSelectedTab(5)}
-					sx={{ cursor: "pointer" }}
-				>
-					<CardContent>
-						<Typography variant="h6">Discarded Transactions</Typography>
-						<Typography variant="h4">{discardedTransactions}</Typography>
-					</CardContent>
-				</Card>
-			</Grid>
-
-			<Grid
-				item
-				xs={12}
-			>
-				<TransactionTable
-					transactions={txPoolData}
-					selectedTab={selectedTab}
-					onTabChange={handleTabChange}
+				<SendersTable
+					senders={senderStats}
+					allTransactions={txPoolData}
 				/>
-			</Grid>
-		</Grid>
+			</TabPanel>
+		</Box>
 	);
 };
 
