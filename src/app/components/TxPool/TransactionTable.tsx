@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useMemo, useCallback } from "react";
 import { Card, CardContent, Typography, Paper, Tabs, Tab } from "@mui/material";
 import { FixedSizeList as List } from "react-window";
-import { DiagTxn } from "../../../Network/mockData/RandomTxGenerator";
+import { DiagTxn } from "../../pages/NewTxPoolDashboard";
 import { NormalRow, DiscardedRow } from "./TransactionTableRow";
 
 interface TabPanelProps {
@@ -14,6 +14,14 @@ interface TransactionTableProps {
 	transactions: DiagTxn[];
 	selectedTab: number;
 	onTabChange: (event: React.SyntheticEvent, newValue: number) => void;
+	stats: {
+		all: number;
+		pending: number;
+		baseFee: number;
+		queued: number;
+		blob: number;
+		discarded: number;
+	};
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -32,26 +40,49 @@ function TabPanel(props: TabPanelProps) {
 	);
 }
 
-const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, selectedTab, onTabChange }) => {
-	const getFilteredTransactions = (tabIndex: number) => {
-		switch (tabIndex) {
-			case 1: // Pending
-				return transactions.filter((tx) => tx.pool === "Pending");
-			case 2: // Base Fee
-				return transactions.filter((tx) => tx.pool === "BaseFee");
-			case 3: // Queued
-				return transactions.filter((tx) => tx.pool === "Queued");
-			case 4: // Blob Transactions
-				return transactions.filter((tx) => tx.blobHashes && tx.blobHashes.length > 0);
-			case 5: // Discarded Transactions
-				return transactions.filter((tx) => tx.discardReason !== "" && tx.discardReason !== "success");
-			default: // All
-				return transactions;
-		}
-	};
+const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, selectedTab, onTabChange, stats }) => {
+	const getFilteredTransactions = useCallback(
+		(tabIndex: number) => {
+			switch (tabIndex) {
+				case 1: // Pending
+					return transactions.filter((tx) => tx.pool === "Pending");
+				case 2: // Base Fee
+					return transactions.filter((tx) => tx.pool === "BaseFee");
+				case 3: // Queued
+					return transactions.filter((tx) => tx.pool === "Queued");
+				case 4: // Blob Transactions
+					return transactions.filter((tx) => tx.blobHashes && tx.blobHashes.length > 0);
+				case 5: // Discarded Transactions
+					return transactions.filter((tx) => tx.discardReason !== "" && tx.discardReason !== "success");
+				default: // All
+					return transactions;
+			}
+		},
+		[transactions]
+	);
 
-	const filteredTransactions = getFilteredTransactions(selectedTab);
+	const filteredTransactions = useMemo(() => getFilteredTransactions(selectedTab), [selectedTab, getFilteredTransactions]);
 	const isDiscardedTab = selectedTab === 5;
+
+	// Memoize the row renderer to prevent unnecessary re-renders
+	const rowRenderer = useCallback(
+		({ index, style, data }: { index: number; style: React.CSSProperties; data: DiagTxn[] }) => {
+			return isDiscardedTab ? (
+				<DiscardedRow
+					index={index}
+					style={style}
+					data={data}
+				/>
+			) : (
+				<NormalRow
+					index={index}
+					style={style}
+					data={data}
+				/>
+			);
+		},
+		[isDiscardedTab]
+	);
 
 	return (
 		<Card>
@@ -71,12 +102,12 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, selec
 						variant="scrollable"
 						scrollButtons="auto"
 					>
-						<Tab label="All" />
-						<Tab label="Pending" />
-						<Tab label="Base Fee" />
-						<Tab label="Queued" />
-						<Tab label="Blob Transactions" />
-						<Tab label="Discarded Transactions" />
+						<Tab label={`All (${stats.all})`} />
+						<Tab label={`Pending (${stats.pending})`} />
+						<Tab label={`Base Fee (${stats.baseFee})`} />
+						<Tab label={`Queued (${stats.queued})`} />
+						<Tab label={`Blob Transactions (${stats.blob})`} />
+						<Tab label={`Discarded (${stats.discarded})`} />
 					</Tabs>
 				</Paper>
 				<TabPanel
@@ -84,27 +115,14 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, selec
 					index={selectedTab}
 				>
 					<List
-						height={600}
+						height={650}
 						itemCount={filteredTransactions.length}
-						itemSize={selectedTab === 5 ? 200 : 150}
+						itemSize={isDiscardedTab ? 200 : 150}
 						width="100%"
 						itemData={filteredTransactions}
+						overscanCount={5}
 					>
-						{({ index, style, data }: { index: number; style: React.CSSProperties; data: DiagTxn[] }) =>
-							selectedTab === 5 ? (
-								<DiscardedRow
-									index={index}
-									style={style}
-									data={data}
-								/>
-							) : (
-								<NormalRow
-									index={index}
-									style={style}
-									data={data}
-								/>
-							)
-						}
+						{rowRenderer}
 					</List>
 				</TabPanel>
 			</CardContent>
@@ -112,4 +130,4 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions, selec
 	);
 };
 
-export default TransactionTable;
+export default React.memo(TransactionTable);

@@ -1,27 +1,5 @@
 import { Transaction } from "ethers";
-import { SubPoolMarker } from "../../app/pages/NewTxPoolDashboard";
-
-export type DiagTxn = {
-	hash: string;
-	rlp: string;
-	senderID: number;
-	size: number;
-	creation: boolean;
-	dataLen: number;
-	accessListAddrCount: number;
-	accessListStorCount: number;
-	blobHashes: string[] | null;
-	isLocal: boolean;
-	discardReason: string;
-	pool: string;
-	tx: Transaction;
-	order: SubPoolMarker;
-};
-
-export type IncomingTxnUpdate = {
-	txns: DiagTxn[];
-	updates: { [key: string]: string[][] }; // Converted [32]byte array to string representation in JS
-};
+import { DiagTxn, SubPoolMarker, IncomingTxnUpdate } from "../../app/pages/NewTxPoolDashboard";
 
 function randomBytesHex(length: number): string {
 	const array = new Uint8Array(length);
@@ -58,6 +36,7 @@ function generateRandomDiagTxn(): DiagTxn {
 	if (Math.random() < 0.5) order |= SubPoolMarker.IsLocal;
 
 	return {
+		hash: randomBytesHex(32),
 		rlp: randomBytesHex(32),
 		senderID: randomInt(1, 2 ** 32),
 		size: randomInt(100, 10000),

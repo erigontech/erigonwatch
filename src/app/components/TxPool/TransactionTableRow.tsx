@@ -1,7 +1,6 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { Grid, Paper, Typography, Divider, Chip } from "@mui/material";
-import { DiagTxn } from "../../../Network/mockData/RandomTxGenerator";
-import { SubPoolMarker } from "../../pages/NewTxPoolDashboard";
+import { DiagTxn, SubPoolMarker } from "../../pages/NewTxPoolDashboard";
 
 interface TransactionTableRowProps {
 	index: number;
@@ -36,8 +35,13 @@ const getTransactionType = (type: number | null | undefined): string => {
 	return typeMap[type] || `Unknown (${type})`;
 };
 
-const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => {
+const BaseRow: React.FC<TransactionTableRowProps> = memo(({ index, style, data }) => {
 	const tx = data[index];
+
+	// Memoize expensive calculations
+	const value = useMemo(() => (Number(tx.tx.value) / 1e18).toFixed(4), [tx.tx.value]);
+	const subPoolMarkers = useMemo(() => getSubPoolMarkers(tx.order), [tx.order]);
+	const transactionType = useMemo(() => getTransactionType(tx?.tx?.type), [tx?.tx?.type]);
 
 	return (
 		<div style={{ ...style, height: "auto" }}>
@@ -50,17 +54,20 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 						item
 						xs={12}
 					>
-						<Typography variant="body2">
-							<strong>Hash:</strong> {"0x" + tx?.tx?.hash || "N/A"}
-						</Typography>
-						<Divider sx={{ my: 1 }} />
-					</Grid>
-					<Grid
-						item
-						xs={12}
-					>
-						<div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "4px" }}>
-							{getSubPoolMarkers(tx.order).map((marker, idx) => (
+						<div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+							<Chip
+								label={"Type: " + transactionType}
+								size="small"
+								color={"primary"}
+								variant="outlined"
+							/>
+							<Chip
+								label={"Pool: " + tx.pool || "Deleted"}
+								size="small"
+								color={tx.pool ? "primary" : "error"}
+								variant="outlined"
+							/>
+							{subPoolMarkers.map((marker, idx) => (
 								<Chip
 									key={idx}
 									label={marker}
@@ -71,6 +78,15 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 								/>
 							))}
 						</div>
+					</Grid>
+					<Grid
+						item
+						xs={12}
+						sm={12}
+					>
+						<Typography variant="body2">
+							<strong>Hash:</strong> {"0x" + tx?.tx?.hash || "N/A"}
+						</Typography>
 					</Grid>
 					<Grid
 						item
@@ -93,7 +109,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Nonce:</strong> {tx.tx.nonce}
@@ -102,25 +118,16 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
-							<strong>Value:</strong> {(Number(tx.tx.value) / 1e18).toFixed(4)} ETH
+							<strong>Value:</strong> {value} ETH
 						</Typography>
 					</Grid>
 					<Grid
 						item
 						xs={12}
-						sm={4}
-					>
-						<Typography variant="body2">
-							<strong>Type:</strong> {getTransactionType(tx?.tx?.type)}
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Gas Limit:</strong> {tx.tx.gasLimit.toString()}
@@ -129,7 +136,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Gas Price:</strong> {tx?.tx?.gasPrice?.toString() || "N/A"}
@@ -138,7 +145,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Max Fee:</strong> {tx?.tx?.maxFeePerGas?.toString() || "N/A"}
@@ -147,7 +154,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Max Priority Fee:</strong> {tx?.tx?.maxPriorityFeePerGas?.toString() || "N/A"}
@@ -181,7 +188,7 @@ const BaseRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => 
 			</Paper>
 		</div>
 	);
-};
+});
 
 const DiscardReason: React.FC<{ reason: string }> = ({ reason }) => (
 	<Grid
@@ -206,10 +213,16 @@ const DiscardReason: React.FC<{ reason: string }> = ({ reason }) => (
 	</Grid>
 );
 
-export const NormalRow: React.FC<TransactionTableRowProps> = (props) => <BaseRow {...props} />;
+export const NormalRow: React.FC<TransactionTableRowProps> = memo((props) => <BaseRow {...props} />);
 
-export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style, data }) => {
+export const DiscardedRow: React.FC<TransactionTableRowProps> = memo(({ index, style, data }) => {
 	const tx = data[index];
+
+	// Memoize expensive calculations
+	const value = useMemo(() => (Number(tx.tx.value) / 1e18).toFixed(4), [tx.tx.value]);
+	const subPoolMarkers = useMemo(() => getSubPoolMarkers(tx.order), [tx.order]);
+	const transactionType = useMemo(() => getTransactionType(tx?.tx?.type), [tx?.tx?.type]);
+
 	return (
 		<div style={{ ...style, height: "auto" }}>
 			<Paper style={{ padding: "12px", marginBottom: "4px" }}>
@@ -221,10 +234,39 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 						item
 						xs={12}
 					>
+						<div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+							<Chip
+								label={"Type: " + transactionType}
+								size="small"
+								color={"primary"}
+								variant="outlined"
+							/>
+							<Chip
+								label={"Pool: " + tx.pool || "Deleted"}
+								size="small"
+								color={tx.pool ? "primary" : "error"}
+								variant="outlined"
+							/>
+							{subPoolMarkers.map((marker, idx) => (
+								<Chip
+									key={idx}
+									label={marker}
+									size="small"
+									color="primary"
+									variant="outlined"
+									sx={{ fontFamily: "monospace" }}
+								/>
+							))}
+						</div>
+					</Grid>
+					<Grid
+						item
+						xs={12}
+						sm={12}
+					>
 						<Typography variant="body2">
 							<strong>Hash:</strong> {"0x" + tx?.tx?.hash || "N/A"}
 						</Typography>
-						<Divider sx={{ my: 1 }} />
 					</Grid>
 					<Grid
 						item
@@ -247,7 +289,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Nonce:</strong> {tx.tx.nonce}
@@ -256,25 +298,16 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
-							<strong>Value:</strong> {(Number(tx.tx.value) / 1e18).toFixed(4)} ETH
+							<strong>Value:</strong> {value} ETH
 						</Typography>
 					</Grid>
 					<Grid
 						item
 						xs={12}
-						sm={4}
-					>
-						<Typography variant="body2">
-							<strong>Type:</strong> {getTransactionType(tx?.tx?.type)}
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Gas Limit:</strong> {tx?.tx?.gasLimit?.toString() || "N/A"}
@@ -283,7 +316,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Gas Price:</strong> {tx?.tx?.gasPrice?.toString() || "N/A"}
@@ -292,7 +325,7 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Max Fee:</strong> {tx?.tx?.maxFeePerGas?.toString() || "N/A"}
@@ -301,39 +334,15 @@ export const DiscardedRow: React.FC<TransactionTableRowProps> = ({ index, style,
 					<Grid
 						item
 						xs={12}
-						sm={4}
+						sm={2}
 					>
 						<Typography variant="body2">
 							<strong>Max Priority Fee:</strong> {tx?.tx?.maxPriorityFeePerGas?.toString() || "N/A"}
 						</Typography>
 					</Grid>
-					{/*tx.tx.data !== "0x" && (
-						<Grid
-							item
-							xs={12}
-						>
-							<Divider sx={{ my: 1 }} />
-							<Typography variant="body2">
-								<strong>Data:</strong>
-							</Typography>
-							<Typography
-								variant="body2"
-								sx={{
-									wordBreak: "break-all",
-									backgroundColor: "rgba(0, 0, 0, 0.05)",
-									p: 1,
-									borderRadius: 1,
-									fontFamily: "monospace",
-									fontSize: "0.8rem"
-								}}
-							>
-								{tx.tx.data}
-							</Typography>
-						</Grid>
-					)*/}
 					<DiscardReason reason={tx.discardReason} />
 				</Grid>
 			</Paper>
 		</div>
 	);
-};
+});
