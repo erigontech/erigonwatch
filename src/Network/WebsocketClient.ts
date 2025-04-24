@@ -79,7 +79,7 @@ export class WebSocketClient {
 	}
 
 	subscribe(type: string, callback: (data: any) => void) {
-		setInterval(() => {
+		/*setInterval(() => {
 			if (current_idx < messageData.length) {
 				const data = messageData[current_idx].message;
 				callback(data);
@@ -87,7 +87,7 @@ export class WebSocketClient {
 			}
 		}, 100);
 
-		return;
+		return;*/
 
 		if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
 			this.connect();
