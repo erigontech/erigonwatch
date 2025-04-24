@@ -219,7 +219,7 @@ const NewTxPoolDashboard: React.FC = () => {
 				sx={{ mb: 1 }}
 			>
 				<Tab label="Pool Content" />
-				<Tab label="Recent Blocks" />
+				{/*<Tab label="Recent Blocks" />*/}
 				<Tab label="Top Senders" />
 			</Tabs>
 
@@ -237,7 +237,7 @@ const NewTxPoolDashboard: React.FC = () => {
 				</Box>
 			</TabPanel>
 
-			<TabPanel
+			{/*<TabPanel
 				value={mainTab}
 				index={1}
 			>
@@ -275,11 +275,11 @@ const NewTxPoolDashboard: React.FC = () => {
 						</TableContainer>
 					</CardContent>
 				</Card>
-			</TabPanel>
+			</TabPanel>*/}
 
 			<TabPanel
 				value={mainTab}
-				index={2}
+				index={1}
 			>
 				<SendersTable
 					senders={senderStats}
