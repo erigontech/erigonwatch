@@ -1,20 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
-import {
-	Card,
-	CardContent,
-	Typography,
-	Grid,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
-	Tabs,
-	Tab,
-	Box
-} from "@mui/material";
+import React, { useEffect, useState, useMemo } from "react";
+import { Tabs, Tab, Box } from "@mui/material";
 import { WebSocketClient } from "../../Network/WebsocketClient";
 import { Transaction } from "ethers";
 import TransactionTable from "../components/TxPool/TransactionTable";
@@ -57,13 +42,6 @@ export enum SubPoolMarker {
 	EnoughFeeCapBlock = 0b000010,
 	IsLocal = 0b000001,
 	BaseFeePoolBits = NoNonceGaps | EnoughBalance | NotTooMuchGas
-}
-
-interface TxnUpdate {
-	txnHash: string;
-	pool: string;
-	event: string;
-	order: SubPoolMarker;
 }
 
 // Limit the number of transactions to prevent memory bloat
@@ -115,9 +93,26 @@ function TabPanel(props: TabPanelProps) {
 	);
 }
 
+export interface SenderInfo {
+	senderId: number;
+	senderNonce: number;
+	senderBalance: string;
+	blockGasLimit: number;
+}
+
+export interface DisplaySenderInfo {
+	senderAddress: string;
+	transactions: DiagTxn[];
+	senderId: number;
+	senderNonce: number;
+	senderBalance: string;
+	blockGasLimit: number;
+}
+
 const NewTxPoolDashboard: React.FC = () => {
 	const [txPoolData, setTxPoolData] = useState<DiagTxn[]>([]);
 	const [blockData, setBlockData] = useState<BlockUpdate[]>([]);
+	const [senderData, setSenderData] = useState<SenderInfo[]>([]);
 	const [selectedTab, setSelectedTab] = useState(0);
 	const [mainTab, setMainTab] = useState(0);
 	const client = WebSocketClient.getInstance();
@@ -145,14 +140,40 @@ const NewTxPoolDashboard: React.FC = () => {
 		return result;
 	}, [txPoolData]);
 
-	const senderStats = Object.entries(
-		txPoolData.reduce((acc: Record<string, number>, tx) => {
-			if (tx.tx?.from) {
-				acc[tx.tx.from] = (acc[tx.tx.from] || 0) + 1;
+	const senderStats: DisplaySenderInfo[] = useMemo(() => {
+		// Group transactions by sender address
+		const txsBySender: Record<string, DiagTxn[]> = {};
+		txPoolData.forEach((tx) => {
+			const from = tx.tx?.from;
+			if (from) {
+				if (!txsBySender[from]) txsBySender[from] = [];
+				txsBySender[from].push(tx);
 			}
-			return acc;
-		}, {})
-	).sort(([, a], [, b]) => b - a);
+		});
+
+		// Build DisplaySenderInfo for each sender
+		return Object.entries(txsBySender).map(([address, transactions]) => {
+			// Try to find sender info (if mapping is possible)
+			// Here, we just pick the first senderData entry for demonstration
+			// You may want to improve this logic if you can map address <-> senderId
+
+			//look for senderid
+			const senderId = transactions[0]?.senderID || 0;
+			let info = senderData.find((info) => info.senderId === senderId);
+			if (!info) {
+				info = { senderId: senderId, senderNonce: 0, senderBalance: "0", blockGasLimit: 0 };
+			}
+
+			return {
+				senderAddress: address,
+				transactions,
+				senderId: info.senderId,
+				senderNonce: info.senderNonce,
+				senderBalance: info.senderBalance,
+				blockGasLimit: info.blockGasLimit
+			};
+		});
+	}, [txPoolData, senderData]);
 
 	useEffect(() => {
 		client.subscribe("txpool", (data) => {
@@ -177,6 +198,21 @@ const NewTxPoolDashboard: React.FC = () => {
 				});
 			} else if (data.type === "blockUpdate") {
 				setBlockData((prev) => [data.message, ...prev].slice(0, BLOCK_HISTORY_LIMIT));
+			} else if (data.type === "senderInfoUpdate") {
+				console.log("senderInfoUpdate", data.message);
+				try {
+					setSenderData((prev) => [
+						...prev,
+						{
+							senderId: data.message.senderId,
+							senderNonce: data.message.senderNonce,
+							senderBalance: data.message.senderBalance,
+							blockGasLimit: data.message.blockGasLimit
+						}
+					]);
+				} catch (error) {
+					console.error("Error parsing sender info:", error);
+				}
 			} else {
 				const newTxns = data.message.txns;
 				initTransaction(newTxns);
@@ -220,7 +256,7 @@ const NewTxPoolDashboard: React.FC = () => {
 			>
 				<Tab label="Pool Content" />
 				{/*<Tab label="Recent Blocks" />*/}
-				<Tab label="Top Senders" />
+				<Tab label="Senders" />
 			</Tabs>
 
 			<TabPanel

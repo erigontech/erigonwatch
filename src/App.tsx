@@ -19,15 +19,12 @@ import {
 	getHardwareInfo,
 	getHeaders,
 	getLogs,
-	getNodeCmdLineArgs,
-	getNodeFlags,
 	getNodeInfo,
 	getNodeVersion,
 	getPeers,
 	getReorgs,
 	getSession,
 	getSnapshotDownloadStatus,
-	getSnapshotFilesList,
 	getSyncStages
 } from "./Network/APIGateway";
 import { DataPage } from "./app/pages/DataPage";
@@ -41,13 +38,7 @@ import { NetworkDownloaderPage } from "./app/pages/NetworkDownloaderPage";
 import { Time } from "./helpers/time";
 import { PeerNetworkPage } from "./app/pages/PeerNetworkPage";
 import { PerformancePage } from "./app/pages/PerformancePage";
-//import raw from "./erigon.txt";
-//import statsjson from "./syncStats.json";
-import {
-	resetSyncStagesState,
-	selectSegmentPeersDiagDataForNode,
-	selectShouldFetchSnapshotFilesListForActiveNode
-} from "./app/store/syncStagesSlice";
+import { resetSyncStagesState, selectShouldFetchSnapshotFilesListForActiveNode } from "./app/store/syncStagesSlice";
 import { IssuesPage } from "./app/pages/IssuesPage";
 import { resetIssueState } from "./app/store/issuesSlice";
 import { isLocalVersion } from "./helpers/env";
@@ -212,56 +203,6 @@ function Layout() {
 		getBackendUrl();
 	}, []);
 
-	/*useEffect(() => {
-		//let prefix = "SyncStatistics";
-		let prefix = "Peers stats";
-		fetch(raw)
-			.then((r) => r.text())
-			.then((text) => {
-				let arr = stringToArrayBySeparator(text, "\n");
-				let bbbb = filterStringsByPrefix(arr, prefix);
-				let arrdddd: any[] = [];
-				bbbb.forEach((str) => {
-					let str2 = getStringByKeyFromString(str, "stats=");
-					let obj = JSON.parse(str2);
-					//check is object empty
-					if (typeof obj === "string") {
-						let obj2 = JSON.parse(obj);
-						arrdddd.push(obj2);
-						console.log(obj2);
-					}
-				});
-				saveObjectToFile(arrdddd, "peersStats");
-			});
-	}, []);
-
-	function saveObjectToFile(obj: any, filename: string) {
-		let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(obj));
-		let downloadAnchorNode = document.createElement("a");
-		downloadAnchorNode.setAttribute("href", dataStr);
-		downloadAnchorNode.setAttribute("download", filename + ".json");
-		document.body.appendChild(downloadAnchorNode); // required for firefox
-		downloadAnchorNode.click();
-		downloadAnchorNode.remove();
-	}
-
-	function getStringByKeyFromString(str: string, key: string): string {
-		let result = "";
-		if (str.includes(key)) {
-			let arr = str.split(key);
-			result = arr[1];
-		}
-		return result;
-	}
-
-	function stringToArrayBySeparator(str: string, separator: string): string[] {
-		return str.split(separator);
-	}
-
-	function filterStringsByPrefix(arr: string[], prefix: string): string[] {
-		return arr.filter((str) => str.includes(prefix));
-	}*/
-
 	useEffect(() => {
 		if (conectionType !== NodeConnectionType.Unknown) {
 			if (isLocalVersion()) {
@@ -294,8 +235,6 @@ function Layout() {
 			}
 		}
 	}, [activeNodeId]);
-
-	const perrsdiagData = useSelector(selectSegmentPeersDiagDataForNode);
 
 	const queryData = () => {
 		getHardwareInfo();

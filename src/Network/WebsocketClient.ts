@@ -1,13 +1,9 @@
 import { currentNodeUrl } from "./APIHandler";
-import { randomIncommingTxnUpdate } from "./mockData/RandomTxGenerator";
-//import { messageData } from "./mockData/people_mod";
-import { messageData } from "./mockData/people";
 
 let wsUrl = "ws";
 let current_idx = 0;
 
 export const websocketUrl = () => {
-	//return `ws://localhost:6062/${wsUrl}`;
 	const baseUrl = currentNodeUrl(true);
 	return `${baseUrl}/${wsUrl}`;
 };
@@ -79,16 +75,6 @@ export class WebSocketClient {
 	}
 
 	subscribe(type: string, callback: (data: any) => void) {
-		/*setInterval(() => {
-			if (current_idx < messageData.length) {
-				const data = messageData[current_idx].message;
-				callback(data);
-				current_idx++;
-			}
-		}, 100);
-
-		return;*/
-
 		if (this.socket.readyState === WebSocket.CLOSED || this.socket.readyState === WebSocket.CLOSING) {
 			this.connect();
 		}
@@ -131,17 +117,3 @@ export class WebSocketClient {
 		this.socket.send(message);
 	}
 }
-
-// Usage example
-/*const client = WebSocketClient.getInstance();
-
-client.subscribe("messageType1", (data) => {
-	console.log("Received data for messageType1:", data);
-});
-
-client.subscribe("messageType2", (data) => {
-	console.log("Received data for messageType2:", data);
-});
-
-// To send a message
-client.sendMessage({ type: "messageType1", data: { key: "value" } });*/
