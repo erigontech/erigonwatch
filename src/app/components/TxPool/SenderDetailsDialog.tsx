@@ -28,6 +28,9 @@ interface SenderDetailsDialogProps {
 	senderAddress: string;
 	transactionCount: number;
 	senderTransactions: DiagTxn[];
+	senderNonce?: number;
+	senderBalance?: string;
+	blockGasLimit?: number;
 }
 
 const formatValue = (value: bigint | undefined) => {
@@ -96,7 +99,15 @@ const formatMask = (order: number) => {
 	return `Mask: 0b${bits.join("")}`;
 };
 
-const SenderDetailsDialog: React.FC<SenderDetailsDialogProps> = ({ open, onClose, senderAddress, transactionCount, senderTransactions }) => {
+const SenderDetailsDialog: React.FC<SenderDetailsDialogProps> = ({
+	open,
+	onClose,
+	senderAddress,
+	transactionCount,
+	senderTransactions,
+	senderNonce,
+	senderBalance
+}) => {
 	const [showCopyAlert, setShowCopyAlert] = useState(false);
 	const alertTimeout = useRef<NodeJS.Timeout>();
 
@@ -137,6 +148,23 @@ const SenderDetailsDialog: React.FC<SenderDetailsDialogProps> = ({ open, onClose
 							/>
 						</Typography>
 						<Typography variant="body1">Total Transactions: {transactionCount}</Typography>
+						{senderNonce !== undefined && <Typography variant="body1">Current Nonce: {senderNonce}</Typography>}
+						{senderBalance !== undefined && (
+							<Typography variant="body1">
+								Balance:{" "}
+								<span>
+									{(() => {
+										try {
+											const eth = Number(BigInt(senderBalance)) / 1e18;
+											return eth.toLocaleString(undefined, { maximumFractionDigits: 5 });
+										} catch {
+											return "0";
+										}
+									})()}
+								</span>{" "}
+								ETH
+							</Typography>
+						)}
 					</Box>
 					<Divider sx={{ my: 2 }} />
 					<TableContainer
@@ -207,7 +235,14 @@ const SenderDetailsDialog: React.FC<SenderDetailsDialogProps> = ({ open, onClose
 										</TableCell>
 										<TableCell>
 											<CopyableValue
-												value={tx.tx?.value}
+												value={(() => {
+													try {
+														const eth = Number(BigInt(tx.tx?.value)) / 1e18;
+														return eth.toLocaleString(undefined, { maximumFractionDigits: 5 }) + " ETH";
+													} catch {
+														return "0 ETH";
+													}
+												})()}
 												onCopy={handleCopy}
 											/>
 										</TableCell>

@@ -8,72 +8,29 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
-	Paper,
 	FormControl,
 	FormControlLabel,
 	Radio,
 	RadioGroup,
 	TextField,
 	Box,
-	InputAdornment,
-	Typography
+	InputAdornment
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { FixedSizeList as List } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
 import SenderDetailsDialog from "./SenderDetailsDialog";
-import { DiagTxn } from "../../pages/NewTxPoolDashboard";
+import { DiagTxn, DisplaySenderInfo } from "../../pages/NewTxPoolDashboard";
 
 interface SendersTableProps {
-	senders: [string, number][];
+	senders: DisplaySenderInfo[];
 	allTransactions: DiagTxn[];
 }
 
 type FilterType = "all" | "top10";
 
-interface RowProps {
-	index: number;
-	style: React.CSSProperties;
-	data: {
-		items: [string, number][];
-		onRowClick: (sender: [string, number]) => void;
-	};
-}
-
-const Row: React.FC<RowProps> = React.memo(({ index, style, data }) => {
-	const { items, onRowClick } = data;
-	const [address, count] = items[index];
-
-	return (
-		<div
-			style={{
-				...style,
-				display: "flex",
-				alignItems: "center",
-				padding: "8px 16px",
-				cursor: "pointer",
-				borderBottom: "1px solid rgba(224, 224, 224, 1)",
-				backgroundColor: "transparent",
-				transition: "background-color 0.2s"
-			}}
-			onClick={() => onRowClick([address, count])}
-			onMouseEnter={(e) => {
-				e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.04)";
-			}}
-			onMouseLeave={(e) => {
-				e.currentTarget.style.backgroundColor = "transparent";
-			}}
-		>
-			<div style={{ flex: 1 }}>{address}</div>
-			<div style={{ width: 100, textAlign: "right" }}>{count}</div>
-		</div>
-	);
-});
-
 const SendersTable: React.FC<SendersTableProps> = ({ senders, allTransactions }) => {
 	const [filterType, setFilterType] = useState<FilterType>("all");
 	const [addressFilter, setAddressFilter] = useState<string>("");
-	const [selectedSender, setSelectedSender] = useState<[string, number] | null>(null);
+	const [selectedSender, setSelectedSender] = useState<DisplaySenderInfo | null>(null);
 
 	const handleFilterChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		setFilterType(event.target.value as FilterType);
@@ -83,7 +40,7 @@ const SendersTable: React.FC<SendersTableProps> = ({ senders, allTransactions })
 		setAddressFilter(event.target.value.toLowerCase());
 	}, []);
 
-	const handleRowClick = useCallback((sender: [string, number]) => {
+	const handleRowClick = useCallback((sender: DisplaySenderInfo) => {
 		setSelectedSender(sender);
 	}, []);
 
@@ -95,33 +52,20 @@ const SendersTable: React.FC<SendersTableProps> = ({ senders, allTransactions })
 		let filtered = senders;
 
 		if (addressFilter) {
-			filtered = filtered.filter(([address]) => address.toLowerCase().includes(addressFilter));
+			filtered = filtered.filter((info) => info.senderAddress.toLowerCase().includes(addressFilter));
 		}
 
 		switch (filterType) {
 			case "top10":
-				return filtered.slice(0, 10);
+				return [...filtered].sort((a, b) => b.transactions.length - a.transactions.length).slice(0, 10);
 			default:
 				return filtered;
 		}
 	}, [senders, addressFilter, filterType]);
 
-	const senderTransactions = useMemo(() => {
-		if (!selectedSender) return [];
-		return allTransactions.filter((tx) => tx.tx?.from === selectedSender[0]);
-	}, [selectedSender, allTransactions]);
-
-	const listData = useMemo(
-		() => ({
-			items: filteredSenders,
-			onRowClick: handleRowClick
-		}),
-		[filteredSenders, handleRowClick]
-	);
-
 	return (
 		<Card>
-			<CardContent sx={{ p: 1 }}>
+			<CardContent sx={{ p: 1, height: "calc(100vh - 220px)" }}>
 				<Box sx={{ mb: 2 }}>
 					<FormControl
 						component="fieldset"
@@ -161,41 +105,53 @@ const SendersTable: React.FC<SendersTableProps> = ({ senders, allTransactions })
 						</Box>
 					</FormControl>
 				</Box>
-				<Box sx={{ height: "calc(100vh - 250px)", width: "100%" }}>
-					<Box
-						sx={{
-							display: "flex",
-							alignItems: "center",
-							padding: "8px 16px",
-							borderBottom: "1px solid rgba(224, 224, 224, 1)",
-							backgroundColor: "background.paper",
-							fontWeight: "bold"
-						}}
-					>
-						<div style={{ flex: 1 }}>Address</div>
-						<div style={{ width: 100, textAlign: "right" }}>Tx Count</div>
-					</Box>
-					<AutoSizer>
-						{({ height, width }) => (
-							<List
-								height={height}
-								itemCount={filteredSenders.length}
-								itemSize={56}
-								width={width}
-								itemData={listData}
-							>
-								{Row}
-							</List>
-						)}
-					</AutoSizer>
+				<Box sx={{ height: "100%", width: "100%" }}>
+					<TableContainer sx={{ height: "100%", maxHeight: "100%", width: "100%" }}>
+						<Table stickyHeader>
+							<TableHead>
+								<TableRow>
+									<TableCell>Address</TableCell>
+									<TableCell>Nonce</TableCell>
+									<TableCell>Balance</TableCell>
+									<TableCell>Tx Count</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{filteredSenders.map((info) => (
+									<TableRow
+										key={info.senderAddress}
+										onClick={() => handleRowClick(info)}
+										style={{ cursor: "pointer" }}
+									>
+										<TableCell>{info.senderAddress}</TableCell>
+										<TableCell>{info.senderNonce}</TableCell>
+										<TableCell>
+											{(() => {
+												try {
+													const eth = Number(BigInt(info.senderBalance)) / 1e18;
+													return eth.toLocaleString(undefined, { maximumFractionDigits: 5 }) + " ETH";
+												} catch {
+													return "0 ETH";
+												}
+											})()}
+										</TableCell>
+										<TableCell>{info.transactions.length}</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				</Box>
 				{selectedSender && (
 					<SenderDetailsDialog
 						open={true}
 						onClose={handleCloseDialog}
-						senderAddress={selectedSender[0]}
-						transactionCount={selectedSender[1]}
-						senderTransactions={senderTransactions}
+						senderAddress={selectedSender.senderAddress}
+						transactionCount={selectedSender.transactions.length}
+						senderTransactions={selectedSender.transactions}
+						senderNonce={selectedSender.senderNonce}
+						senderBalance={selectedSender.senderBalance}
+						blockGasLimit={selectedSender.blockGasLimit}
 					/>
 				)}
 			</CardContent>
